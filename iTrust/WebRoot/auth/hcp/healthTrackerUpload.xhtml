@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageTitle">
+			iTrust - Upload Health Tracker Data
+		</ui:define>
+		
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		
+		<ui:define name="mainContent">
+
+			<!-- Title and tabs -->
+			<h:panelGrid style="text-align:center" width="100%" columns="1" border="0">
+				<h:panelGroup><h3>Upload Health Tracker Data</h3></h:panelGroup>
+			</h:panelGrid>
+			<h:panelGrid class="fTable" style="margin: 0 auto; text-align:center;" width="100%" columns="4" border="0">
+				<h:panelGroup>
+					<h4><h:link value="View" outcome="healthTrackerView"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Edit" outcome="healthTrackerEdit"/></h4>
+				</h:panelGroup>
+				<h:panelGroup style="text-decoration:underline">
+					<h4><h:link value="Upload" outcome="healthTrackerUpload"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Summary" outcome="healthTrackerSummary"/></h4>
+				</h:panelGroup>
+			</h:panelGrid>
+			<br/>
+
+			<!-- File Upload Form -->
+			<h:outputLabel for="uploadForm">Upload Data File:</h:outputLabel>
+			<h:form id="uploadForm" enctype="multipart/form-data" prependId="false">
+				<p>
+					<h:inputFile id="uploadFile" value="#{fileUploadBean.uploadedFile}">
+					</h:inputFile>
+				</p>
+				<h:commandButton id="uploadButton" value="Upload File"
+					action="#{fileUploadBean.upload}">
+				</h:commandButton>
+				<!-- <p id="textOutput">Text: #{fileUploadBean.text}</p>  -->
+			</h:form>
+									
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

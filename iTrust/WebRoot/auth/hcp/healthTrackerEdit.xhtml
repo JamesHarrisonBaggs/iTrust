@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageTitle">
+			iTrust - Edit Health Tracker Data
+		</ui:define>
+		
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		
+		<ui:define name="mainContent">
+
+			<!-- Title and tabs -->
+			<h:panelGrid style="text-align:center" width="100%" columns="1" border="0">
+				<h:panelGroup><h3>Edit Health Tracker Data</h3></h:panelGroup>
+			</h:panelGrid>
+			<h:panelGrid class="fTable" style="margin: 0 auto; text-align:center;" width="100%" columns="4" border="0">
+				<h:panelGroup>
+					<h4><h:link value="View" outcome="healthTrackerView"/></h4>
+				</h:panelGroup>
+				<h:panelGroup style="text-decoration:underline">
+					<h4><h:link value="Edit" outcome="healthTrackerEdit"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Upload" outcome="healthTrackerUpload"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Summary" outcome="healthTrackerSummary"/></h4>
+				</h:panelGroup>
+			</h:panelGrid>
+			<br/>
+			
+			<!-- Edit Form -->
+			<h:form id="htform">
+				<h:panelGrid class="fTable" style="margin: 0 auto; text-align:center;" width="50%" columns="2">
+					<h:panelGroup>
+						<div class="form-group">
+							<h:outputLabel for="patientId">Patient ID:</h:outputLabel>
+							<h:inputText id="patientId" value="#{session.getAttribute('pid')}"
+								class="form-control inline" required="true" readonly="true">
+							</h:inputText>
+							<h:message for="patientId" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="date">Date:</h:outputLabel>
+							<h:inputText id="date" value="#{htBean.date}"
+								class="form-control inline" required="true">
+								<f:converter converterId="localDateConverter" />
+							</h:inputText>
+							<h:message for="date" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="calories">Calories:</h:outputLabel>
+							<h:inputText id="calories" value="#{htBean.calories}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="calories" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="steps">Steps:</h:outputLabel>
+							<h:inputText id="steps" value="#{htBean.steps}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="steps" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="distance">Distance:</h:outputLabel>
+							<h:inputText id="distance" value="#{htBean.distance}"
+								class="form-control inline" required="true">
+								<f:convertNumber />
+							</h:inputText>
+							<h:message for="distance" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="floors">Floors:</h:outputLabel>
+							<h:inputText id="floors" value="#{htBean.floors}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="floors" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="activityCalories">Activity Calories:</h:outputLabel>
+							<h:inputText id="activityCalories"
+								value="#{htBean.activityCalories}" class="form-control inline"
+								required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="activityCalories" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="minutesSedentary">Minutes Sedentary:</h:outputLabel>
+							<h:inputText id="minutesSedentary"
+								value="#{htBean.minutesSedentary}" class="form-control inline"
+								required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="minutesSedentary" class="iTrustError" />
+						</div>
+					</h:panelGroup>
+					<h:panelGroup>
+						<div class="form-group">
+							<h:outputLabel for="minutesLightlyActive">Minutes Lightly Active:</h:outputLabel>
+							<h:inputText id="minutesLightlyActive"
+								value="#{htBean.minutesLightlyActive}" class="form-control inline"
+								required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="minutesLightlyActive" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="minutesFairlyActive">Minutes Fairly Active:</h:outputLabel>
+							<h:inputText id="minutesFairlyActive"
+								value="#{htBean.minutesFairlyActive}" class="form-control inline"
+								required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="minutesFairlyActive" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="minutesVeryActive">Minutes Very Active:</h:outputLabel>
+							<h:inputText id="minutesVeryActive"
+								value="#{htBean.minutesVeryActive}" class="form-control inline"
+								required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="minutesVeryActive" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="activeHours">Active Hours:</h:outputLabel>
+							<h:inputText id="activeHours" value="#{htBean.activeHours}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="activeHours" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="heartrateLow">Heartrate Low:</h:outputLabel>
+							<h:inputText id="heartrateLow" value="#{htBean.heartrateLow}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="heartrateLow" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="heartrateHigh">Heartrate High:</h:outputLabel>
+							<h:inputText id="heartrateHigh" value="#{htBean.heartrateHigh}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="heartrateHigh" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="heartrateAverage">Heartrate Average:</h:outputLabel>
+							<h:inputText id="heartrateAverage"
+								value="#{htBean.heartrateAverage}" class="form-control inline"
+								required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="heartrateAverage" class="iTrustError" />
+						</div>
+						<div class="form-group">
+							<h:outputLabel for="uvExposure">UV Exposure:</h:outputLabel>
+							<h:inputText id="uvExposure" value="#{htBean.uvExposure}"
+								class="form-control inline" required="true">
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+							<h:message for="uvExposure" class="iTrustError" />
+						</div>
+					</h:panelGroup>
+				</h:panelGrid>
+				<br/>
+				<div class="form-group form-button-group" align="center">
+					<h:commandButton id="submit_data" value="Save Health Tracker Data"
+						style="font-size: 150%; font-weight: bold"
+						action="#{htcontrol.updateData(htBean)}" />
+				</div>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

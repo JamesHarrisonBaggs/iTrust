@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageTitle">
+			iTrust - Health Tracker Data Summary
+		</ui:define>
+		
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		
+		<ui:define name="pageScripts">
+			<script type="text/javascript"
+				src="https://www.gstatic.com/charts/loader.js"></script>
+			<script type="text/javascript">
+				// Load the Google Visualization API.
+			 	google.charts.load('current', {packages: ['corechart']});
+				// Set a callback to run when Visualization API is loaded.
+				google.charts.setOnLoadCallback(drawChart);
+				 
+				// Callback that creates and populates a data table, instantiates
+				// the pie chart, passes in the data and draws it.
+				function drawChart() {
+					// Create the data table.
+					var data = google.visualization.arrayToDataTable([
+						[ 'Date', 'Steps' ], #{chartBean.chartData}
+					]);
+					// Set chart options
+					var options = {
+						title: 'Steps over Time',
+						curveType: 'none',
+						legend: {position: 'none'},
+						hAxis: {slantedText : true},
+						pointShape: 'square',
+						pointSize: 10,
+						width: 500,
+						height: 250
+					};
+					// Instantiate and draw chart
+					var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+					chart.draw(data, options);
+				}
+			</script>
+		</ui:define>
+		
+		<ui:define name="mainContent">
+
+			<!-- Title and tabs -->
+			<h:panelGrid style="text-align:center" width="100%" columns="1" border="0">
+				<h:panelGroup><h3>Health Tracker Data Summary</h3></h:panelGroup>
+			</h:panelGrid>
+			<h:panelGrid class="fTable" style="margin: 0 auto; text-align:center;" width="100%" columns="4" border="0">
+				<h:panelGroup>
+					<h4><h:link value="View" outcome="healthTrackerView"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Edit" outcome="healthTrackerEdit"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Upload" outcome="healthTrackerUpload"/></h4>
+				</h:panelGroup>
+				<h:panelGroup style="text-decoration:underline">
+					<h4><h:link value="Summary" outcome="healthTrackerSummary"/></h4>
+				</h:panelGroup>
+			</h:panelGrid>
+			<br/>
+						
+			<!-- Google Chart -->
+			<h4>Summary Reports</h4>
+			<div id="chart_div"></div>
+			
+			<!-- Start and end date form -->
+			<h:form>
+				<h:panelGrid class="fTable" style="text-align:center;" width="50%" columns="3" border="0">
+					<h:panelGroup>
+						<h:outputLabel for="startChartDate">Start Date:</h:outputLabel>
+						<h:inputText id="startChartDate" value="#{chartBean.startDate}"
+							class="form-control inline" required="true">
+							<f:converter converterId="localDateConverter" />
+						</h:inputText>
+						<h:message for="startChartDate" class="iTrustError" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel for="endChartDate">End Date:</h:outputLabel>
+						<h:inputText id="endChartDate" value="#{chartBean.endDate}"
+							class="form-control inline" required="true">
+							<f:converter converterId="localDateConverter" />
+						</h:inputText>
+						<h:message for="endChartDate" class="iTrustError" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:commandButton id="chartDateSearch" value="Search for Data"
+							action="#{chartBean.updateChartRange()}">
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

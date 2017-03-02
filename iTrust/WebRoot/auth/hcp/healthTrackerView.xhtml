@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageTitle">
+			iTrust - View Health Tracker Data
+		</ui:define>
+		
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		
+		<ui:define name="mainContent">
+
+			<!-- Title and tabs -->
+			<h:panelGrid style="text-align:center" width="100%" columns="1" border="0">
+				<h:panelGroup><h3>View Health Tracker Data</h3></h:panelGroup>
+			</h:panelGrid>
+			<h:panelGrid class="fTable" style="margin: 0 auto; text-align:center;" width="100%" columns="4" border="0">
+				<h:panelGroup style="text-decoration:underline">
+					<h4><h:link value="View" outcome="healthTrackerView"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Edit" outcome="healthTrackerEdit"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Upload" outcome="healthTrackerUpload"/></h4>
+				</h:panelGroup>
+				<h:panelGroup>
+					<h4><h:link value="Summary" outcome="healthTrackerSummary"/></h4>
+				</h:panelGroup>
+			</h:panelGrid>
+			<br/>
+			
+			<!-- View Form -->
+			<h:form id="viewForm">
+				<h:panelGrid width="75%" columns="3" border="0">
+					<h:panelGroup>
+						<h:outputLabel for="searchDate">Enter date to view data (M/d/yyyy):</h:outputLabel>
+					</h:panelGroup>
+					<h:panelGroup>
+						<!-- Input date box -->
+						<h:inputText id="searchDate" value="#{htcontrol.searchDate}"
+							class="form-control inline" required="true">
+							<f:converter converterId="localDateConverter" />
+						</h:inputText>
+						<h:message for="searchDate" class="iTrustError" />
+					</h:panelGroup>
+					<h:panelGroup>
+						<!-- Search button -->
+						<h:commandButton id="searchForDate" value="Search for Data"
+							action="#{htcontrol.searchForData()}">
+						</h:commandButton>
+					</h:panelGroup>
+				</h:panelGrid>
+				<br/>
+				<!-- Table of results -->
+				<h:dataTable id="DataTable" class="fTable" value="#{htcontrol.dataList}" var="data" border="1">
+						<h:column>
+							<f:facet name="header">Date</f:facet>
+								#{data.date}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Calories</f:facet>
+								#{data.calories}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Steps</f:facet>
+								#{data.steps}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Distance</f:facet>
+								#{data.distance}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Floors</f:facet>
+								#{data.floors}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Activity Calories</f:facet>
+								#{data.activityCalories}
+							</h:column>
+						<h:column>							
+							<f:facet name="header">Mins Sedentary</f:facet>
+								#{data.minutesSedentary}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Mins Lightly Active</f:facet>
+								#{data.minutesLightlyActive}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Mins Fairly Active</f:facet>
+								#{data.minutesFairlyActive}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Mins Very Active</f:facet>
+								#{data.minutesVeryActive}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Active Hours</f:facet>
+								#{data.activeHours}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Heartrate Low</f:facet>
+								#{data.heartrateLow}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Heartrate High</f:facet>
+								#{data.heartrateHigh}
+							</h:column>
+						<h:column>
+							<f:facet name="header">Heartrate Average</f:facet>
+								#{data.heartrateAverage}
+							</h:column>
+						<h:column>
+							<f:facet name="header">UV Exposure</f:facet>
+								#{data.uvExposure}
+							</h:column>
+					</h:dataTable>
+			</h:form>	
+			
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
