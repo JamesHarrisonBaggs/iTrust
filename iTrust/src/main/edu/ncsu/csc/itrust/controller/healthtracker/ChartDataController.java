@@ -59,7 +59,8 @@ public class ChartDataController implements Serializable {
 			sb.append(b.getSteps());
 			sb.append("],");
 		}
-		return sb.toString().substring(0, sb.toString().length() - 1);
+		String steps = sb.toString();		
+		return steps.length() > 0 ? steps.substring(0, steps.length() - 1) : "";
 	}
 	
 	/**
