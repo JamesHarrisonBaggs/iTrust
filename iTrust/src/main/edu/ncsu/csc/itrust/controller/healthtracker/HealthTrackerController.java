@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -17,7 +20,6 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 /**
  * A controller for the HealthTracker XHTML pages.
  * Extends iTrustController to use session and logging utilities.
- * Uses HealthTrackerValidator to validate incoming data.
  * Uses HealthTrackerSQL to interact with the MySQL database.
  * 
  * TODO Log these events
@@ -45,7 +47,7 @@ public class HealthTrackerController extends iTrustController {
 		this.database = factory.getHealthTrackerDataSQL();
 		dataList = new ArrayList<HealthTrackerBean>();
 	}
-	
+		
 	/**
 	 * USED BY ENTER DATA
 	 * Updates a set of data in the HealthTracker database table
@@ -66,6 +68,8 @@ public class HealthTrackerController extends iTrustController {
 		} catch (DBException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+		} catch (FormValidationException e) {
+			FacesContext.getCurrentInstance().addMessage("htform", new FacesMessage(e.getMessage()));
 		}
 	}
 	

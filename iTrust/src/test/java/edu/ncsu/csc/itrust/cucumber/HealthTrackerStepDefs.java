@@ -235,12 +235,28 @@ public class HealthTrackerStepDefs {
 			assertEquals(patientData[i], resultData[i]);
 		}
 	}
+	
+	/** Test Invalid Input */
 
+	@Then("^an error message is displayed: (.*)$")
+	public void check_error_message(String error) throws Throwable {
+		String src = driver.getPageSource();
+		Assert.assertTrue(src.contains(error));
+	}
+	
+	@Then("^an error message is displayed at the top: (.*)$")
+	public void check_error_message_at_top(String error) throws Throwable {
+		WebElement element = driver.findElement(By.xpath("//*[@id=\"htform\"]/table[1]/tbody/tr/td/span"));
+		String src = element.getText();
+		assertEquals(error.trim(), src.trim());
+	}
+	
 	/** Test Upload **/
 
 	@When("^I click the button to upload the file (.*)$")
 	public void click_upload_button(String filename) throws Throwable {
 		WebElement element;
+		
 		try {
 			// multiplatform support!
 			String os = System.getProperty("os.name");
