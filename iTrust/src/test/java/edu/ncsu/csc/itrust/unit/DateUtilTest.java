@@ -16,6 +16,13 @@ public class DateUtilTest extends TestCase {
 		String year = "" + (Integer.valueOf(formatter.format(new Date())) - yearsAgo);
 		assertEquals(year, DateUtil.yearsAgo(yearsAgo).split("/")[2]);
 	}
+	
+	public void testIsInMonthRange() throws Exception {
+		 Date date = new GregorianCalendar(2012, Calendar.MARCH, 11).getTime();
+		 assertTrue(DateUtil.isInMonthRange(date, 0, 3));
+		 assertFalse(DateUtil.isInMonthRange(date, 6, 9));
+		 assertTrue(DateUtil.isInMonthRange(date, 11, 5));
+	}
 
 	public void testYearsFromNow() throws Exception {
 		// This test is intended to test the logic of the conversion
