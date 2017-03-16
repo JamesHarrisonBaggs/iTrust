@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * Takes a parameter map and creates a bean from that map of the appropriate type.
- * @param <T> The type to be returned from the appropriate parameter map.
+ * @param <T> The type to be returned from the appropriate parameter map
  */
 public class BeanBuilder<T> {
 	/**
