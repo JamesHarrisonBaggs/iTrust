@@ -267,9 +267,9 @@ public class HealthTrackerStepDefs {
 			String path = dir + filename;
 			
 			// helpful prints
-			System.out.println("path: " + path);
-			System.out.println("os.name: " + os);
-			System.out.println("user.dir: " + dir);
+			// System.out.println("path: " + path);
+			// System.out.println("os.name: " + os);
+			// System.out.println("user.dir: " + dir);
 			
 			element = driver.findElement(By.id("uploadFile"));
 			element.sendKeys(path);

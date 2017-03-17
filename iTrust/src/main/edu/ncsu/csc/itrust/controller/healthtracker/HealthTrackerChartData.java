@@ -23,7 +23,7 @@ import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
  */
 @ManagedBean(name = "chartBean")
 @SessionScoped
-public class ChartDataController implements Serializable {
+public class HealthTrackerChartData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String chartData;
@@ -33,7 +33,7 @@ public class ChartDataController implements Serializable {
 	private LocalDate startDate;
 	private LocalDate endDate;
 
-	public ChartDataController() throws DBException {
+	public HealthTrackerChartData() throws DBException {
 		htcontrol = new HealthTrackerController();
 		this.dataList = htcontrol.getAllData();
 		refreshChartData();
