@@ -41,6 +41,11 @@
 			
 			<!-- Edit Form -->
 			<h:form id="htform">
+				
+				<h:panelGrid class="fTable" id="errorBox" style="margin: 0 auto; text-align:center;" width="50%" columns="1">
+					<h:message for="htform" class="iTrustError"></h:message>	
+				</h:panelGrid>
+				
 				<h:panelGrid class="fTable" style="margin: 0 auto; text-align:center;" width="50%" columns="2">
 					<h:panelGroup>
 						<div class="form-group">
@@ -62,7 +67,7 @@
 							<h:outputLabel for="calories">Calories:</h:outputLabel>
 							<h:inputText id="calories" value="#{htBean.calories}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
+								<!-- <f:convertNumber integerOnly="true" /> -->
 							</h:inputText>
 							<h:message for="calories" class="iTrustError" />
 						</div>
@@ -70,7 +75,6 @@
 							<h:outputLabel for="steps">Steps:</h:outputLabel>
 							<h:inputText id="steps" value="#{htBean.steps}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="steps" class="iTrustError" />
 						</div>
@@ -78,7 +82,6 @@
 							<h:outputLabel for="distance">Distance:</h:outputLabel>
 							<h:inputText id="distance" value="#{htBean.distance}"
 								class="form-control inline" required="true">
-								<f:convertNumber />
 							</h:inputText>
 							<h:message for="distance" class="iTrustError" />
 						</div>
@@ -86,7 +89,6 @@
 							<h:outputLabel for="floors">Floors:</h:outputLabel>
 							<h:inputText id="floors" value="#{htBean.floors}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="floors" class="iTrustError" />
 						</div>
@@ -95,7 +97,6 @@
 							<h:inputText id="activityCalories"
 								value="#{htBean.activityCalories}" class="form-control inline"
 								required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="activityCalories" class="iTrustError" />
 						</div>
@@ -104,7 +105,6 @@
 							<h:inputText id="minutesSedentary"
 								value="#{htBean.minutesSedentary}" class="form-control inline"
 								required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="minutesSedentary" class="iTrustError" />
 						</div>
@@ -115,7 +115,6 @@
 							<h:inputText id="minutesLightlyActive"
 								value="#{htBean.minutesLightlyActive}" class="form-control inline"
 								required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="minutesLightlyActive" class="iTrustError" />
 						</div>
@@ -124,7 +123,6 @@
 							<h:inputText id="minutesFairlyActive"
 								value="#{htBean.minutesFairlyActive}" class="form-control inline"
 								required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="minutesFairlyActive" class="iTrustError" />
 						</div>
@@ -133,7 +131,6 @@
 							<h:inputText id="minutesVeryActive"
 								value="#{htBean.minutesVeryActive}" class="form-control inline"
 								required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="minutesVeryActive" class="iTrustError" />
 						</div>
@@ -141,7 +138,6 @@
 							<h:outputLabel for="activeHours">Active Hours:</h:outputLabel>
 							<h:inputText id="activeHours" value="#{htBean.activeHours}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="activeHours" class="iTrustError" />
 						</div>
@@ -149,7 +145,6 @@
 							<h:outputLabel for="heartrateLow">Heartrate Low:</h:outputLabel>
 							<h:inputText id="heartrateLow" value="#{htBean.heartrateLow}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="heartrateLow" class="iTrustError" />
 						</div>
@@ -157,7 +152,6 @@
 							<h:outputLabel for="heartrateHigh">Heartrate High:</h:outputLabel>
 							<h:inputText id="heartrateHigh" value="#{htBean.heartrateHigh}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="heartrateHigh" class="iTrustError" />
 						</div>
@@ -166,7 +160,6 @@
 							<h:inputText id="heartrateAverage"
 								value="#{htBean.heartrateAverage}" class="form-control inline"
 								required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="heartrateAverage" class="iTrustError" />
 						</div>
@@ -174,7 +167,6 @@
 							<h:outputLabel for="uvExposure">UV Exposure:</h:outputLabel>
 							<h:inputText id="uvExposure" value="#{htBean.uvExposure}"
 								class="form-control inline" required="true">
-								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 							<h:message for="uvExposure" class="iTrustError" />
 						</div>

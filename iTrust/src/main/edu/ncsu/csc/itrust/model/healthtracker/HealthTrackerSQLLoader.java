@@ -79,5 +79,81 @@ public class HealthTrackerSQLLoader {
 		ht.setUvExposure(results.getInt("uv_exp"));				
 		return ht;
 	}
+	
+	/**
+	 * Get the integer value if initialized in DB, otherwise get null.
+	 * 
+	 * @param rs 
+	 * 		ResultSet object
+	 * @param field
+	 * 		name of DB attribute 
+	 * @return Integer value or null
+	 * @throws SQLException when field doesn't exist in the result set
+	 */
+	public Integer getIntOrNull(ResultSet rs, String field) throws SQLException {
+		Integer ret = rs.getInt(field);
+		if (rs.wasNull()) {
+			ret = null;
+		}
+		return ret;
+	}
+	
+	/**
+	 * Get the float value if initialized in DB, otherwise get null.
+	 * 
+	 * @param rs 
+	 * 		ResultSet object
+	 * @param field
+	 * 		name of DB attribute 
+	 * @return Float value or null
+	 * @throws SQLException when field doesn't exist in the result set
+	 */
+	public Float getFloatOrNull(ResultSet rs, String field) throws SQLException {
+		Float ret = rs.getFloat(field);
+		if (rs.wasNull()) {
+			ret = null;
+		}
+		return ret;
+	}
+	
+	/**
+	 * Set integer placeholder in statement to a value or null
+	 * 
+	 * @param ps
+	 * 		PreparedStatement object
+	 * @param index
+	 * 		Index of placeholder in the prepared statement
+	 * @param value
+	 * 		Value to set to placeholder, the value may be null 
+	 * @throws SQLException
+	 * 		When placeholder is invalid
+	 */
+	public void setIntOrNull(PreparedStatement ps, int index, Integer value) throws SQLException {
+		if (value == null) {
+			ps.setNull(index, java.sql.Types.INTEGER);
+		} else {
+			ps.setInt(index, value);
+		}
+	}
+	
+	/**
+	 * Set float placeholder in statement to a value or null
+	 * 
+	 * @param ps
+	 * 		PreparedStatement object
+	 * @param index
+	 * 		Index of placeholder in the prepared statement
+	 * @param value
+	 * 		Value to set to placeholder, the value may be null 
+	 * @throws SQLException
+	 * 		When placeholder is invalid
+	 */
+	public void setFloatOrNull(PreparedStatement ps, int index, Float value) throws SQLException {
+		if (value == null) {
+			ps.setNull(index, java.sql.Types.FLOAT);
+		} else {
+			ps.setFloat(index, value);
+		}
+	}
 
 }
