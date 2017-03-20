@@ -36,7 +36,6 @@ public class HealthTrackerSQLLoaderTest extends TestCase {
 	@Mock
 	private PreparedStatement mockPreparedStatement;
 	
-	@SuppressWarnings("null")
 	@Override
 	public void setUp() throws Exception {
 		htloader = new HealthTrackerSQLLoader();

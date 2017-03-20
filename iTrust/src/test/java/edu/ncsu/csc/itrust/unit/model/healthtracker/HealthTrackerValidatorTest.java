@@ -10,7 +10,6 @@ import org.junit.Test;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerValidator;
-import junit.framework.Assert;
 
 public class HealthTrackerValidatorTest {
 

@@ -30,7 +30,6 @@ public class OfficeVisitSQLLoaderTest extends TestCase {
 	@Mock
 	private PreparedStatement mockPreparedStatement;
 	
-	@SuppressWarnings("null")
 	@Override
 	public void setUp() throws Exception {
 		ovloader = new OfficeVisitSQLLoader();
