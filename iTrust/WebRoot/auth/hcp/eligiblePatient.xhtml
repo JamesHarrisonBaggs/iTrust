@@ -24,15 +24,26 @@
 			<div class="form-group" style="width: 500px">
 				<h2>Patient Obstetric Care Eligibility</h2>
 				<br />
-				<h4 id="header"> #{user.getUserNameForID(session.getAttribute("pid"))} is not eligible to receive obstetric care at this time (hardcoded for looks)</h4>
-					<br/>
-				<table class = "ftable">
+				<h4 id="header">
+					#{user.getUserNameForID(session.getAttribute("pid"))} is not
+					eligible to receive obstetric care at this time (hardcoded for
+					looks)</h4>
+				<br />
+				<table class="ftable">
 					<tr>
-						<td><h:commandButton id="submitObGynEligible"
-								value="Set Patient Eligible" /></td>
+						<h5 id="proceed">How would you like to proceed?</h5>
+					</tr>
+					<tr>
 
-						<td><h:commandButton id="submitObGynIneligible"
-								value="Set Patient Ineligible" action="/iTrust/auth/hcp-obGyn/obstetricsInit.xhtml?faces-redirect=true"/></td>
+						<td><h:message for="submitObGynEligible"></h:message> <h:commandButton
+								id="submitObGynEligible" value="Set Patient Eligible" /></td>
+
+
+						<td><h:message for="submitObGynIneligible"></h:message> <h:commandButton
+								id="submitObGynIneligible" value="Set Patient Ineligible" /></td>
+					</tr>
+					<tr>
+						<td><h:commandButton id="continue" value="Continue" /></td>
 					</tr>
 				</table>
 			</div>
