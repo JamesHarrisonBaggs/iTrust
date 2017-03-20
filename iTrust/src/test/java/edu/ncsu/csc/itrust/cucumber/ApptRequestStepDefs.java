@@ -3,7 +3,6 @@ package edu.ncsu.csc.itrust.cucumber;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,8 +14,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import edu.ncsu.csc.itrust.selenium.iTrustSeleniumTest;
-
-import cucumber.api.java.Before;
 
 public class ApptRequestStepDefs extends iTrustSeleniumTest {
 
