@@ -1,7 +1,6 @@
 package edu.ncsu.csc.itrust.model.diagnosis;
 
-import java.time.format.DateTimeFormatter;
-
+//import java.time.format.DateTimeFormatter;
 import edu.ncsu.csc.itrust.exception.ErrorList;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.POJOValidator;
