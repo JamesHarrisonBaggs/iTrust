@@ -20,6 +20,42 @@
 		<ui:define name="leftMenu">
 			<ui:include src="/auth/hcp/menu.xhtml" />
 		</ui:define>
+		<ui:define name="mainContent">
+			<div class="form-group" style="width: 500px">
+				<h2>Patient Obstetric Initialization</h2>
+			</div>
+			<br />
+			<h:dataTable id="DataTable" class="fTable" width = "100%"
+				value="#{obstetricController.dateList}" var="data" border="1">
+				<h:column>
+					<f:facet name="header">Date</f:facet>
+								#{data.date}
+							</h:column>
+				<h:column>
+					<f:facet name="header">Status</f:facet>
+								#{data.status}
+							</h:column>
+			</h:dataTable>
+			<br />
+			<h:panelGrid class="fTable"
+				style="margin: 1 auto; text-align:center;" width="100%" columns="2"
+				border="0">
+				<h:panelGroup>
+					<h:selectOneMenu value="#{obstetricController.viewDate}" width = "100%">
+						<f:selectItem itemValue="Place Holder" itemLabel="Place Holder" />
+						<f:selectItems value="#{obstetricController.dateList}" />
+					</h:selectOneMenu>
+					<h:commandButton id="viewPatientInitRecord" width = "45%"
+						style="font-weight:bold"
+						value="View Patient Initialization Record" />
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<br />
+			<h:commandButton id="createPatientInitRecord"
+				style="font-weight:bold"
+				value="Create New Patient Initialization Record" />
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>
