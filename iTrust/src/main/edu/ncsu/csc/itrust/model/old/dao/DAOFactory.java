@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.model.old.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
 
@@ -237,6 +238,11 @@ public class DAOFactory {
 	 */
 	public ReviewsDAO getReviewsDAO() {
 		return new ReviewsDAO(this);
+	}
+
+	public ObstetricsInitMySQL getObInitDataSQL() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
