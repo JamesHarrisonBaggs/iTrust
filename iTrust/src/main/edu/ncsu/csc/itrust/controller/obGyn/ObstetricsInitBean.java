@@ -21,6 +21,8 @@ public class ObstetricsInitBean {
 	private Date estimatedDueDate;
 	/** Number of days pregnant */
 	private int daysPregnant;
+	/** Date Created */
+	private Date dateCreated;
 	
 	/**
 	 * Construct an ObstetricsBean
@@ -105,6 +107,14 @@ public class ObstetricsInitBean {
 	 */
 	private void setDaysPregnant(int daysPregnant) {
 		this.daysPregnant = daysPregnant;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 	
 }
