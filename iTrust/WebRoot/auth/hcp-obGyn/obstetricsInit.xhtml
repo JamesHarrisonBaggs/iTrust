@@ -25,27 +25,34 @@
 				<h2>Patient Obstetric Initialization</h2>
 			</div>
 			<br />
-			<h:dataTable id="DataTable" class="fTable" width = "100%"
+			<h:dataTable id="DataTable" class="fTable" width="100%"
 				value="#{obstetricController.dateList}" var="data" border="1">
 				<h:column>
-					<f:facet name="header">Date</f:facet>
-								#{data.date}
-							</h:column>
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:link outcome="viewPatientInitRecord" value="#{data.date}">
+						<f:param name="viewDate" value="#{data.date}" />
+					</h:link>
+
+				</h:column>
 				<h:column>
 					<f:facet name="header">Status</f:facet>
 								#{data.status}
 							</h:column>
 			</h:dataTable>
 			<br />
-			<h:panelGrid class="fTable"
-				style="margin: 1 auto; text-align:center;" width="100%" columns="2"
-				border="0">
+			<h:panelGrid class="fTable" style="text-align:Left;" width="50%"
+				columns="2" border="0">
 				<h:panelGroup>
-					<h:selectOneMenu value="#{obstetricController.viewDate}" width = "100%">
-						<f:selectItem itemValue="Place Holder" itemLabel="Place Holder" />
+					<h:selectOneMenu value="#{obstetricController.viewDate}"
+						width="100%">
+						<f:selectItem
+							itemValue="Place Holder for Date if above href doesn't work"
+							itemLabel="Place Holder for date" />
 						<f:selectItems value="#{obstetricController.dateList}" />
 					</h:selectOneMenu>
-					<h:commandButton id="viewPatientInitRecord" width = "45%"
+					<h:commandButton id="viewPatientInitRecord" width="45%"
 						style="font-weight:bold"
 						value="View Patient Initialization Record" />
 				</h:panelGroup>
