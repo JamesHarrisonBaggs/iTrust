@@ -2,6 +2,10 @@ package edu.ncsu.csc.itrust.cucumber;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -62,7 +66,7 @@ public class ObstetricsPatientInitializationStepDefs {
 		driver.findElement(By.name("NAME_SUBMIT")).click();
 		try {
 			driver.findElement(By.name("user_" + patient)).click();
-			assertEquals("iTrust - Patient Obstetric Initialization", driver.getTitle());
+			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -70,7 +74,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@And("^I realize it is a wrong patient, so I click on Select a Different Patient$")
 	public void wrong_patient() {
-		
+		driver.findElement(By.xpath("//*[@id=\"j_idt48\"]/span/a")).click();
 	}
 	
 	@And("^the patient is not in the system$")
@@ -84,20 +88,27 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@And("^I click on create new initialization$")
 	public void new_initialization() {
-		driver.findElement(By.linkText("Add")).click();
+		driver.findElement(By.id("j_idt26:createPatientInitRecord")).click();
 		try {
-			assertEquals("New Initialization", driver.getTitle());
+			WebElement element = driver.findElement(By.name("obgyn_controller"));
+			assertEquals("obgyn_controller", element.getTagName());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
 	}
 	
 	@When("^I enter the patient's LMP (.*)$")
-	public void edit_LMP(String date) {
-		driver.findElement(By.name("LMP")).clear();
-		driver.findElement(By.name("LMP")).sendKeys(date);
-		String EDD  = "";
-		assertEquals(EDD, driver.findElement(By.name("EDD")).getText());
+	public void edit_LMP(String date) throws ParseException {
+		driver.findElement(By.name("obgyn_controller:datepicker")).clear();
+		driver.findElement(By.name("obgyn_controller:datepicker")).sendKeys(date);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date edd = format.parse(date);
+		Calendar c = Calendar.getInstance();
+		c.setTime(edd);
+		c.add(Calendar.DATE, 280);
+		edd = c.getTime();
+		String EDD = format.format(edd.getTime());
+		assertEquals(EDD, driver.findElement(By.xpath("//*[@id=\"obgyn_controller\"]/table/tbody/tr[2]/td")).getText());
 	}
 	
 	@When("^I select the patient's initialization at (.*)$")
@@ -127,11 +138,13 @@ public class ObstetricsPatientInitializationStepDefs {
 		driver.findElement(By.name("day_of_pregnancy")).sendKeys(day);
 		driver.findElement(By.name("hours_in_labor")).sendKeys(hrs);
 		driver.findElement(By.name("weight_gain")).sendKeys(gain);
-		Select select = new Select(driver.findElement(By.xpath("drop_down")));
-		select.deselectAll();
-		select.selectByVisibleText(type);
+		Select delivery = new Select(driver.findElement(By.xpath("delivery_drop_down")));
+		delivery.deselectAll();
+		delivery.selectByVisibleText(type);
 		driver.findElement(By.name("whether_multiple")).sendKeys(multiple);
-		driver.findElement(By.name("how_many")).sendKeys(num);
+		Select number = new Select(driver.findElement(By.xpath("number_drop_down")));
+		number.deselectAll();
+		number.selectByVisibleText(num);
 	}
 	
 	@And("^I click create$")
