@@ -69,17 +69,17 @@
 							style="font-size:12px; font-weight:bold"
 							value="View Patient Initialization Record" action="#{obgyn_controller.submitViewDate}"/>
 					</h:panelGroup>
-					<h:panelGroup rendered="#{obgyn_controller.eligible}">
-						<h:commandButton id="setPatientIneligible"
-							style="font-size:12px; font-weight:bold" align="left"
-							value="Set Patient as Ineligible" width="50%"
-							action="#{obgyn_controller.submitNotEligible}" />
-					</h:panelGroup>
 					<h:panelGroup rendered="#{!obgyn_controller.eligible}">
 						<h:commandButton id="setPatientEligible"
 							style="font-size:12px; font-weight:bold" align="left"
 							value="Set Patient as eligible" width="50%"
 							action="#{obgyn_controller.submitEligible}" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{obgyn_controller.eligible}">
+						<h:commandButton id="setPatientIneligible"
+							style="font-size:12px; font-weight:bold" align="left"
+							value="Set Patient as Ineligible" width="50%"
+							action="#{obgyn_controller.submitNotEligible}" />
 					</h:panelGroup>
 					<h:panelGroup rendered="#{obgyn_controller.obGyn}">
 						<h:commandButton id="createPatientInitRecord"

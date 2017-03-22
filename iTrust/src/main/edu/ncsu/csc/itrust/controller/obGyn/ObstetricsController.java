@@ -23,7 +23,7 @@ public class ObstetricsController extends iTrustController {
 	private List<PregnancyBean> priorPregList;
 	private boolean obGyn = false;
 	private SessionUtils sessionUtils;
-	private boolean eligible = false;
+	private boolean eligible;
 	private String viewDate;
 	private Long mid;
 	private Long hcpid;
@@ -41,19 +41,25 @@ public class ObstetricsController extends iTrustController {
 		setObGyn(sessionUtils.getSessionLoggedInMIDLong());
 		mid = sessionUtils.getCurrentPatientMIDLong();
 		hcpid = sessionUtils.getSessionLoggedInMIDLong();
+		if (mid != null) {
+			eligible = databasePatient.getPatient(mid).isObgynEligible();
+		}
 	}
 	public void submitCreate() {
 		
 	}
-	public void submitNotEligible() throws DBException {
+	
+	public void submitEligible() throws DBException {
 		PatientBean p = databasePatient.getPatient(mid);
+		p.setObgynEligible(true);
 		databasePatient.editPatient(p, hcpid);
-		p.setObgynEligible(false);
-		
 		setEligible(p.isObgynEligible());
 	}
-	public void submitEligible() {
-		setEligible(true);
+	public void submitNotEligible() throws DBException {
+		PatientBean p = databasePatient.getPatient(mid);
+		p.setObgynEligible(false);
+		databasePatient.editPatient(p, hcpid);
+		setEligible(p.isObgynEligible());
 	}
 	public void submitViewDate() {
 		
