@@ -43,7 +43,7 @@
 						<h:outputText value="Date" />
 					</f:facet>
 					<h:link outcome="viewPatientInitRecord"
-						value="#{obsInitBean.dateCreated}">
+						value="#{obsInitBean.initDate}">
 						<f:param name="viewDate" value="#{obgyn_controller.viewDate}" />
 					</h:link>
 
@@ -62,7 +62,7 @@
 								itemValue="Place Holder for Date if above href doesn't work"
 								itemLabel="Place Holder for date" />
 							<f:selectItems value="#{obgyn_controller.obGynList}"
-								var="obsInitBean" itemValue="#{obsInitBean.dateCreated}" />
+								var="obsInitBean" itemValue="#{obsInitBean.initDate}" />
 						</h:selectOneMenu>
 						<br />
 						<h:commandButton id="viewPatientInitRecord"

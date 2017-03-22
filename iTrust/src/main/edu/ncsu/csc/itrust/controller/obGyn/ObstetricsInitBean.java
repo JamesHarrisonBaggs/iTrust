@@ -1,6 +1,8 @@
 package edu.ncsu.csc.itrust.controller.obGyn;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import javax.faces.bean.ManagedBean;
 
 /**
@@ -14,15 +16,17 @@ public class ObstetricsInitBean {
 	/** MID of the patient */
 	private long patientId;
 	/** Date of initialization */
-	private Date initializationDate;
+	private LocalDate initDate;
 	/** Date of last menstrual period */
-	private Date lastMenstrualPeriod;
+	private LocalDate lastMenstrualPeriod;
 	/** Estimated due date */
-	private Date estimatedDueDate;
+	private LocalDate estimatedDueDate;
 	/** Number of days pregnant */
 	private int daysPregnant;
-	/** Date Created */
-	private Date dateCreated;
+	/** String representing time pregnant */
+	private String timePregnant;
+	/** Boolean for if record is current */
+	private boolean current;
 	
 	/**
 	 * Construct an ObstetricsBean
@@ -31,90 +35,114 @@ public class ObstetricsInitBean {
 		
 	}
 	
-	/** GETTERS **/
-
 	/**
-	 * @return the patientId
+	 * Calculates and sets the estimated due date and days pregnant
+	 * Called from setLastMenstrualPeriod() and therefore updated with the LMP
 	 */
+	private void calculateData() {
+		// Estimated due date = LMP + 280 days
+		LocalDate edd = lastMenstrualPeriod.plus(280, ChronoUnit.DAYS);
+		this.setEstimatedDueDate(edd);
+		
+		// Days pregnant = between LMP and today
+		long daysPreg = ChronoUnit.DAYS.between(lastMenstrualPeriod.atStartOfDay(), LocalDate.now().atStartOfDay());
+		this.setDaysPregnant((int) daysPreg);
+		
+		// TODO not a good way of storing days pregnant
+		// should probably generate on-the-fly
+		
+		// String representing days pregnant
+		StringBuilder sb = new StringBuilder();
+		long weeks = daysPreg/7;
+		sb.append(weeks);
+		sb.append(weeks == 1 ? " week " : " weeks ");
+		long days = daysPreg % 7;
+		sb.append(days);
+		sb.append(days == 1 ? " day" : " days");
+		this.setTimePregnant(sb.toString());
+	}
+	
+	/** GETTERS **/
+	
 	public long getPatientId() {
 		return patientId;
 	}
 
-	/**
-	 * @return the initializationDate
-	 */
-	public Date getInitializationDate() {
-		return initializationDate;
+	// might need to change in XHTML
+	public LocalDate getInitDate() {
+		return initDate;
+	}
+	
+	// return java.time.LocalDate as java.sql.Timestamp
+	public Timestamp getInitTimestamp() {
+		return Timestamp.valueOf(initDate.atStartOfDay());
 	}
 
-	/**
-	 * @return the lastMenstrualPeriod
-	 */
-	public Date getLastMenstrualPeriod() {
+	public LocalDate getLastMenstrualPeriod() {
 		return lastMenstrualPeriod;
 	}
+	
+	// return java.time.LocalDate as java.sql.Timestamp
+	public Timestamp getLMPTimestamp() {
+		return Timestamp.valueOf(lastMenstrualPeriod.atStartOfDay());
+	}
 
-	/**
-	 * @return the estimatedDueDate
-	 */
-	public Date getEstimatedDueDate() {
+	public LocalDate getEstimatedDueDate() {
 		return estimatedDueDate;
 	}
 
-	/**
-	 * @return the daysPregnant
-	 */
 	public int getDaysPregnant() {
 		return daysPregnant;
 	}
-
-	/** SETTERS **/
 	
-	/**
-	 * @param patientId the patientId to set
-	 */
+	public String getTimePregnant() {
+		return timePregnant;
+	}
+
+	public boolean isCurrent() {
+		return current;
+	}
+	
+	/** SETTERS **/
+
 	public void setPatientId(long patientId) {
 		this.patientId = patientId;
 	}
 
-	/**
-	 * @param initializationDate the initializationDate to set
-	 */
-	public void setInitializationDate(Date initializationDate) {
-		this.initializationDate = initializationDate;
+	// might need to change in XHTML
+	public void setInitDate(LocalDate initDate) {
+		this.initDate = initDate;
+	}
+	
+	// set java.time.LocalDate from java.sql.Timestamp
+	public void setInitTimestamp(Timestamp initDate) {
+		this.initDate = initDate.toLocalDateTime().toLocalDate();
 	}
 
-	/**
-	 * @param lastMenstrualPeriod the lastMenstrualPeriod to set
-	 */
-	public void setLastMenstrualPeriod(Date lastMenstrualPeriod) {
+	public void setLastMenstrualPeriod(LocalDate lastMenstrualPeriod) {
 		this.lastMenstrualPeriod = lastMenstrualPeriod;
-		// TODO EDD = LMP + 280 days
-		this.setEstimatedDueDate(lastMenstrualPeriod);
-		// TODO Time pregnant
-		this.setDaysPregnant(0);
+		this.calculateData();
 	}
 
-	/**
-	 * @param estimatedDueDate the estimatedDueDate to set
-	 */
-	private void setEstimatedDueDate(Date estimatedDueDate) {
+	// set java.time.LocalDate from java.sql.Timestamp
+	public void setLMPTimestamp(Timestamp lmpDate) {
+		this.lastMenstrualPeriod = lmpDate.toLocalDateTime().toLocalDate();
+	}
+
+	public void setEstimatedDueDate(LocalDate estimatedDueDate) {
 		this.estimatedDueDate = estimatedDueDate;
 	}
 
-	/**
-	 * @param daysPregnant the daysPregnant to set
-	 */
-	private void setDaysPregnant(int daysPregnant) {
+	public void setDaysPregnant(int daysPregnant) {
 		this.daysPregnant = daysPregnant;
 	}
-
-	public Date getDateCreated() {
-		return dateCreated;
+	
+	public void setTimePregnant(String timePregnant) {
+		this.timePregnant = timePregnant;
 	}
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
+	public void setCurrent(boolean current) {
+		this.current = current;
 	}
 	
 }

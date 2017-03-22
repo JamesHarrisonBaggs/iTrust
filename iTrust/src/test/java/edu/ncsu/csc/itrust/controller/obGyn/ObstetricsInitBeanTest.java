@@ -34,18 +34,18 @@ public class ObstetricsInitBeanTest {
 
 		// 0 week
 		ob.setLastMenstrualPeriod(LocalDate.now().minusDays(1));
-		assertEquals("0 weeks 1 day", ob.getDaysPregnantStr());
+		assertEquals("0 weeks 1 day", ob.getTimePregnant());
 		
 		// 1 week
 		ob.setLastMenstrualPeriod(LocalDate.now().minusDays(10));
-		assertEquals("1 week 3 days", ob.getDaysPregnantStr());
+		assertEquals("1 week 3 days", ob.getTimePregnant());
 		
 		// 0 days
 		ob.setLastMenstrualPeriod(LocalDate.now().minusDays(14));
-		assertEquals("2 weeks 0 days", ob.getDaysPregnantStr());
+		assertEquals("2 weeks 0 days", ob.getTimePregnant());
 
 		// 1 day
 		ob.setLastMenstrualPeriod(LocalDate.now().minusDays(99));
-		assertEquals("14 weeks 1 day", ob.getDaysPregnantStr());
+		assertEquals("14 weeks 1 day", ob.getTimePregnant());
 	}
 }
