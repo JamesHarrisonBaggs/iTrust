@@ -18,11 +18,6 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
  *
  */
 public class ObstetricsInitMySQL {
-	
-	//	id				BIGINT			UNSIGNED DEFAULT 0,
-	//	init_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	//	current			BOOLEAN			NOT NULL DEFAULT FALSE,
-	//	lmp_date		TIMESTAMP		NOT NULL,
 
 	private DAOFactory factory;
 	private ObstetricsInitSQLLoader loader;
@@ -64,10 +59,10 @@ public class ObstetricsInitMySQL {
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = loader.loadUpdate(conn.prepareStatement(""
 						+ "INSERT INTO obstetrics "
-						+ "(id, init_date, current, lmp_date) "
+						+ "(id, init_date, lmp_date, current) "
 						+ "VALUES(?,?,?,?) "
 						+ "ON DUPLICATE KEY UPDATE "
-						+ "id=?, init_date=?, current=?, lmp_date=?"), bean)) {
+						+ "id=?, init_date=?, lmp_date=?, current=?"), bean)) {
 			int result = stmt.executeUpdate();
 			return result;
 		} catch (SQLException e) {

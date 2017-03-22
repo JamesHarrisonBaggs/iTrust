@@ -30,8 +30,10 @@ public class ObstetricsInitValidator {
 	 * @throws FormValidationException
 	 */
 	public void validate(ObstetricsInitBean bean) throws FormValidationException {
-		// TODO validate
 		ErrorList errors = new ErrorList();
+		
+		// TODO validate
+		
 		if (errors.hasErrors()) {
 			throw new FormValidationException(errors);
 		}

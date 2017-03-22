@@ -15,11 +15,6 @@ import edu.ncsu.csc.itrust.controller.obGyn.ObstetricsInitBean;
  */
 public class ObstetricsInitSQLLoader {
 	
-	//	id				BIGINT			UNSIGNED DEFAULT 0,
-	//	init_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	//	current			BOOLEAN			NOT NULL DEFAULT FALSE,
-	//	lmp_date		TIMESTAMP		NOT NULL,
-	
 	private static ObstetricsInitSQLLoader instance;
 	
 	/**
@@ -39,8 +34,8 @@ public class ObstetricsInitSQLLoader {
 		ps.setLong(i++, bean.getPatientId());
 		Timestamp current = new Timestamp(Calendar.getInstance().getTime().getTime());
 		ps.setTimestamp(i++, current);
-		ps.setBoolean(i++, bean.isCurrent());
 		ps.setTimestamp(i++, bean.getLMPTimestamp());
+		ps.setBoolean(i++, bean.isCurrent());
 		return ps;
 	}
 	
@@ -51,9 +46,9 @@ public class ObstetricsInitSQLLoader {
 	public ObstetricsInitBean loadResults(ResultSet results) throws SQLException {
 		ObstetricsInitBean bean = new ObstetricsInitBean();
 		bean.setPatientId(results.getLong("id"));
-		bean.setInitDateTimestamp(results.getTimestamp("init_date"));
-		bean.setCurrent(results.getBoolean("current"));
+		bean.setInitTimestamp(results.getTimestamp("init_date"));
 		bean.setLMPTimestamp(results.getTimestamp("lmp_date"));
+		bean.setCurrent(results.getBoolean("current"));
 		return bean;
 	}
 
