@@ -174,6 +174,8 @@ public class PatientLoader implements BeanLoader<PatientBean> {
 			}
 		}
 		ps.setDate(i++, date);
+		ps.setBoolean(i++, p.isObgynEligible());
+		ps.setLong(38, p.getMID());
 		return ps;
 	}
 }

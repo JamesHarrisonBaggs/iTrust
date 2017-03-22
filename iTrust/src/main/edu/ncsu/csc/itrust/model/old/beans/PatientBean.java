@@ -62,6 +62,7 @@ public class PatientBean implements Serializable, Comparable<PatientBean> {
 	private String spiritualPractices = "";
 	private String alternateName = "";
 	private String dateOfDeactivationStr = "";
+	private boolean obgynEligible = false;
 
 
 	public BloodType getBloodType() {
@@ -500,6 +501,14 @@ public class PatientBean implements Serializable, Comparable<PatientBean> {
 	public int hashCode() {
 		assert false : "hashCode not designed";
 		return 42; // any arbitrary constant will do
+	}
+
+	public boolean isObgynEligible() {
+		return obgynEligible;
+	}
+
+	public void setObgynEligible(boolean obgynEligible) {
+		this.obgynEligible = obgynEligible;
 	}
 	
 }
