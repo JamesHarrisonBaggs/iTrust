@@ -498,17 +498,25 @@ public enum TransactionType {
 	/**EDIT_OPHTHALMOLOGY_SURGERY**/
 	EDIT_OPHTHALMOLOGY_SURGERY(8602, "Edit Ophthalmology Surgery", "Edit Ophthalmology Surgery", true),
 	
-	/**VIEW HEALTH TRACKER DATA**/
+	/** View Health Tracker Data **/
 	VIEW_HEALTHTRACKER_DATA(8700, "View Health Tracker Data", "viewed health tracker data", true),
-	/**MANUALLY ENTER HEALTH TRACKER DATA**/
+	/** Manually Enter Health Tracker Data **/
 	ENTER_HEALTHTRACKER_DATA(8701, "Enter Health Tracker Data", "entered health tracker data", true),
-	/**UPLOAD HEALTH TRACKER DATA FILE**/
+	/** Upload Health Tracker Data File **/
 	UPLOAD_HEALTHTRACKER_DATA(8702, "Upload Health Tracker Data File", "uploaded health tracker data", true),
-	/**EDIT EXISTING HEALTH TRACKER DATA**/
+	/** Edit Existing Health Tracker Data **/
 	EDIT_HEALTHTRACKER_DATA(8703, "Edit Health Tracker Data", "edited existing health tracker data", true),
-	/**VIEW HEALTH TRACKER SUMMARY DATA**/
+	/** View Health Tracker Summary Data **/
 	VIEW_HEALTHTRACKER_SUMMARY(8704, "View Health Tracker Summary Data", "viewed health tracker summary data", true),
+	
+	/** Create Obstetrics Record **/
+	CREATE_OBSTETRIC_RECORD(9300, "Create Initial Obstetric Record", " created obstetric record", true),
+	/** View Obstetrics Record **/
+	VIEW_OBSTETRIC_RECORD(9301, "View Initial Obstetric Record", " viewed obstetric record", true),
+	/** Update Obstetrics Record **/
+	UPDATE_OBSTETRIC_RECORD(9302, "Update Obstetric Record", "updated obstetric record", true)
 	;
+	
 	/**
 	 * This string is used in the SQL statement associated with pulling events for
 	 * display in a patient's Access Log
