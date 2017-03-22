@@ -128,7 +128,9 @@ public class ObstetricsInitBean {
 
 	public void setLastMenstrualPeriod(LocalDate lastMenstrualPeriod) {
 		this.lastMenstrualPeriod = lastMenstrualPeriod;
-		this.calculateData();
+		if (this.lastMenstrualPeriod != null) {
+			this.calculateData();
+		}
 	}
 
 	// set java.time.LocalDate from java.sql.Timestamp

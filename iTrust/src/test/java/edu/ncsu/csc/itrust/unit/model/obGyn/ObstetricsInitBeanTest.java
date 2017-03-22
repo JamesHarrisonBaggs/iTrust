@@ -55,8 +55,8 @@ public class ObstetricsInitBeanTest {
 		ob.setInitDate(LocalDate.of(2016, 3, 24));
 		ob.setLastMenstrualPeriod(LocalDate.of(2016, 02, 20));
 		
-		assertEquals(Timestamp.valueOf("2016-03-24 10:10:10.0"), ob.getInitTimestamp());
-		assertEquals(Timestamp.valueOf("2016-02-20 10:10:10.0"), ob.getLMPTimestamp());
+		assertEquals(Timestamp.valueOf("2016-03-24 00:00:00.0"), ob.getInitTimestamp());
+		assertEquals(Timestamp.valueOf("2016-02-20 00:00:00.0"), ob.getLMPTimestamp());
 
 	}
 	

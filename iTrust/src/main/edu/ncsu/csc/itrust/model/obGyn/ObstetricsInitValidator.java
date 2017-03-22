@@ -29,13 +29,19 @@ public class ObstetricsInitValidator {
 	 * @throws FormValidationException
 	 */
 	public void validate(ObstetricsInitBean bean) throws FormValidationException {
-		ErrorList errors = new ErrorList();
-		
-		// TODO validate
-		
-		if (errors.hasErrors()) {
-			throw new FormValidationException(errors);
-		}
+		ErrorList errorList = new ErrorList();
+		if (bean.getPatientId() < 0)
+			errorList.addIfNotNull("Patient ID cannot be negative");
+		if (bean.getInitDate() == null)
+			errorList.addIfNotNull("Init date cannot be null");
+		if (bean.getLastMenstrualPeriod() == null)
+			errorList.addIfNotNull("LMP date cannot be null");
+		if (bean.getEstimatedDueDate() == null)
+			errorList.addIfNotNull("EDD cannot be null");
+		if (bean.getDaysPregnant() < 0)
+			errorList.addIfNotNull("Days pregnant cannot be negative");
+		if (errorList.hasErrors())
+			throw new FormValidationException(errorList);
 	}
 		
 }
