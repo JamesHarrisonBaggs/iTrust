@@ -67,7 +67,7 @@
 						<br />
 						<h:commandButton id="viewPatientInitRecord"
 							style="font-size:12px; font-weight:bold"
-							value="View Patient Initialization Record" />
+							value="View Patient Initialization Record" action="#{obgyn_controller.submitViewDate}"/>
 					</h:panelGroup>
 					<h:panelGroup rendered="#{obgyn_controller.eligible}">
 						<h:commandButton id="setPatientIneligible"
