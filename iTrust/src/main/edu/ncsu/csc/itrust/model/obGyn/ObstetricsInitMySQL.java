@@ -37,7 +37,7 @@ public class ObstetricsInitMySQL {
 	public List<ObstetricsInitBean> getByID(long id) throws DBException {
 		ArrayList<ObstetricsInitBean> beans = new ArrayList<ObstetricsInitBean>();
 		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id = ?")) {
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id = ? ORDER BY init_date DESC")) {
 			stmt.setLong(1, id);
 			final ResultSet results = stmt.executeQuery();
 			while (results.next()) {
