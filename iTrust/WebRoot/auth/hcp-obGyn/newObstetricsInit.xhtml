@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<f:metadata>
+	<f:event type="preRenderView"
+		listener="#{obgyn_controller.logViewPIR()}" />
+</f:metadata>
+<!-- Utilizes jQuery date picker from https://jqueryui.com/datepicker/  -->
+<head>
+<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>jQuery UI Datepicker - Default functionality</title>
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+				<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+				<script>
+					$(document).ready(function() {
+						$(".datepicker").datepicker({
+							showOn : "button",
+							buttonText : "Select Data"
+						})
+					});
+				</script>
+		</link>
+	</meta>
+</meta>
+</head>
+<!-- End of utilization  -->
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">iTrust - View Obstetrics Initilizations</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<div class="form-group" style="width: 500px">
+				<h2>Patient Obstetric Initialization</h2>
+				<h4>of #{user.getUserNameForID(session.getAttribute("pid"))}</h4>
+				<h:message for="newObgynInitAdded" style="color:green" />
+				<h:message for="newObgynInitNotAdded" style="color:red" />
+			</div>
+			<div class="form-group">
+				<h:outputLabel for="fitnessDateLabel" style="width: 100px">Fitness Date: </h:outputLabel>
+				<h:inputText id="datepicker" styleClass="datepicker"
+					value="#{view_fitness_data_form.fitnessDate}"></h:inputText>
+			</div>
+			<div class="form-group  form-button-group">
+				<h:commandButton id="submitDateButton" value="Submit Date"
+					action="#{view_fitness_data_form.submit}" />
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
