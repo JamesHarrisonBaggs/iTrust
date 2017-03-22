@@ -31,11 +31,12 @@ public class ObstetricsController extends iTrustController {
 	private List<PregnancyBean> pregnancyList;
 	private boolean obGyn;
 	private boolean eligible;
-	private boolean bothObGynEligible;
+	private boolean newObgynInit;
 
 	private String viewDate;
 	private Long mid;
 	private Long hcpid;
+	private ObstetricsInitBean obData;
 
 	public ObstetricsController() throws DBException {
 		super();
@@ -59,8 +60,7 @@ public class ObstetricsController extends iTrustController {
 		}
 		if (mid != null) {
 			setEligible(patientDB.getPatient(mid).isObgynEligible()); 
-		}
-		setBothObGynEligible(getObGyn() && isEligible());		
+		}		
 	}
 
 	/** added by Eric **/
@@ -106,7 +106,10 @@ public class ObstetricsController extends iTrustController {
 	}
 
 	public void submitCreate() {
-
+		
+	}
+	public void submitClose() {
+		setNewObgynInit(false);
 	}
 
 	public void submitEligible() throws DBException {
@@ -125,6 +128,14 @@ public class ObstetricsController extends iTrustController {
 
 	public void submitViewDate() {
 
+	}
+	public void submitNewObgynInit() {
+		setObData(new ObstetricsInitBean(true));
+		setNewObgynInit(true);
+	}
+	public void submitNewDate() {
+		obData.getEstimatedDueDate();
+		setNewObgynInit(true);
 	}
 
 	public void setObGyn(Long mid) throws DBException {
@@ -181,7 +192,19 @@ public class ObstetricsController extends iTrustController {
 		return (obGyn && eligible);
 	}
 
-	public void setBothObGynEligible(boolean bothObGynEligible) {
-		this.bothObGynEligible = bothObGynEligible;
+	public boolean isNewObgynInit() {
+		return newObgynInit;
+	}
+
+	public void setNewObgynInit(boolean newObgynInit) {
+		this.newObgynInit = newObgynInit;
+	}
+
+	public ObstetricsInitBean getObData() {
+		return obData;
+	}
+
+	public void setObData(ObstetricsInitBean obData) {
+		this.obData = obData;
 	}
 }

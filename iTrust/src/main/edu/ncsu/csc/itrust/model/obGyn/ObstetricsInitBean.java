@@ -35,6 +35,14 @@ public class ObstetricsInitBean {
 		
 	}
 	
+	public ObstetricsInitBean(boolean b) {
+		if(b) {
+			initDate = LocalDate.now();
+			lastMenstrualPeriod = LocalDate.now();
+			calculateData();
+		}
+	}
+
 	/**
 	 * Calculates and sets the estimated due date and days pregnant
 	 * Called from setLastMenstrualPeriod() and therefore updated with the LMP

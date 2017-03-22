@@ -14,48 +14,40 @@
 <head>
 <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>jQuery UI Datepicker - Default functionality</title>
+		<title>iTrust - New Obstetrics Initialization</title>
 		<link rel="stylesheet"
 			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-				<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-				<script>
-					$(document).ready(function() {
-						$(".datepicker").datepicker({
-							showOn : "button",
-							buttonText : "Select Data"
-						})
-					});
-				</script>
+			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<script>
+				$(document).ready(function() {
+					$(".datepicker").datepicker({
+						showOn : "button",
+						buttonText : "Select Date",
+						dateFormat: 'yy-mm-dd'
+					})
+				});
+			</script>
 		</link>
 	</meta>
 </meta>
 </head>
 <!-- End of utilization  -->
-<h:body>
-	<ui:composition template="/iTrust_template.xhtml">
-		<ui:define name="pageStyle"></ui:define>
-		<ui:define name="pageTitle">iTrust - View Obstetrics Initilizations</ui:define>
-		<ui:define name="leftMenu">
-			<ui:include src="/auth/hcp/menu.xhtml" />
-		</ui:define>
-		<ui:define name="mainContent">
-			<div class="form-group" style="width: 500px">
-				<h2>Patient Obstetric Initialization</h2>
-				<h4>of #{user.getUserNameForID(session.getAttribute("pid"))}</h4>
-				<h:message for="newObgynInitAdded" style="color:green" />
-				<h:message for="newObgynInitNotAdded" style="color:red" />
-			</div>
-			<div class="form-group">
-				<h:outputLabel for="fitnessDateLabel" style="width: 100px">Fitness Date: </h:outputLabel>
-				<h:inputText id="datepicker" styleClass="datepicker"
-					value="#{view_fitness_data_form.fitnessDate}"></h:inputText>
-			</div>
-			<div class="form-group  form-button-group">
-				<h:commandButton id="submitDateButton" value="Submit Date"
-					action="#{view_fitness_data_form.submit}" />
-			</div>
-		</ui:define>
-	</ui:composition>
-</h:body>
+<body>
+	<div style="width: 500px">
+		<h4>Create New Initialization Record</h4>
+		<h:form id="obgyn_controller">
+			<h:panelGrid class="fTable" width="50%" columns="1">
+				<h:panelGroup>
+					<h:outputLabel for="fitnessDateLabel" style="width: 100px">Last Menstural Period </h:outputLabel>
+					<h:inputText type="text" id="datepicker" styleClass="datepicker"
+						value="#{obgyn_controller.obData.lastMenstrualPeriod}"></h:inputText>
+				</h:panelGroup>
+				<h:outputText value = "#{obgyn_controller.obData.estimatedDueDate}"/>
+				<h:commandButton width="10%" id="submitDateButton" value="Calculate Estimated Delivery Date"
+						action="#{obgyn_controller.submitNewDate}" />
+			</h:panelGrid>
+		</h:form>
+	</div>
+</body>
 </html>

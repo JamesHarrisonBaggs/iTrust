@@ -37,10 +37,11 @@
 			</div>
 			<br />
 			<h:dataTable id="PIRTable" class="fTable" width="50%"
-				value="#{obgyn_controller.obstetricsList}" var="obsInitBean" border="1">
+				value="#{obgyn_controller.obstetricsList}" var="obsInitBean"
+				border="1">
 				<h:column>
 					<f:facet name="header">
-								<h:outputText value="Date"/>
+						<h:outputText value="Date" />
 					</f:facet>
 					<h:link outcome="viewSingleObstetricsInit"
 						value="#{obsInitBean.initDate}">
@@ -50,9 +51,9 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">Status</f:facet>
-								<h:outputText rendered="#{obsInitBean.current}" value="Active"/>
-								<h:outputText rendered="#{!obsInitBean.current}" value="Inactive"/>
-							</h:column>
+					<h:outputText rendered="#{obsInitBean.current}" value="Active" />
+					<h:outputText rendered="#{!obsInitBean.current}" value="Inactive" />
+				</h:column>
 			</h:dataTable>
 			<br />
 			<h:form>
@@ -60,12 +61,14 @@
 					<h:panelGroup rendered="false">
 						<h:selectOneMenu value="#{obgyn_controller.viewDate}" width="50%">
 							<f:selectItems value="#{obgyn_controller.obstetricsList}"
-								var="obsInitBean" itemValue="#{obsInitBean.initDate}" itemLabel="#{obsInitBean.initDate}"/>
+								var="obsInitBean" itemValue="#{obsInitBean.initDate}"
+								itemLabel="#{obsInitBean.initDate}" />
 						</h:selectOneMenu>
 						<br />
 						<h:commandButton id="viewPatientInitRecord"
 							style="font-size:11px; font-weight:bold"
-							value="View Patient Initialization Record" action="#{obgyn_controller.submitViewDate}"/>
+							value="View Patient Initialization Record"
+							action="#{obgyn_controller.submitViewDate}" />
 					</h:panelGroup>
 					<h:panelGroup rendered="#{!obgyn_controller.eligible}">
 						<h:commandButton id="setPatientEligible"
@@ -79,14 +82,19 @@
 							value="Set Patient as Ineligible" width="50%"
 							action="#{obgyn_controller.submitNotEligible}" />
 					</h:panelGroup>
-					<h:panelGroup rendered="#{obgyn_controller.bothObGynEligible}">
+					<h:panelGroup rendered="#{obgyn_controller.isBothObGynEligible()}">
 						<h:commandButton id="createPatientInitRecord"
 							style="font-size:11px; font-weight:bold" align="left"
 							value="Create New Initialization Record"
-							action="#{obgyn_controller.submitCreate}" />
+							action="#{obgyn_controller.submitNewObgynInit}" />
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
+			<br />
+			<br />
+			<h:panelGrid rendered="#{obgyn_controller.newObgynInit}">
+				<ui:include src="/auth/hcp-obGyn/newObstetricsInit.xhtml" />
+			</h:panelGrid>
 		</ui:define>
 	</ui:composition>
 </h:body>
