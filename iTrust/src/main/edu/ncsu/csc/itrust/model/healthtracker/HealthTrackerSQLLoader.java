@@ -15,7 +15,6 @@ public class HealthTrackerSQLLoader {
 	/**
 	 * FOR DATABASE UPDATES
 	 * Loads data from a Bean to a SQL PreparedStatement
-	 * @param update - true if updating, false if adding
 	 */
 	public PreparedStatement loadUpdate(PreparedStatement ps, HealthTrackerBean ht) throws SQLException {
 		int i = 1;

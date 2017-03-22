@@ -2,6 +2,7 @@ package edu.ncsu.csc.itrust.controller.obGyn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import javax.faces.bean.ManagedBean;
@@ -12,6 +13,7 @@ import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obGyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
@@ -22,6 +24,7 @@ public class ObstetricsController extends iTrustController {
 	
 	private DAOFactory factory;
 	private ObstetricsInitMySQL initDB;
+	private PregnancyMySQL pregDB;
 	private PatientDAO patientDB;
 	
 	private List<ObstetricsInitBean> obstetricsList;
@@ -35,8 +38,11 @@ public class ObstetricsController extends iTrustController {
 
 	public ObstetricsController() throws DBException {
 		super();
+		
+		// get databases
 		this.factory = DAOFactory.getProductionInstance();
 		this.initDB = factory.getObstetricsInitDAO();
+		this.pregDB = factory.getPregnanciesDAO();
 		this.patientDB = factory.getPatientDAO();
 		
 		obstetricsList = new ArrayList<ObstetricsInitBean>();
@@ -63,14 +69,13 @@ public class ObstetricsController extends iTrustController {
 	
 	public List<PregnancyBean> getPregnancies() throws DBException {
 		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return null;
-//		return databasePreg.getByID(id);
+		return pregDB.getByID(id);
 	}
 	
 	public List<PregnancyBean> getPregnanciesByDate(LocalDate date) throws DBException {
 		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return null;
-//		return databasePreg.getByDate(id, date);
+		Timestamp ts = Timestamp.valueOf(date.atStartOfDay());
+		return pregDB.getByDate(id, ts);
 	}
 	
 	// add or update
@@ -85,12 +90,12 @@ public class ObstetricsController extends iTrustController {
 	
 	// add or update
 	public void updatePregnancy(PregnancyBean bean) throws DBException {
-//		try {
-//			int result = databasePreg.update(bean);
-//			// TODO log
-//		} catch (FormValidationException e) {
-//			// TODO handle
-//		}
+		try {
+			int result = pregDB.update(bean);
+			// TODO log
+		} catch (FormValidationException e) {
+			// TODO handle
+		}
 	}
 	
 	public void submitCreate() {

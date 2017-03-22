@@ -150,8 +150,6 @@ public class HealthTrackerMySQL {
 				int rows = stmt.executeUpdate();
 				return rows;
 			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
 				throw new DBException(e);
 			}
 	}

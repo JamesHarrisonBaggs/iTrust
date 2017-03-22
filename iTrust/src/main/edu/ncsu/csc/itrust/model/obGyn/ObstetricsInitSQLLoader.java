@@ -34,6 +34,13 @@ public class ObstetricsInitSQLLoader {
 		ps.setTimestamp(i++, current);
 		ps.setTimestamp(i++, bean.getLMPTimestamp());
 		ps.setBoolean(i++, bean.isCurrent());
+		
+		// set again for duplicate
+		ps.setLong(i++, bean.getPatientId());
+		ps.setTimestamp(i++, current);
+		ps.setTimestamp(i++, bean.getLMPTimestamp());
+		ps.setBoolean(i++, bean.isCurrent());
+		
 		return ps;
 	}
 	
