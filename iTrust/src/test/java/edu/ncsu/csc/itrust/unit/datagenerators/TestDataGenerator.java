@@ -634,6 +634,10 @@ public class TestDataGenerator {
 	public void uc22() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/UC22.sql");
 	}
+	
+	public void uc93() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc93.sql");
+	}
 
 	public void testExpertSearch() throws FileNotFoundException, SQLException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/testExpertSearch.sql");
@@ -966,6 +970,7 @@ public class TestDataGenerator {
 		uc63(); // NEW
 		uc55();
 		uc56();
+		uc93();
 		if (!checkIfZipsExists()) {
 			zipCodes();
 		}
