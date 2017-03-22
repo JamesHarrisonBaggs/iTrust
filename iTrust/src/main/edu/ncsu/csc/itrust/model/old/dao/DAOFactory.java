@@ -138,6 +138,7 @@ public class DAOFactory {
 	public HealthTrackerMySQL getHealthTrackerDataSQL() {
 		return new HealthTrackerMySQL(this);
 	}
+	
 	/**
 	 * 
 	 * @return this DAOFactory's HospitalsDAO
@@ -223,6 +224,10 @@ public class DAOFactory {
 	}
 
 
+	public ObstetricsInitMySQL getObstetricsInitDAO() {
+		return new ObstetricsInitMySQL(this);
+	}
+
 	/**
 	 * 
 	 * @return this DAOFactory's DrugReactionOverrideCodesDAO
@@ -238,11 +243,6 @@ public class DAOFactory {
 	 */
 	public ReviewsDAO getReviewsDAO() {
 		return new ReviewsDAO(this);
-	}
-
-	public ObstetricsInitMySQL getObInitDataSQL() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 
