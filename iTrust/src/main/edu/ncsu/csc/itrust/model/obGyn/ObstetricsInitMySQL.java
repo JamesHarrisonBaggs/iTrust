@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,26 @@ public class ObstetricsInitMySQL {
 			throw new DBException(e);
 		}
 		return beans;
+	}
+	
+	/**
+	 * Returns 1 obstetric records for a patient
+	 */
+	public ObstetricsInitBean getByDate(long id, Timestamp date) throws DBException {
+		ArrayList<ObstetricsInitBean> beans = new ArrayList<ObstetricsInitBean>();
+		try (Connection conn = factory.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id = ? AND init_date=?")) {
+			stmt.setLong(1, id);
+			stmt.setTimestamp(2, date);
+			final ResultSet results = stmt.executeQuery();
+			while (results.next()) {
+				beans.add(loader.loadResults(results));
+			}
+			results.close();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+		return beans.get(0);
 	}
 	
 	/**

@@ -84,6 +84,11 @@ public class ObstetricsController extends iTrustController {
 		Timestamp ts = Timestamp.valueOf(date.atStartOfDay());
 		return pregDB.getByDate(id, ts);
 	}
+	public ObstetricsInitBean getObstetricsInitBeanByDate(LocalDate date) throws DBException {
+		long id = getSessionUtils().getCurrentPatientMIDLong();
+		Timestamp ts = Timestamp.valueOf(date.atStartOfDay());
+		return initDB.getByDate(id, ts);
+	}
 
 	// add or update
 	public void updateRecord(ObstetricsInitBean bean) throws DBException {
