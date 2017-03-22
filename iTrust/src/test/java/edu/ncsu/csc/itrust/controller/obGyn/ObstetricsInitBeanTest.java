@@ -2,6 +2,9 @@ package edu.ncsu.csc.itrust.controller.obGyn;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 

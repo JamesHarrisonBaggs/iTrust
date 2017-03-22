@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-import edu.ncsu.csc.itrust.controller.obGyn.ObstetricsInitBean;
-
 /**
  * Interface between SQL objects and ObstetricsInitBean
  * @author erein

@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.controller.obGyn;
+package edu.ncsu.csc.itrust.model.obGyn;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

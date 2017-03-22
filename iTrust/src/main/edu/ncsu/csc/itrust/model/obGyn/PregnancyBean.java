@@ -1,13 +1,13 @@
-package edu.ncsu.csc.itrust.controller.obGyn;
+package edu.ncsu.csc.itrust.model.obGyn;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PregnancyBean {
 	
 	/** MID of the patient */
 	private long patientId;
 	/** Date of birth */
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	/** Year of conception */
 	private int yearOfConception;
 	/** Number of days pregnant */
@@ -40,7 +40,7 @@ public class PregnancyBean {
 	/**
 	 * @return the dateOfBirth
 	 */
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
@@ -98,7 +98,7 @@ public class PregnancyBean {
 	/**
 	 * @param dateOfBirth the dateOfBirth to set
 	 */
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

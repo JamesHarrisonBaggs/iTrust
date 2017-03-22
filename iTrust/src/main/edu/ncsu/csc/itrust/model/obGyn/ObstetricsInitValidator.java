@@ -1,6 +1,5 @@
 package edu.ncsu.csc.itrust.model.obGyn;
 
-import edu.ncsu.csc.itrust.controller.obGyn.ObstetricsInitBean;
 import edu.ncsu.csc.itrust.exception.ErrorList;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 
