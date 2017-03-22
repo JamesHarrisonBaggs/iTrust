@@ -14,6 +14,37 @@
 
 </head>
 <body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">iTrust - View Single Initilization</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<div class="form-group" style="width: 500px">
+				<h2>View Initialization</h2>
+			</div>
 
+			<h:dataTable id="DataTable" class="fTable"
+				value="#{obgyn_controller.obstetricsList}" var="data" border="1">
+				<h:column>
+					<f:facet name="header">Date</f:facet>
+						#{data.initDate}
+				</h:column>
+				<h:row>
+					<f:facet name="header">Last Menstrual Period Date</f:facet>
+						#{data.lastMenstrualPeriod}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Estimated Delivery Date</f:facet>
+						#{data.estimatedDueDate}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Estimated Delivery Date</f:facet>
+						#{data.estimatedDueDate}
+				</h:column>
+			</h:dataTable>
+		</ui:define>
+	</ui:composition>
 </body>
 </html>
