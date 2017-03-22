@@ -35,15 +35,18 @@
 					<f:facet name="header">Last Menstrual Period Date</f:facet>
 						#{data.lastMenstrualPeriod}
 				</h:column>
-				<h:column>
-					<f:facet name="header">Estimated Delivery Date</f:facet>
+					<h:column>
+						<f:facet name="header">Estimated Delivery Date</f:facet>
 						#{data.estimatedDueDate}
 				</h:column>
-				<h:column>
-					<f:facet name="header">Estimated Delivery Date</f:facet>
+					<h:column>
+						<f:facet name="header">Estimated Delivery Date</f:facet>
 						#{data.estimatedDueDate}
 				</h:column>
 			</h:dataTable>
+			<h:Button id="backToObstetrics" value="Back"
+				outcome="viewObstetricsInit">
+			</h:Button>
 		</ui:define>
 	</ui:composition>
 </body>
