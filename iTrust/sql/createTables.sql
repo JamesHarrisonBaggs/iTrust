@@ -533,7 +533,7 @@ CREATE TABLE pregnancies
 	days_pregnant	INTEGER(15)		UNSIGNED DEFAULT 0,
 	hours_labor		INTEGER(15)		UNSIGNED DEFAULT 0,
 	weight_gain		FLOAT(19)		DEFAULT 0,
-	delivery_type	VARCHAR(30)		NOT NULL DEFAULT ''
+	delivery_type	VARCHAR(30)		NOT NULL DEFAULT '',
 	amount			INTEGER(15)		UNSIGNED DEFAULT 1,
 	PRIMARY KEY(id, birth_date)
 ) ENGINE=MyISAM;
