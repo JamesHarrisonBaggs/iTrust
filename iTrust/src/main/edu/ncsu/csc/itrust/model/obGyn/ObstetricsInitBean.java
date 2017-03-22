@@ -35,11 +35,10 @@ public class ObstetricsInitBean {
 		
 	}
 	
-	public ObstetricsInitBean(boolean b) {
-		if(b) {
-			initDate = LocalDate.now();
-			lastMenstrualPeriod = LocalDate.now();
-			calculateData();
+	public ObstetricsInitBean(boolean current) {
+		if (current) {
+			this.setInitDate(LocalDate.now());
+			this.setLastMenstrualPeriod(LocalDate.now());
 		}
 	}
 
@@ -134,7 +133,7 @@ public class ObstetricsInitBean {
 
 	// set java.time.LocalDate from java.sql.Timestamp
 	public void setLMPTimestamp(Timestamp lmpDate) {
-		this.lastMenstrualPeriod = lmpDate.toLocalDateTime().toLocalDate();
+		this.setLastMenstrualPeriod(lmpDate.toLocalDateTime().toLocalDate());
 	}
 
 	public void setEstimatedDueDate(LocalDate estimatedDueDate) {
