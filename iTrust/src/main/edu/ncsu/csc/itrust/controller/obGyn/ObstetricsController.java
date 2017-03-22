@@ -1,6 +1,5 @@
 package edu.ncsu.csc.itrust.controller.obGyn;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,62 +7,81 @@ import javax.faces.bean.ManagedBean;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
+import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "obgyn_controller")
 public class ObstetricsController extends iTrustController {
-	
 	private DAOFactory factory;
-	private ObstetricsInitMySQL initDB;
-	private List<ObstetricsInitBean> dataListObInit;
+	private ObstetricsInitMySQL databaseObInit;
+	private List<ObstetricsInitBean> obGynList;
+	private List<PregnancyBean> priorPregList;
+	private boolean obGyn = false;
+	private SessionUtils sessionUtils;
+	private boolean eligible = false;
+	private String viewDate;
 
-	/**
-	 * Constructs a new Obstetrics Controller
-	 * @throws DBException
-	 */
 	public ObstetricsController() throws DBException {
 		super();
+		sessionUtils = super.getSessionUtils();
 		this.factory = DAOFactory.getProductionInstance();
-		this.initDB = factory.getObstetricsInitDAO();
-		dataListObInit = new ArrayList<ObstetricsInitBean>();
+		this.databaseObInit = factory.getObstetricsInitDAO();
+		obGynList = new ArrayList<ObstetricsInitBean>();
+		setObGynList();
+		priorPregList = new ArrayList<PregnancyBean>();
+		setPriorPregList();
+		setObGyn(sessionUtils.getSessionLoggedInMIDLong());
+	}
+	public void submitCreate() {
+		
+	}
+	public void submitNotEligible() {
+		setEligible(false);
+	}
+	public void submitEligible() {
+		setEligible(true);
 	}
 	
-	public List<ObstetricsInitBean> getRecords() throws DBException {
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return initDB.getByID(id);
+	public void setObGyn(Long mid) throws DBException {
+		PersonnelBean p = factory.getPersonnelDAO().getPersonnel(mid); 
+		obGyn = p.getSpecialty().equals("ob/gyn");
 	}
-	
-	public List<PregnancyBean> getPregnancies() throws DBException {
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return null;
-//		return databasePreg.getByID(id);
+	public boolean getObGyn() {
+		return obGyn;
 	}
-	
-	public List<PregnancyBean> getPregnanciesByDate(LocalDate date) throws DBException {
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return null;
-//		return databasePreg.getByDate(id, date);
+	public List<ObstetricsInitBean> getObGynList() {
+		return obGynList;
 	}
-	
-	// add or update
-	public void updateRecord(ObstetricsInitBean bean) throws DBException {
-		try {
-			int result = initDB.update(bean);
-			// TODO log
-		} catch (FormValidationException e) {
-			// TODO handle
-		}
+	private void setObGynList() {
+		// TODO Auto-generated method stub
+		
 	}
-	
-	public void updatePregnancy(PregnancyBean bean) throws DBException {
-//		try {
-//			int result = databasePreg.update(bean);
-//			// TODO log
-//		} catch (FormValidationException e) {
-//			// TODO handle
-//		}
+	public List<PregnancyBean> getPriorPregList() {
+		return priorPregList;
+	}
+	private void setPriorPregList() {
+		// TODO Auto-generated method stub
 	}
 
+	public boolean isEligible() {
+		return eligible;
+	}
+
+	public void setEligible(boolean eligible) {
+		this.eligible = eligible;
+	}
+
+	public String getViewDate() {
+		return viewDate;
+	}
+
+	public void setViewDate(String viewDate) {
+		this.viewDate = viewDate;
+	}
+	public void logViewPIR() {
+		//TODO Auto-generated method stud
+	}
+	
 }
