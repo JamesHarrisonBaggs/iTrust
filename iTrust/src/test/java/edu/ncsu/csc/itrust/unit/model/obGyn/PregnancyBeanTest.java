@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.obGyn;
+package edu.ncsu.csc.itrust.unit.model.obGyn;
 
 import static org.junit.Assert.*;
 
@@ -6,9 +6,11 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
+
 public class PregnancyBeanTest {
 
-	PregnancyBean bean;
+	private PregnancyBean bean;
 	
 	@Test
 	public void testPregnancyBean() {

@@ -39,7 +39,6 @@ import cucumber.api.java.en.Then;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.sql.DataSource;

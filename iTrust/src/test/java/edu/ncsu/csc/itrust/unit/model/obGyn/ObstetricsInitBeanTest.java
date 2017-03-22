@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.obGyn;
+package edu.ncsu.csc.itrust.unit.model.obGyn;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -11,8 +11,8 @@ import java.time.temporal.ChronoUnit;
 
 public class ObstetricsInitBeanTest {
 
-	ObstetricsInitBean ob;
-	LocalDate date;
+	private ObstetricsInitBean ob;
+	private LocalDate date;
 	
 	@Test
 	public void testObstetricsInitBean() {
