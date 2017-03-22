@@ -6,6 +6,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -31,11 +34,11 @@ public class ObstetricsController extends iTrustController {
 	private List<PregnancyBean> pregnancyList;
 	private boolean obGyn;
 	private boolean eligible;
-	private boolean newObgynInit;
 
 	private String viewDate;
 	private Long mid;
 	private Long hcpid;
+	private String currentDate;
 	private ObstetricsInitBean obData;
 
 	public ObstetricsController() throws DBException {
@@ -47,20 +50,20 @@ public class ObstetricsController extends iTrustController {
 		this.pregDB = factory.getPregnanciesDAO();
 		this.patientDB = factory.getPatientDAO();
 
-		obstetricsList = new ArrayList<ObstetricsInitBean>();
-		setObGynList();
-
-		pregnancyList = new ArrayList<PregnancyBean>();
-		setPriorPregList();
-
-		mid = getSessionUtils().getCurrentPatientMIDLong();
 		hcpid = getSessionUtils().getSessionLoggedInMIDLong();
+		obstetricsList = getObstetricsList();
+//		pregnancyList = getPregnancyList();
+		
+		mid = getSessionUtils().getCurrentPatientMIDLong();
+
 		if (hcpid != null) {
 			setObGyn(hcpid);
 		}
 		if (mid != null) {
 			setEligible(patientDB.getPatient(mid).isObgynEligible()); 
-		}		
+		}
+		setCurrentDate(LocalDate.now().toString());
+		setObData(new ObstetricsInitBean(true));
 	}
 
 	/** added by Eric **/
@@ -111,12 +114,8 @@ public class ObstetricsController extends iTrustController {
 	}
 
 	public void submitCreate() {
-		
-	}
-	public void submitClose() {
-		setNewObgynInit(false);
-	}
 
+	}
 	public void submitEligible() throws DBException {
 		PatientBean p = patientDB.getPatient(mid);
 		p.setObgynEligible(true);
@@ -136,17 +135,20 @@ public class ObstetricsController extends iTrustController {
 	}
 	public void submitNewObgynInit() {
 		setObData(new ObstetricsInitBean(true));
-		setNewObgynInit(true);
 	}
 	public void submitNewDate() {
-		obData.getEstimatedDueDate();
-		setNewObgynInit(true);
+		LocalDate l = LocalDate.parse(viewDate);
+		obData.setEstimatedDueDate(l);
 	}
 
 	public void setObGyn(Long mid) throws DBException {
 		if (mid != null) {
-			PersonnelBean p = factory.getPersonnelDAO().getPersonnel(mid); 
-			obGyn = p.getSpecialty().equals("ob/gyn");
+			PersonnelBean p = factory.getPersonnelDAO().getPersonnel(mid);
+			if (p.getSpecialty().equals("ob/gyn") || p.getSpecialty().equals("ob/gyn")) {
+				obGyn = true;
+			} else {
+				obGyn = false;
+			}
 		}
 	}
 
@@ -197,19 +199,22 @@ public class ObstetricsController extends iTrustController {
 		return (obGyn && eligible);
 	}
 
-	public boolean isNewObgynInit() {
-		return newObgynInit;
-	}
-
-	public void setNewObgynInit(boolean newObgynInit) {
-		this.newObgynInit = newObgynInit;
-	}
-
 	public ObstetricsInitBean getObData() {
+		if(obData == null) {
+			return new ObstetricsInitBean(true);
+		}
 		return obData;
 	}
 
 	public void setObData(ObstetricsInitBean obData) {
 		this.obData = obData;
+	}
+
+	public String getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(String currentDate) {
+		this.currentDate = currentDate;
 	}
 }
