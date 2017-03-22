@@ -515,6 +515,15 @@ CREATE TABLE healthtrackerdata
 	PRIMARY KEY(id, data_date)
 ) ENGINE=MyISAM;
 
+CREATE TABLE obstetrics
+(
+	id				BIGINT			UNSIGNED DEFAULT 0,
+	init_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	current			BOOLEAN			NOT NULL DEFAULT FALSE,
+	lmp_date		TIMESTAMP		NOT NULL,
+	PRIMARY KEY(id, init_date)
+) ENGINE=MyISAM;
+
 CREATE TABLE medicalProcedure
 (
 	id 						BIGINT(20) 		UNSIGNED AUTO_INCREMENT,
