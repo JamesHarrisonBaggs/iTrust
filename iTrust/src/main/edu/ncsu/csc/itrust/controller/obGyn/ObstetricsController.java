@@ -28,14 +28,12 @@ public class ObstetricsController extends iTrustController {
 	private Long mid;
 	private Long hcpid;
 
-
-	
 	public ObstetricsController() throws DBException {
 		super();
 		sessionUtils = super.getSessionUtils();
 		this.factory = DAOFactory.getProductionInstance();
-		this.databaseObInit = factory.getObInitDataSQL();
 		this.databasePatient = factory.getPatientDAO();
+		this.databaseObInit = factory.getObstetricsInitDAO();
 		obGynList = new ArrayList<ObstetricsInitBean>();
 		setObGynList();
 		priorPregList = new ArrayList<PregnancyBean>();
@@ -80,7 +78,6 @@ public class ObstetricsController extends iTrustController {
 	}
 	private void setPriorPregList() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public boolean isEligible() {
