@@ -1,6 +1,7 @@
 package edu.ncsu.csc.itrust.model.obGyn;
 
 import java.time.LocalDate;
+import java.sql.Timestamp;
 
 public class PregnancyBean {
 	
@@ -42,6 +43,13 @@ public class PregnancyBean {
 	 */
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
+	}
+	
+	/**
+	 * @return the dateOfBirth in java.sql.Timestamp form
+	 */
+	public Timestamp getDOBTimestamp() {
+		return Timestamp.valueOf(dateOfBirth.atStartOfDay());
 	}
 
 	/**
@@ -100,6 +108,13 @@ public class PregnancyBean {
 	 */
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+	
+	/**
+	 * @param dateOfBirth the dateOfBirth as java.sql.Timestamp
+	 */
+	public void setDOBTimestamp(Timestamp dateOfBirth) {
+		this.dateOfBirth = dateOfBirth.toLocalDateTime().toLocalDate();
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
+import edu.ncsu.csc.itrust.model.obGyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
 
@@ -223,7 +224,10 @@ public class DAOFactory {
 		return new RemoteMonitoringDAO(this);
 	}
 
-
+	/**
+	 * 
+	 * @return this DAOFactory's ObstetricsInitMySQL
+	 */
 	public ObstetricsInitMySQL getObstetricsInitDAO() {
 		return new ObstetricsInitMySQL(this);
 	}
@@ -234,6 +238,14 @@ public class DAOFactory {
 	 */
 	public DrugReactionOverrideCodesDAO getORCodesDAO() {
 		return new DrugReactionOverrideCodesDAO(this);
+	}
+	
+	/**
+	 * 
+	 * @return this DAOFactory's PregnancyMySQL
+	 */
+	public PregnancyMySQL getPregnanciesDAO() {
+		return new PregnancyMySQL(this);
 	}
 
 

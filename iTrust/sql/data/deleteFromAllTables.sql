@@ -20,6 +20,7 @@ DELETE FROM loginfailures;
 DELETE FROM message;
 ALTER TABLE message AUTO_INCREMENT = 0;
 DELETE FROM obstetrics;
+DELETE FROM pregnancies;
 DELETE FROM reportrequests;
 ALTER TABLE reportrequests AUTO_INCREMENT = 0;
 DELETE FROM representatives;
