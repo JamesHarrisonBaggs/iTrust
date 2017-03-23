@@ -39,10 +39,63 @@
 								value="Expected Delivery Date:  #{obgyn_controller.getEstimatedDueDate()}" />
 							<h:outputText style="color: green"
 								rendered="#{obgyn_controller.initDateExistsInDB()}"
-								value="Number of weeks Pregnant: #{obgyn_controller.getWeeksPregnant()}" width="50%"></h:outputText>
+								value="Number of weeks Pregnant: #{obgyn_controller.getWeeksPregnant()}"
+								width="50%"></h:outputText>
 							<h:commandButton width="10%" id="submitDateButton"
 								value="Calculate Estimated Delivery Date, And Save Initilization"
 								action="#{obgyn_controller.submitNewDate}" update="edd">
+							</h:commandButton>
+							<h:panelGroup align="center">
+								<h:dataTable id="PIRTable" class="fTable" width="50%"
+									value="#{obgyn_controller.pregnancyList}" var="pregBean"
+									border="1">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Date of Birth" />
+										</f:facet>
+										<h:outputText value="#{pregBean.dateOfBirth}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Year of Conception" />
+										</f:facet>
+										<h:outputText value="#{pregBean.yearOfConception}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Days Pregnant" />
+										</f:facet>
+										<h:outputText value="#{pregBean.daysPregnant}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Hours in Labor" />
+										</f:facet>
+										<h:outputText value="#{pregBean.hoursInLabor}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Weight Gain" />
+										</f:facet>
+										<h:outputText value="#{pregBean.weightGain}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Delivery Type" />
+										</f:facet>
+										<h:outputText value="#{pregBean.deliveryType}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Amount of Children" />
+										</f:facet>
+										<h:outputText value="#{pregBean.amount}"/>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+							<h:commandButton id="newPreg" style="font-size:11px; font-weight:bold" align="left"
+								value="Create New Prior Pregnancy"
+								action="/auth/hcp-obGyn/newPriorPregnancy.xhtml">
 							</h:commandButton>
 							<h:commandButton id="returnOBHome"
 								style="font-size:11px; font-weight:bold" align="left"
