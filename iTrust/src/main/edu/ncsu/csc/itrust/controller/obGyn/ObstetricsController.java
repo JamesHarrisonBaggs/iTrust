@@ -36,6 +36,21 @@ public class ObstetricsController extends iTrustController {
 	private Long mid;
 	private Long hcpid;
 	private String currentDate;
+	private String newInitDate;
+	/**
+	 * @return the newInitDate
+	 */
+	public String getNewInitDate() {
+		return newInitDate;
+	}
+
+	/**
+	 * @param newInitDate the newInitDate to set
+	 */
+	public void setNewInitDate(String newInitDate) {
+		this.newInitDate = newInitDate;
+	}
+
 	private ObstetricsInitBean obData;
 
 	public ObstetricsController() throws DBException {
@@ -61,8 +76,13 @@ public class ObstetricsController extends iTrustController {
 		}
 		
 		setCurrentDate(LocalDate.now().toString());
+		setNewInitDate(currentDate);
 		setObData(new ObstetricsInitBean(true));
 		
+	}
+	
+	public String getEstimatedDueDate(){
+		return LocalDate.parse(newInitDate).plusDays(280).toString();
 	}
 
 	/**
@@ -155,9 +175,12 @@ public class ObstetricsController extends iTrustController {
 		setObData(new ObstetricsInitBean(true));
 	}
 	
-	public void submitNewDate() {
-		LocalDate l = LocalDate.parse(viewDate);
-		obData.setEstimatedDueDate(l);
+	public void submitNewDate() throws DBException, FormValidationException {
+		obData.setCurrent(true);
+		obData.setEstimatedDueDate(LocalDate.parse(newInitDate).plusDays(280));
+		obData.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
+		
+		initDB.update(obData);
 	}
 	
 	/** GETTERS AND SETTERS **/
@@ -165,7 +188,7 @@ public class ObstetricsController extends iTrustController {
 	public void setObGyn(Long mid) throws DBException {
 		if (mid != null) {
 			PersonnelBean p = factory.getPersonnelDAO().getPersonnel(mid);
-			if (p.getSpecialty().equals("ob/gyn") || p.getSpecialty().equals("ob/gyn")) {
+			if (p.getSpecialty().equals("OB/GYN") || p.getSpecialty().equals("ob/gyn")) {
 				obGyn = true;
 			} else {
 				obGyn = false;

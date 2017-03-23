@@ -93,6 +93,10 @@ public class ObstetricsInitBean {
 	public Timestamp getLMPTimestamp() {
 		return Timestamp.valueOf(lastMenstrualPeriod.atStartOfDay());
 	}
+	
+	public Timestamp getEstimatedDueDateTimestamp(){
+		return Timestamp.valueOf(estimatedDueDate.atStartOfDay());
+	}
 
 	public LocalDate getEstimatedDueDate() {
 		return estimatedDueDate;
@@ -141,6 +145,7 @@ public class ObstetricsInitBean {
 	public void setEstimatedDueDate(LocalDate estimatedDueDate) {
 		this.estimatedDueDate = estimatedDueDate;
 	}
+	
 
 	public void setDaysPregnant(int daysPregnant) {
 		this.daysPregnant = daysPregnant;
