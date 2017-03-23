@@ -46,6 +46,8 @@
 								action="#{obgyn_controller.submitNewDate}" update="edd">
 							</h:commandButton>
 							<h:panelGroup align="center">
+							<h:outputText id="priorPregnancies"
+								value="Prior Pregnancies" style="font-size:20px; font-weight:bold" align="left"/>
 								<h:dataTable id="PIRTable" class="fTable" width="50%"
 									value="#{obgyn_controller.pregnancyList}" var="pregBean"
 									border="1">
