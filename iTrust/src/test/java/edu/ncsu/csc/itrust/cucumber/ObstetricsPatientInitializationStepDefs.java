@@ -130,37 +130,37 @@ public class ObstetricsPatientInitializationStepDefs {
 		}
 	}
 	
-	@And("^I add a new prior pregnancy, Year of conception (.*), Number of week pregnant (.*) (.*), Number of hours in labor (.*), Weight gained during pregnancy (.*), Delivery type (.*), Whether is a multiple (.*), How many (.*)$")
-	public void prior_pregnancy(String yc, String wk, String day, String hrs, String gain, String type, String multiple, String num) {
+	@And("^I add a new prior pregnancy, Year of conception (.*), Number of week pregnant (.*), Number of hours in labor (.*), Weight gained during pregnancy (.*), Delivery type (.*), Number of multiple (.*)$")
+	public void prior_pregnancy(String yc, String wk, String hrs, String gain, String type, String num) {
 		driver.findElement(By.linkText("Add prior pregnancy")).click();
-		driver.findElement(By.name("year_of_conception")).sendKeys(yc);
-		driver.findElement(By.name("week_of_pregnancy")).sendKeys(wk);
-		driver.findElement(By.name("day_of_pregnancy")).sendKeys(day);
-		driver.findElement(By.name("hours_in_labor")).sendKeys(hrs);
-		driver.findElement(By.name("weight_gain")).sendKeys(gain);
+		driver.findElement(By.name("yearOfConception")).sendKeys(yc);
+		driver.findElement(By.name("numberOfWeeks")).sendKeys(wk);
+		driver.findElement(By.name("numberOfHours")).sendKeys(hrs);
+		driver.findElement(By.name("weightGain")).sendKeys(gain);
 		Select delivery = new Select(driver.findElement(By.xpath("delivery_drop_down")));
 		delivery.deselectAll();
 		delivery.selectByVisibleText(type);
-		driver.findElement(By.name("whether_multiple")).sendKeys(multiple);
 		Select number = new Select(driver.findElement(By.xpath("number_drop_down")));
 		number.deselectAll();
-		number.selectByVisibleText(num);
+		number.selectByValue(num);
 	}
 	
-	@And("^I click create$")
+	@And("^I click Calculate Estimated Delivery Date, And Save Initilization and Return to Obstetrics Home$")
 	public void create_initialization() {
 		try {
-			driver.findElement(By.linkText("Create")).click();
+			driver.findElement(By.name("obgyn_controller:submitDateButton")).click();
+			driver.findElement(By.name("obgyn_controller:returnOBHome")).click();
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
 	}
 	
-	@Then("^a new initialization is created$")
-	public void initialization_created() {
+	@Then("^a new initialization (.*) is created$")
+	public void initialization_created(String time) {
 		try {
 			assertEquals("iTrust - Patient Obstetric Initialization", driver.getTitle());
-			assertEquals("New initialization created", driver.findElement(By.name("message")));
+			driver.findElement(By.linkText(time)).click();
+			assertEquals("iTrust - View Single Initilization", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -169,7 +169,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Then("^I can view the initialization$")
 	public void view_initialization() {
 		try {
-			assertEquals("View Initialization", driver.getTitle());
+			assertEquals("iTrust - View Single Initilization", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -186,7 +186,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Then("^the system asked to enter correct prior pregnancy info$")
 	public void incorrect_pregnancy_info() {
 		try {
-			driver.findElement(By.linkText("Create")).click();
+			driver.findElement(By.name("obgyn_controller:submitDateButton")).click();
 			assertEquals("pregnancy info is not corret", driver.findElement(By.name("error_message")));
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
