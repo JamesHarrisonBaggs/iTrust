@@ -25,6 +25,9 @@
 			<div class="form-group" style="width: 500px">
 				<div style="width: 500px">
 					<h4>Create New Initialization Record</h4>
+					<h:outputText style="color: green"
+						rendered="#{obgyn_controller.initDateExistsInDB()}"
+						value="This initilization date is saved!" width="50%"></h:outputText>
 					<h:form id="obgyn_controller">
 						<h:panelGrid class="fTable" width="50%" columns="1">
 							<h:panelGroup id="basicInfo">
@@ -32,11 +35,19 @@
 								<h:inputText type="text" id="datepicker" styleClass="datepicker"
 									value="#{obgyn_controller.newInitDate}"></h:inputText>
 							</h:panelGroup>
-							<h:outputText id="edd" value="#{obgyn_controller.getEstimatedDueDate()}" />
+							<h:outputText id="edd"
+								value="Expected Delivery Date:  #{obgyn_controller.getEstimatedDueDate()}" />
+							<h:outputText style="color: green"
+								rendered="#{obgyn_controller.initDateExistsInDB()}"
+								value="Number of weeks Pregnant: #{obgyn_controller.getWeeksPregnant()}" width="50%"></h:outputText>
 							<h:commandButton width="10%" id="submitDateButton"
-								value="Calculate Estimated Delivery Date"
-								action="#{obgyn_controller.submitNewDate}"
-								update="edd">
+								value="Calculate Estimated Delivery Date, And Save Initilization"
+								action="#{obgyn_controller.submitNewDate}" update="edd">
+							</h:commandButton>
+							<h:commandButton id="returnOBHome"
+								style="font-size:11px; font-weight:bold" align="left"
+								value="Return to Obstetrics Home"
+								action="/auth/hcp-obGyn/viewObstetricsInit.xhtml">
 							</h:commandButton>
 						</h:panelGrid>
 					</h:form>

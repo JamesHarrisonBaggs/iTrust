@@ -46,7 +46,7 @@ public class ObstetricsInitBean {
 	 * Calculates and sets the estimated due date and days pregnant
 	 * Called from setLastMenstrualPeriod() and therefore updated with the LMP
 	 */
-	private void calculateData() {
+	public void calculateData() {
 		// Estimated due date = LMP + 280 days
 		LocalDate edd = lastMenstrualPeriod.plus(280, ChronoUnit.DAYS);
 		this.setEstimatedDueDate(edd);

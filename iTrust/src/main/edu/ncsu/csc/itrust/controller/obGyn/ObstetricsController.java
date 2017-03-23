@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.controller.obGyn;
 import java.util.List;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import javax.faces.bean.ManagedBean;
 import edu.ncsu.csc.itrust.controller.iTrustController;
@@ -31,6 +32,7 @@ public class ObstetricsController extends iTrustController {
 	
 	private boolean obGyn;
 	private boolean eligible;
+	private boolean updatedInit;
 
 	private String viewDate;
 	private Long mid;
@@ -175,11 +177,18 @@ public class ObstetricsController extends iTrustController {
 		setObData(new ObstetricsInitBean(true));
 	}
 	
+	public String getWeeksPregnant(){
+		int totDays = (int) ChronoUnit.DAYS.between(LocalDate.parse(newInitDate).atStartOfDay(), LocalDate.now().atStartOfDay());
+		int days = totDays%7;
+		int weeks = totDays/7;
+		return (weeks + "weeks and " + days + " Days Pregnant!");
+	}
+	
 	public void submitNewDate() throws DBException, FormValidationException {
 		obData.setCurrent(true);
 		obData.setEstimatedDueDate(LocalDate.parse(newInitDate).plusDays(280));
 		obData.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
-		
+		updatedInit = true;
 		initDB.update(obData);
 	}
 	
@@ -200,6 +209,10 @@ public class ObstetricsController extends iTrustController {
 		return obGyn;
 	}
 
+	//TODO Finish this
+	public boolean initDateExistsInDB(){
+		return updatedInit;
+	}
 	public List<ObstetricsInitBean> getObGynList() {
 		return obstetricsList;
 	}
