@@ -48,7 +48,7 @@ Scenario Outline: View Initializaition
 	
 	Examples:
 	| hcp  		 | pw | patient | name | date       |
-	| 9000000012 | pw | 2       | Andy | 2017-02-21 |	
+	| 9000000012 | pw | 2       | Andy | 2016-01-01 |	
 	
 Scenario Outline: Wrong Patient Name
 	Given I logged in as an OBGYN HCP with MID <hcp> and password <pw>
@@ -85,11 +85,11 @@ Scenario Outline: Incorrect Prior Pregnancy Input
 	Then the system asked to enter correct prior pregnancy info
 	
 	Examples:
-	| hcp        | pw | patient | name  | date       | yc   | wk | hrs | gain | type             | num |
-	| 9000000012 | pw | 12      | Sandy | 2017-02-21 |      | 40 | 13  | 15   | Vaginal Delivery | 1   |
-	| 9000000012 | pw | 12      | Sandy | 2017-02-21 | 2015 |    | 13  | 15   | Vaginal Delivery | 1   |
-	| 9000000012 | pw | 12      | Sandy | 2017-02-21 | 2015 | 40 |     | 15   | Vaginal Delivery | 1   |
-	| 9000000012 | pw | 12      | Sandy | 2017-02-21 | 2015 | 40 | 13  |      | Vaginal Delivery | 1   |
-	| 9000000012 | pw | 12      | Sandy | 2017-02-21 | 2015 | 40 | 13  | 15   |                  | 1   |
-	| 9000000012 | pw | 12      | Sandy | 2017-02-21 | 2015 | 40 | 13  | 15   | Vaginal Delivery |     |
+	| hcp        | pw | patient | name | date       | yc   | wk | hrs | gain | type             | num |
+	| 9000000012 | pw | 2       | Andy | 2017-02-21 |      | 40 | 13  | 15   | Vaginal Delivery | 1   |
+	| 9000000012 | pw | 2       | Andy | 2017-02-21 | 2015 |    | 13  | 15   | Vaginal Delivery | 1   |
+	| 9000000012 | pw | 2       | Andy | 2017-02-21 | 2015 | 40 |     | 15   | Vaginal Delivery | 1   |
+	| 9000000012 | pw | 2       | Andy | 2017-02-21 | 2015 | 40 | 13  |      | Vaginal Delivery | 1   |
+	| 9000000012 | pw | 2       | Andy | 2017-02-21 | 2015 | 40 | 13  | 15   |                  | 1   |
+	| 9000000012 | pw | 2       | Andy | 2017-02-21 | 2015 | 40 | 13  | 15   | Vaginal Delivery |     |
 	

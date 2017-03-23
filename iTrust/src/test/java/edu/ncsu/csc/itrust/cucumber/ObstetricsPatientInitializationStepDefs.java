@@ -88,10 +88,9 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@And("^I click on create new initialization$")
 	public void new_initialization() {
-		driver.findElement(By.id("j_idt26:createPatientInitRecord")).click();
+		driver.findElement(By.name("j_idt27:createPatientInitRecord")).click();
 		try {
 			WebElement element = driver.findElement(By.name("obgyn_controller"));
-			assertEquals("obgyn_controller", element.getTagName());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -132,7 +131,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@And("^I add a new prior pregnancy, Year of conception (.*), Number of week pregnant (.*), Number of hours in labor (.*), Weight gained during pregnancy (.*), Delivery type (.*), Number of multiple (.*)$")
 	public void prior_pregnancy(String yc, String wk, String hrs, String gain, String type, String num) {
-		driver.findElement(By.linkText("Add prior pregnancy")).click();
+		driver.findElement(By.name("obgyn_controller:newPreg")).click();
 		driver.findElement(By.name("yearOfConception")).sendKeys(yc);
 		driver.findElement(By.name("numberOfWeeks")).sendKeys(wk);
 		driver.findElement(By.name("numberOfHours")).sendKeys(hrs);
@@ -187,7 +186,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	public void incorrect_pregnancy_info() {
 		try {
 			driver.findElement(By.name("obgyn_controller:submitDateButton")).click();
-			assertEquals("pregnancy info is not corret", driver.findElement(By.name("error_message")));
+			assertEquals("pregnancy info is not corret", driver.findElement(By.name("error_message")).getText());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
