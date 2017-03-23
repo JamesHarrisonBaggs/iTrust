@@ -1,8 +1,11 @@
 package edu.ncsu.csc.itrust.model.obGyn;
 
 import java.time.LocalDate;
-import java.sql.Timestamp;
 
+import javax.faces.bean.ManagedBean;
+
+import java.sql.Timestamp;
+@ManagedBean(name = "pregBean")
 public class PregnancyBean {
 	
 	/** MID of the patient */
