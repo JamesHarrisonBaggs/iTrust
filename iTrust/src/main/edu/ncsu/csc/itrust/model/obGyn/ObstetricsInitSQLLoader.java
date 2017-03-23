@@ -30,14 +30,14 @@ public class ObstetricsInitSQLLoader {
 	public PreparedStatement loadUpdate(PreparedStatement ps, ObstetricsInitBean bean) throws SQLException {
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
+		ps.setTimestamp(i++, bean.getInitTimestamp());
 		ps.setTimestamp(i++, bean.getLMPTimestamp());
-		ps.setTimestamp(i++, bean.getEstimatedDueDateTimestamp());
 		ps.setBoolean(i++, bean.isCurrent());
 		
 		// set again for duplicate
 		ps.setLong(i++, bean.getPatientId());
+		ps.setTimestamp(i++, bean.getInitTimestamp());
 		ps.setTimestamp(i++, bean.getLMPTimestamp());
-		ps.setTimestamp(i++, bean.getEstimatedDueDateTimestamp());
 		ps.setBoolean(i++, bean.isCurrent());
 		
 		return ps;
