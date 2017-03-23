@@ -32,7 +32,7 @@ public class ObstetricsInitBeanTest {
 //		assertEquals(ob.getEstimatedDueDate());
 //		assertEquals(ob.getDaysPregnant());
 //		assertEquals(ob.getTimePregnant());
-		assertEquals(true, ob.isCurrent());
+		assertEquals(true, ob.isCurrent()); 
 
 	}
 	
@@ -76,6 +76,13 @@ public class ObstetricsInitBeanTest {
 		long expDays = ChronoUnit.DAYS.between(date, LocalDate.now().atStartOfDay());
 		long actDays = ob.getDaysPregnant();		
 		assertEquals(expDays, actDays);
+	
+		// ensure null check works
+		ob = new ObstetricsInitBean();
+		ob.setLastMenstrualPeriod(null);
+		assertNull(ob.getEstimatedDueDate());
+		assertNull(ob.getTimePregnant());
+	
 	}
 	
 	@Test

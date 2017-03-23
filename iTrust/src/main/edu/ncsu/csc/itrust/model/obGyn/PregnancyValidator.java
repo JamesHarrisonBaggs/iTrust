@@ -28,13 +28,25 @@ public class PregnancyValidator {
 	 * @throws FormValidationException
 	 */
 	public void validate(PregnancyBean bean) throws FormValidationException {
-		ErrorList errors = new ErrorList();
+		ErrorList errorList = new ErrorList();
 		
-		// TODO validate
+		if (bean.getPatientId() < 0)
+			errorList.addIfNotNull("Patient id cannot be negative");		
+		if (bean.getDateOfBirth() == null)
+			errorList.addIfNotNull("Date of birth cannot be null");
+		if (bean.getDaysPregnant() < 0)
+			errorList.addIfNotNull("Days pregnant cannot be negative");
+		if (bean.getHoursInLabor() < 0)
+			errorList.addIfNotNull("Hours in labor cannot be negative");
+		if (bean.getAmount() < 0)
+			errorList.addIfNotNull("Amount cannot be negative");
+		if (bean.getAmount() == 0)
+			errorList.addIfNotNull("Amount cannot be zero");
+		// TODO validate more stuff
 		
-		if (errors.hasErrors()) {
-			throw new FormValidationException(errors);
-		}
+		if (errorList.hasErrors())
+			throw new FormValidationException(errorList);
+		
 	}
-	
+
 }

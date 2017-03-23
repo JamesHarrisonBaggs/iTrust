@@ -17,16 +17,25 @@ public class PregnancyBean {
 	private int hoursInLabor;
 	/** Weight gain during pregnancy */
 	private double weightGain;
-	/** Type of delivery (vaginal delivery, vacuum assist, forceps assist, caesarean section, miscarriage */
+	/** Type of delivery */
 	private String deliveryType;
 	/** Whether the pregnant is a multiple */
 	private int amount;
 	
 	/**
+	 * Enumerated type representing a fixed number of delivery types
+	 */
+	public enum DeliveryType {
+		VAGINAL_DELIVERY, VACUUM_ASSIST, FORCEPS_ASSIST, C_SECTION, MISCARRIAGE;
+	}
+	
+	// TODO update so this enum is utilized
+	
+	/**
 	 * Construct a PregnancyBean
 	 */
 	public PregnancyBean() {
-		
+
 	}
 
 	/** GETTERS **/
