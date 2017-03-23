@@ -1,44 +1,44 @@
 package edu.ncsu.csc.itrust.cucumber;
 
+//import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
+//import cucumber.api.java.en.When;
+
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.exception.FormValidationException;
+//import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
+//import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCodeMySQL;
-import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
+//import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
 import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureMySQL;
-import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
+//import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitValidator;
-import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
+//import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AuthDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.HospitalsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
-import edu.ncsu.csc.itrust.model.old.enums.Role;
+//import edu.ncsu.csc.itrust.model.old.enums.Role;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import cucumber.api.java.en.Then;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.sql.DataSource;

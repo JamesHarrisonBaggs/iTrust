@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+
+<f:metadata>
+	<f:event type="preRenderView"
+		listener="#{prescription_controller.logViewPrescriptionReport()}" />
+</f:metadata>
+
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">iTrust - View Obstetrics Eligibility</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<div class="form-group" style="width: 500px">
+				<h2>Patient Obstetric Care Eligibility</h2>
+				<br />
+				<h4 id="header">
+					#{user.getUserNameForID(session.getAttribute("pid"))} is not
+					eligible to receive obstetric care at this time (hardcoded for
+					looks)</h4>
+				<br />
+				<h:panelGrid class="fTable"
+					style="margin: 0 auto; text-align:center;" width="100%" columns="4"
+					border="0">
+					<h:panelGroup>
+						<h5 id="proceed">How would you like to proceed?</h5>
+						<h:message for="submitObGynEligible"></h:message>
+						<h:commandButton id="submitObGynEligible"
+							value="Set Patient Eligible" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -90,6 +90,7 @@ CREATE TABLE patients(
 	SpiritualPractices varchar(512) default '',
 	AlternateName varchar(32) default '',
 	DateOfDeactivation DATE default NULL,
+	obgynEligible boolean default false,
 	PRIMARY KEY (MID)
 ) ENGINE=MyISAM;
 
@@ -513,6 +514,28 @@ CREATE TABLE healthtrackerdata
 	hr_avg 			INTEGER(15) 	UNSIGNED DEFAULT 0,
 	uv_exp			INTEGER(15) 	UNSIGNED DEFAULT 0,
 	PRIMARY KEY(id, data_date)
+) ENGINE=MyISAM;
+
+CREATE TABLE obstetrics
+(
+	id				BIGINT			UNSIGNED DEFAULT 0,
+	init_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	lmp_date		TIMESTAMP		NOT NULL DEFAULT '1970-01-01 00:00:01',
+	current			BOOLEAN			NOT NULL DEFAULT FALSE,
+	PRIMARY KEY(id, init_date)
+) ENGINE=MyISAM;
+
+CREATE TABLE pregnancies
+(
+	id				BIGINT			UNSIGNED DEFAULT 0,
+	birth_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	conception_year	INTEGER(15)		UNSIGNED DEFAULT 0,
+	days_pregnant	INTEGER(15)		UNSIGNED DEFAULT 0,
+	hours_labor		INTEGER(15)		UNSIGNED DEFAULT 0,
+	weight_gain		FLOAT(19)		DEFAULT 0,
+	delivery_type	VARCHAR(30)		NOT NULL DEFAULT '',
+	amount			INTEGER(15)		UNSIGNED DEFAULT 1,
+	PRIMARY KEY(id, birth_date)
 ) ENGINE=MyISAM;
 
 CREATE TABLE medicalProcedure

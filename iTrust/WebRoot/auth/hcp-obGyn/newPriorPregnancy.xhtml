@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageTitle">iTrust - New Prior Pregnancy</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<itrust:patientNav thisTitle="Prior Pregnancy" />
+			<div align="center">
+
+				<h:form id="pregnancyForm">
+					<br />
+					<table cellspacing="0" align="center" cellpadding="0">
+						<tr>
+							<td valign="top">
+								<table class="fTable" align="center" style="width: 350px;">
+									<tr>
+										<th colspan="2">New Prior Pregnancy</th>
+									</tr>
+									<tr>
+										<td class="subHeaderVertical">Date of Birth:</td>
+										<td><h:inputText name="dob"
+												value="#{pregBean.dateOfBirth}">
+												<f:converter converterId="localDateConverter" />
+											</h:inputText></td>
+									</tr>
+									<tr>
+										<td class="subHeaderVertical">Year of Conception:</td>
+										<td><h:inputText name="yearOfConception"
+												value="#{pregBean.yearOfConception}">
+											</h:inputText></td>
+									</tr>
+									<tr>
+										<td class="subHeaderVertical">Number of Days Pregnant:</td>
+										<td><h:inputText name="numberOfWeeks"
+												value="#{pregBean.daysPregnant}">
+											</h:inputText></td>
+									</tr>
+
+									<tr>
+
+										<td class="subHeaderVertical">Number of Hours in Labor:</td>
+										<td><h:inputText name="numberOfHours"
+												value="#{pregBean.hoursInLabor}">
+											</h:inputText></td>
+
+									</tr>
+									<tr>
+										<td class="subHeaderVertical">Weight Gain During
+											Pregnancy:</td>
+										<td><h:inputText name="weightGain"
+												value="#{pregBean.weightGain}">
+											</h:inputText></td>
+									</tr>
+									<tr>
+										<td class="subHeaderVertical">Delivery Type:</td>
+										<td><h:selectOneMenu value="#{pregBean.deliveryType}">
+												<f:selectItem itemValue="vaginal"
+													itemLabel="Vaginal Delivery" />
+												<f:selectItem itemValue="vacuum"
+													itemLabel="Vaginal Delivery Vacuum Assist" />
+												<f:selectItem itemValue="forceps"
+													itemLabel="Vaginal Delivery Forceps Assist" />
+												<f:selectItem itemValue="caesarean"
+													itemLabel="Caesarean Section" />
+												<f:selectItem itemValue="miscarriage"
+													itemLabel="Miscarriage" />
+											</h:selectOneMenu></td>
+									</tr>
+									<tr>
+										<td class="subHeaderVertical">Multiple Pregnancy?:</td>
+										<td><h:selectOneMenu value="#{pregBean.amount}">
+												<f:selectItem itemValue="1" itemLabel="Single" />
+												<f:selectItem itemValue="2" itemLabel="Twins" />
+												<f:selectItem itemValue="3" itemLabel="Triplets" />
+												<f:selectItem itemValue="4" itemLabel="Quadruplets" />
+												<f:selectItem itemValue="5" itemLabel="Quintuplets" />
+												<f:selectItem itemValue="6" itemLabel="Sextuplets" />
+												<f:selectItem itemValue="7" itemLabel="Septuplets" />
+												<f:selectItem itemValue="8" itemLabel="Octuplets" />
+												<f:selectItem itemValue="9" itemLabel="Nontuplets" />
+											</h:selectOneMenu></td>
+									</tr>
+									<tr>
+										<td><h:commandButton id="createNewPreg"
+												style="font-size:11px; font-weight:bold" align="left"
+												value="Create New Prior Pregnancy"
+												action="#{obgyn_controller.updatePregnancy(pregBean)}">
+											</h:commandButton></td>
+											<td><h:button id="return"
+												style="font-size:11px; font-weight:bold" align="left"
+												value="Return to New Obstetrics Initialization"
+												outcome="/auth/hcp-obGyn/newObstetricsInit.xhtml">
+											</h:button></td>
+											
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+					</table>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

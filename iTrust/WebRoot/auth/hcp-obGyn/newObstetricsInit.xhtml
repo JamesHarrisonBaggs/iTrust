@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<f:metadata>
+	<f:event type="preRenderView"
+		listener="#{obgyn_controller.logViewPIR()}" />
+</f:metadata>
+<!-- Utilizes jQuery date picker from https://jqueryui.com/datepicker/  -->
+<head>
+</head>
+<!-- End of utilization  -->
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">iTrust - View Obstetrics Initilizations</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<div class="form-group" style="width: 500px">
+				<div style="width: 500px">
+					<h4>Create New Initialization Record</h4>
+					<h:outputText style="color: green"
+						rendered="#{obgyn_controller.initDateExistsInDB()}"
+						value="This initilization date is saved!" width="50%"></h:outputText>
+					<h:form id="obgyn_controller">
+						<h:panelGrid class="fTable" width="50%" columns="1">
+							<h:panelGroup id="basicInfo">
+								<h:outputLabel for="datepicker" style="width: 100px">Last Menstural Period </h:outputLabel>
+								<h:inputText type="text" id="datepicker" styleClass="datepicker"
+									value="#{obgyn_controller.newInitDate}"></h:inputText>
+							</h:panelGroup>
+							<h:outputText id="edd"
+								value="Expected Delivery Date:  #{obgyn_controller.getEstimatedDueDate()}" />
+							<h:outputText style="color: green"
+								rendered="#{obgyn_controller.initDateExistsInDB()}"
+								value="Number of weeks Pregnant: #{obgyn_controller.getWeeksPregnant()}"
+								width="50%"></h:outputText>
+							<h:commandButton width="10%" id="submitDateButton"
+								value="Calculate Estimated Delivery Date, And Save Initilization"
+								action="#{obgyn_controller.submitNewDate}" update="edd">
+							</h:commandButton>
+							<h:panelGroup align="center">
+							<h:outputText id="priorPregnancies"
+								value="Prior Pregnancies" style="font-size:20px; font-weight:bold" align="left"/>
+								<h:dataTable id="PIRTable" class="fTable" width="50%"
+									value="#{obgyn_controller.pregnancyList}" var="pregBean"
+									border="1">
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Date of Birth" />
+										</f:facet>
+										<h:outputText value="#{pregBean.dateOfBirth}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Year of Conception" />
+										</f:facet>
+										<h:outputText value="#{pregBean.yearOfConception}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Days Pregnant" />
+										</f:facet>
+										<h:outputText value="#{pregBean.daysPregnant}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Hours in Labor" />
+										</f:facet>
+										<h:outputText value="#{pregBean.hoursInLabor}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Weight Gain" />
+										</f:facet>
+										<h:outputText value="#{pregBean.weightGain}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Delivery Type" />
+										</f:facet>
+										<h:outputText value="#{pregBean.deliveryType}"/>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											<h:outputText value="Amount of Children" />
+										</f:facet>
+										<h:outputText value="#{pregBean.amount}"/>
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+							<h:commandButton id="newPreg" style="font-size:11px; font-weight:bold" align="left"
+								value="Create New Prior Pregnancy"
+								action="/auth/hcp-obGyn/newPriorPregnancy.xhtml">
+							</h:commandButton>
+							<h:commandButton id="returnOBHome"
+								style="font-size:11px; font-weight:bold" align="left"
+								value="Return to Obstetrics Home"
+								action="/auth/hcp-obGyn/viewObstetricsInit.xhtml">
+							</h:commandButton>
+						</h:panelGrid>
+					</h:form>
+				</div>
+			</div>
+		</ui:define>.
+	</ui:composition>
+</h:body>
+</html>
