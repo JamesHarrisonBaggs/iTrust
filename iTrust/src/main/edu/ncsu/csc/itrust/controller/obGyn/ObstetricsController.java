@@ -143,6 +143,7 @@ public class ObstetricsController extends iTrustController {
 	 * @throws DBException
 	 */
 	public void updatePregnancy(PregnancyBean bean) throws DBException {
+		bean.setPatientId(mid);
 		try {
 			pregDB.update(bean);
 			// TODO log
