@@ -28,7 +28,7 @@
 		<h:outputLabel for="ovApptType">Appointment Type:</h:outputLabel>
 		<h:selectOneMenu id="ovApptType"
 			value="#{office_visit_form.apptTypeID}" class="selectpicker">
-			<f:selectItems value="#{appt_type_controller.getApptTypelList()}"
+			<f:selectItems value="#{appt_type_controller.getApptTypeList()}"
 				var="at" itemLabel="#{at.name}" itemValue="#{at.ID}" />
 		</h:selectOneMenu>
 	</div>

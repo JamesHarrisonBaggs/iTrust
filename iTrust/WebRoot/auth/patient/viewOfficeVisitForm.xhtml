@@ -31,7 +31,7 @@
 		<h:selectOneMenu id="ovApptType" disabled="true"
 			value="#{office_visit_form.apptTypeID}" class="selectpicker">
 			<f:selectItems
-				value="#{appt_type_controller.getApptTypelList()}" var="at"
+				value="#{appt_type_controller.getApptTypeList()}" var="at"
 				itemLabel="#{at.name}" itemValue="#{at.ID}" />
 		</h:selectOneMenu>
 	</div>

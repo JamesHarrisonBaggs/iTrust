@@ -23,18 +23,24 @@
 				<div align="center">
 					<br />
 					<br />
-					<h2 style="font-size: 175%; font-weight: bold;">Select a previous visit to view</h2>
+					<h2 style="font-size: 175%; font-weight: bold;">Select a visit to view</h2>
 					<h:dataTable id="previousVisits" styleClass="fTable" value="#{office_visit_controller.getOfficeVisitsForCurrentPatient()}" 
 						var="ov"  border="1">
 						<br/>
 						<h:column>
 							<f:facet name="header">
-								<h:outputText value="Click the Link"/>
+								<h:outputText value="Select Link"/>
 							</f:facet>
 						   <h:link outcome="officeVisitInfo" value="Select">
 	      						 	<f:param name="visitID" value="#{ov.visitID}" />
 	   						</h:link>
-						</h:column>	
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Type"/>
+							</f:facet>
+							<h:outputText value="#{appt_type_controller.getApptTypeForID(ov.apptTypeID)}"/>
+						</h:column>
 	 					<h:column>
 							<f:facet name="header">
 								<h:outputText value="Date"/>
@@ -43,7 +49,7 @@
 								<f:converter converterId="localDateTimeConverter"/>
 							</h:outputText>
 						</h:column>	
-						 <h:column>
+						<h:column>
 							<f:facet name="header">
 								<h:outputText value="Location"/>
 							</f:facet>
