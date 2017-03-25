@@ -275,7 +275,7 @@ public class OfficeVisitForm {
 	}
 
 	/**
-	 * Constructor for OfficeVisitForm for testing purpses.
+	 * Constructor for OfficeVisitForm for testing purposes.
 	 */
 	public OfficeVisitForm(OfficeVisitController ovc) {
 		try {
