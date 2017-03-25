@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
 
 public class PregnancyBeanTest {
 

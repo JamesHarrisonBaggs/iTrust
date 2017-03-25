@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;

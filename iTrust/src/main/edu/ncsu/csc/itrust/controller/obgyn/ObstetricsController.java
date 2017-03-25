@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.controller.obGyn;
+package edu.ncsu.csc.itrust.controller.obgyn;
 
 import java.util.List;
 import java.sql.Timestamp;
@@ -9,10 +9,10 @@ import javax.faces.bean.ManagedBean;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;

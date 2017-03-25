@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.obGyn;
+package edu.ncsu.csc.itrust.model.obgyn;
 
 import edu.ncsu.csc.itrust.exception.ErrorList;
 import edu.ncsu.csc.itrust.exception.FormValidationException;

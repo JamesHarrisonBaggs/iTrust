@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.obGyn;
+package edu.ncsu.csc.itrust.model.obgyn;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

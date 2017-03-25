@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitValidator;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitValidator;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
 
 public class ObstetricsInitValidatorTest {
 

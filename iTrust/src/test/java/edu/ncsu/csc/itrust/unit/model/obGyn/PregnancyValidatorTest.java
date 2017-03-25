@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyValidator;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyValidator;
 
 public class PregnancyValidatorTest {
 	

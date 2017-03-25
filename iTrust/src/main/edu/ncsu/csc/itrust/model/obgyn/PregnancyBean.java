@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.obGyn;
+package edu.ncsu.csc.itrust.model.obgyn;
 
 import java.time.LocalDate;
 

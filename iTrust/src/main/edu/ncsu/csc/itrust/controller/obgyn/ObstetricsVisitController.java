@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.controller.obGyn;
+package edu.ncsu.csc.itrust.controller.obgyn;
 
 import javax.faces.bean.ManagedBean;
 import edu.ncsu.csc.itrust.controller.iTrustController;

@@ -3,7 +3,7 @@ package edu.ncsu.csc.itrust.unit.model.obGyn;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

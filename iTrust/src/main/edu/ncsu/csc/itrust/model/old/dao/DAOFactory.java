@@ -3,9 +3,9 @@ package edu.ncsu.csc.itrust.model.old.dao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
 
 /**
