@@ -3,7 +3,7 @@ package edu.ncsu.csc.itrust.unit.model.obGyn;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
+import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -11,12 +11,12 @@ import java.time.temporal.ChronoUnit;
 
 public class ObstetricsInitBeanTest {
 
-	private ObstetricsInitBean ob;
+	private ObstetricsInit ob;
 	private LocalDate date;
 	
 	@Test
 	public void testObstetricsInitBean() {
-		ob = new ObstetricsInitBean(true);
+		ob = new ObstetricsInit(true);
 		
 		LocalDate init = LocalDate.of(2016, 3, 24);
 		LocalDate lmp = LocalDate.now().minusDays(9);
@@ -38,7 +38,7 @@ public class ObstetricsInitBeanTest {
 	
 	@Test
 	public void testSetTimestamps() {
-		ob = new ObstetricsInitBean();
+		ob = new ObstetricsInit();
 
 		ob.setInitTimestamp(Timestamp.valueOf("2016-03-24 10:10:10.0"));
 		ob.setLMPTimestamp(Timestamp.valueOf("2016-02-20 10:10:10.0"));
@@ -50,7 +50,7 @@ public class ObstetricsInitBeanTest {
 	
 	@Test
 	public void testGetTimestamps() {
-		ob = new ObstetricsInitBean();
+		ob = new ObstetricsInit();
 
 		ob.setInitDate(LocalDate.of(2016, 3, 24));
 		ob.setLastMenstrualPeriod(LocalDate.of(2016, 02, 20));
@@ -62,7 +62,7 @@ public class ObstetricsInitBeanTest {
 	
 	@Test
 	public void testSetLastMenstrualPeriod() {
-		ob = new ObstetricsInitBean(false);
+		ob = new ObstetricsInit(false);
 		
 		// set LMP
 		date = LocalDate.of(2017, 2, 21);
@@ -78,7 +78,7 @@ public class ObstetricsInitBeanTest {
 		assertEquals(expDays, actDays);
 	
 		// ensure null check works
-		ob = new ObstetricsInitBean();
+		ob = new ObstetricsInit();
 		ob.setLastMenstrualPeriod(null);
 		assertNull(ob.getEstimatedDueDate());
 		assertNull(ob.getTimePregnant());
@@ -87,7 +87,7 @@ public class ObstetricsInitBeanTest {
 	
 	@Test
 	public void testPregnantString() {		
-		ob = new ObstetricsInitBean();
+		ob = new ObstetricsInit();
 
 		// 0 week
 		ob.setLastMenstrualPeriod(LocalDate.now().minusDays(1));

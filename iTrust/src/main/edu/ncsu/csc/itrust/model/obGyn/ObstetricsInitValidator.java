@@ -28,7 +28,7 @@ public class ObstetricsInitValidator {
 	 * @param bean - the bean to validate
 	 * @throws FormValidationException
 	 */
-	public void validate(ObstetricsInitBean bean) throws FormValidationException {
+	public void validate(ObstetricsInit bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
 		if (bean.getPatientId() < 0)
 			errorList.addIfNotNull("Patient id cannot be negative");

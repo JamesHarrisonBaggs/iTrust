@@ -6,14 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
+import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitValidator;
 import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
 
 public class ObstetricsInitValidatorTest {
 
 	ObstetricsInitValidator validator;
-	ObstetricsInitBean bean;
+	ObstetricsInit bean;
 	
 	@Before
 	public void setUp() {
@@ -30,7 +30,7 @@ public class ObstetricsInitValidatorTest {
 	public void testValidBeans() {
 
 		// sample bean
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setPatientId(101);
 		bean.setInitDate(LocalDate.of(2016, 3, 24));
 		bean.setLastMenstrualPeriod(LocalDate.now().minusDays(9));
@@ -48,7 +48,7 @@ public class ObstetricsInitValidatorTest {
 	public void testInvalidBeans() {
 		
 		// default bean
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		try {
 			validate(bean);
 			fail("Validation passed unexpectedly");
@@ -57,7 +57,7 @@ public class ObstetricsInitValidatorTest {
 		}
 		
 		// test id < 0
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setPatientId(-7);
 		try {
 			validate(bean);
@@ -67,7 +67,7 @@ public class ObstetricsInitValidatorTest {
 		}
 		
 		// test date == null
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setInitDate(null);
 		try {
 			validate(bean);
@@ -77,7 +77,7 @@ public class ObstetricsInitValidatorTest {
 		}
 		
 		// test LMP == null
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setLastMenstrualPeriod(null);
 		try {
 			validate(bean);
@@ -87,7 +87,7 @@ public class ObstetricsInitValidatorTest {
 		}
 		
 		// test EDD == null
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setEstimatedDueDate(null);
 		try {
 			validate(bean);
@@ -97,7 +97,7 @@ public class ObstetricsInitValidatorTest {
 		}
 		
 		// test days pregnant < 0
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setDaysPregnant(-5);
 		try {
 			validate(bean);
@@ -113,7 +113,7 @@ public class ObstetricsInitValidatorTest {
 	 * @param bean
 	 * @throws FormValidationException
 	 */
-	private void validate(ObstetricsInitBean bean) throws FormValidationException {
+	private void validate(ObstetricsInit bean) throws FormValidationException {
 		validator.validate(bean);
 	}
 	

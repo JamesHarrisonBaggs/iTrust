@@ -27,7 +27,7 @@ public class ObstetricsInitSQLLoader {
 	 * For database updates.
 	 * Loads data from an Obstetrics Bean to a PreparedStatement
 	 */
-	public PreparedStatement loadUpdate(PreparedStatement ps, ObstetricsInitBean bean) throws SQLException {
+	public PreparedStatement loadUpdate(PreparedStatement ps, ObstetricsInit bean) throws SQLException {
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
 		ps.setTimestamp(i++, bean.getInitTimestamp());
@@ -47,8 +47,8 @@ public class ObstetricsInitSQLLoader {
 	 * For database queries.
 	 * Loads data from a ResultsSet to an Obstetrics Bean
 	 */
-	public ObstetricsInitBean loadResults(ResultSet results) throws SQLException {
-		ObstetricsInitBean bean = new ObstetricsInitBean();
+	public ObstetricsInit loadResults(ResultSet results) throws SQLException {
+		ObstetricsInit bean = new ObstetricsInit();
 		bean.setPatientId(results.getLong("id"));
 		bean.setInitTimestamp(results.getTimestamp("init_date"));
 		bean.setLMPTimestamp(results.getTimestamp("lmp_date"));

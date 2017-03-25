@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc.itrust.exception.DBException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
+import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
@@ -23,8 +23,8 @@ public class ObstetricsInitMySQLTest {
 	private DAOFactory dao;
 	private TestDataGenerator gen;
 	
-	private List<ObstetricsInitBean> list;
-	private ObstetricsInitBean bean;
+	private List<ObstetricsInit> list;
+	private ObstetricsInit bean;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -65,7 +65,7 @@ public class ObstetricsInitMySQLTest {
 		}
 		
 		assertEquals(1, list.size());
-		ObstetricsInitBean b = list.get(0);		
+		ObstetricsInit b = list.get(0);		
 		assertEquals(true, b.isCurrent());
 		assertEquals(2, b.getPatientId());
 		assertEquals(LocalDate.of(1972, 01, 01), b.getInitDate());
@@ -75,7 +75,7 @@ public class ObstetricsInitMySQLTest {
 	public void testUpdate() throws Exception {
 		
 		// create bean
-		bean = new ObstetricsInitBean();
+		bean = new ObstetricsInit();
 		bean.setPatientId(3);
 		bean.setInitTimestamp(Timestamp.valueOf("2017-03-24 00:00:00"));
 		bean.setLMPTimestamp(Timestamp.valueOf("2017-02-04 00:00:00"));
@@ -100,7 +100,7 @@ public class ObstetricsInitMySQLTest {
 				
 		// check assertions
 		assertEquals(1, list.size());
-		ObstetricsInitBean b = list.get(0);
+		ObstetricsInit b = list.get(0);
 		assertEquals(3, b.getPatientId());
 		assertEquals(LocalDate.of(2017, 03, 24), b.getInitDate());
 		assertEquals(LocalDate.of(2017, 02, 04), b.getLastMenstrualPeriod());
@@ -109,9 +109,9 @@ public class ObstetricsInitMySQLTest {
 	}
 
 	@SuppressWarnings("unused")
-	private void printList(List<ObstetricsInitBean> list) {
+	private void printList(List<ObstetricsInit> list) {
 		System.err.println(list.size());
-		for (ObstetricsInitBean b : list) {
+		for (ObstetricsInit b : list) {
 			System.err.println(b.getPatientId() + ", " + b.getInitDate());
 		}
 	} 

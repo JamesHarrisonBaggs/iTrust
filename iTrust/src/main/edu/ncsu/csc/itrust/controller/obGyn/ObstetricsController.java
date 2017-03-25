@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedBean;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
+import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
 import edu.ncsu.csc.itrust.model.obGyn.PregnancyMySQL;
@@ -27,7 +27,7 @@ public class ObstetricsController extends iTrustController {
 	private PregnancyMySQL pregDB;
 	private PatientDAO patientDB;
 
-	private List<ObstetricsInitBean> obstetricsList;
+	private List<ObstetricsInit> obstetricsList;
 	private List<PregnancyBean> pregnancyList;
 	
 	private boolean obGyn;
@@ -53,7 +53,7 @@ public class ObstetricsController extends iTrustController {
 		this.newInitDate = newInitDate;
 	}
 
-	private ObstetricsInitBean obData;
+	private ObstetricsInit obData;
 
 	public ObstetricsController() throws DBException {
 		super();
@@ -79,7 +79,7 @@ public class ObstetricsController extends iTrustController {
 		
 		setCurrentDate(LocalDate.now().toString());
 		setNewInitDate(currentDate);
-		setObData(new ObstetricsInitBean(true));
+		setObData(new ObstetricsInit(true));
 		
 	}
 	
@@ -91,7 +91,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return all obstetrics records for the current patient
 	 * @throws DBException
 	 */
-	public List<ObstetricsInitBean> getObstetricsList() throws DBException {
+	public List<ObstetricsInit> getObstetricsList() throws DBException {
 		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
 		return initDB.getByID(id);
@@ -101,7 +101,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return the obstetrics record for the current patient for the given date
 	 * @throws DBException
 	 */
-	public List<ObstetricsInitBean> getObstetricsRecordByDate(LocalDate date) throws DBException {
+	public List<ObstetricsInit> getObstetricsRecordByDate(LocalDate date) throws DBException {
 		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
 		long id = getSessionUtils().getCurrentPatientMIDLong();
 		return initDB.getByDate(id, Timestamp.valueOf(date.atStartOfDay()));
@@ -129,7 +129,7 @@ public class ObstetricsController extends iTrustController {
 	 * Add or update the obstetric record specified in the given bean
 	 * @throws DBException
 	 */
-	public void updateObstetricRecord(ObstetricsInitBean bean) throws DBException {
+	public void updateObstetricRecord(ObstetricsInit bean) throws DBException {
 		try {
 			int result = initDB.update(bean);
 			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_RECORD : TransactionType.UPDATE_OBSTETRIC_RECORD, "");
@@ -175,7 +175,7 @@ public class ObstetricsController extends iTrustController {
 	}
 	
 	public void submitNewObgynInit() {
-		setObData(new ObstetricsInitBean(true));
+		setObData(new ObstetricsInit(true));
 	}
 	
 	public String getWeeksPregnant(){
@@ -214,7 +214,7 @@ public class ObstetricsController extends iTrustController {
 	public boolean initDateExistsInDB(){
 		return updatedInit;
 	}
-	public List<ObstetricsInitBean> getObGynList() {
+	public List<ObstetricsInit> getObGynList() {
 		return obstetricsList;
 	}
 
@@ -249,14 +249,14 @@ public class ObstetricsController extends iTrustController {
 		return (obGyn && eligible);
 	}
 
-	public ObstetricsInitBean getObData() {
+	public ObstetricsInit getObData() {
 		if(obData == null) {
-			return new ObstetricsInitBean(true);
+			return new ObstetricsInit(true);
 		}
 		return obData;
 	}
 
-	public void setObData(ObstetricsInitBean obData) {
+	public void setObData(ObstetricsInit obData) {
 		this.obData = obData;
 	}
 

@@ -35,8 +35,8 @@ public class ObstetricsInitMySQL {
 	/**
 	 * Returns all obstetrics records for a patient
 	 */
-	public List<ObstetricsInitBean> getByID(long id) throws DBException {
-		ArrayList<ObstetricsInitBean> beans = new ArrayList<ObstetricsInitBean>();
+	public List<ObstetricsInit> getByID(long id) throws DBException {
+		ArrayList<ObstetricsInit> beans = new ArrayList<ObstetricsInit>();
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id=? ORDER BY init_date DESC")) {
 			stmt.setLong(1, id);
@@ -54,8 +54,8 @@ public class ObstetricsInitMySQL {
 	/**
 	 * Returns a single obstetric record for a patient on a date
 	 */
-	public List<ObstetricsInitBean> getByDate(long id, Timestamp date) throws DBException {
-		ArrayList<ObstetricsInitBean> beans = new ArrayList<ObstetricsInitBean>();
+	public List<ObstetricsInit> getByDate(long id, Timestamp date) throws DBException {
+		ArrayList<ObstetricsInit> beans = new ArrayList<ObstetricsInit>();
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id=? AND init_date=?")) {
 			stmt.setLong(1, id);
@@ -74,7 +74,7 @@ public class ObstetricsInitMySQL {
 	/**
 	 * Adds or updates an obstetrics record in the database
 	 */
-	public int update(ObstetricsInitBean bean) throws DBException, FormValidationException {
+	public int update(ObstetricsInit bean) throws DBException, FormValidationException {
 		validator.validate(bean);
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = loader.loadUpdate(conn.prepareStatement(""
