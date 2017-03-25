@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.unit.model.obGyn;
+package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
 import java.time.LocalDate;
