@@ -35,11 +35,14 @@
 					<input id="tab-health-metrics" type="radio" name="ovtabs" />
 					<label for="tab-health-metrics">Health Metrics</label>
 					
+					<input id="tab-obstetrics" type="radio" name="ovtabs" />
+					<label for="tab-obstetrics">Health Metrics</label>
+					
 					<input id="tab-prescriptions" type="radio" name="ovtabs" />
 					<label for="tab-prescriptions">Prescriptions</label>
 
-					<input id="tab-daignoses" type="radio" name="ovtabs" />
-					<label for="tab-daignoses">Diagnoses</label>
+					<input id="tab-diagnoses" type="radio" name="ovtabs" />
+					<label for="tab-diagnoses">Diagnoses</label>
 
 					<input id="tab-obstetrics" type="radio" name="ovtabs" />
 					<label for="tab-obstetrics">Obstetrics</label>					
@@ -62,17 +65,15 @@
 						<div class="tab-panel" id="content-health-metrics">
 							<ui:include src="/auth/hcp-uap/basicHealthMetricsForm.xhtml"></ui:include>
 						</div>
-						
+						<div class="tab-panel" id="content-obstetrics">
+							<ui:include src="/auth/hcp-obGyn/manageObstetrics.xhtml"></ui:include>
+						</div>
 						<div class="tab-panel" id="content-prescriptions">
 							<ui:include src="/auth/hcp-uap/managePrescriptions.xhtml"></ui:include>
 						</div>
 												
-						<div class="tab-panel" id="content-daignoses">
+						<div class="tab-panel" id="content-diagnoses">
 							<ui:include src="/auth/hcp-uap/manageDiagnoses.xhtml"></ui:include>
-						</div>
-
-						<div class="tab-panel" id="content-obstetrics">
-							<ui:include src="/auth/hcp-obGyn/manageObstetrics.xhtml"></ui:include>
 						</div>
 						
 						<div class="tab-panel" id="content-lab-procedure">

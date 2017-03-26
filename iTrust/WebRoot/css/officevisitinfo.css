@@ -6,8 +6,9 @@
 
 #tab-general:checked ~ .tab-content > #content-general,
 #tab-health-metrics:checked ~ .tab-content > #content-health-metrics,
-#tab-prescriptions:checked ~ .tab-content > #content-prescriptions, 
-#tab-daignoses:checked ~ .tab-content > #content-daignoses, 
+#tab-prescriptions:checked ~ .tab-content > #content-prescriptions,
+#tab-obstetrics:checked ~ .tab-content > #content-obstetrics, 
+#tab-diagnoses:checked ~ .tab-content > #content-diagnoses, 
 #tab-obstetrics:checked ~ .tab-content > #content-obstetrics,
 #tab-lab-procedure:checked ~ .tab-content > #content-lab-procedure, 
 #tab-medical-procedures:checked ~ .tab-content > #content-medical-procedures, 
