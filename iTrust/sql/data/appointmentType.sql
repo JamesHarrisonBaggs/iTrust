@@ -4,5 +4,6 @@ VALUES
 ('Mammogram', '60', '3000'),
 ('Physical', '15', '2000'),
 ('Colonoscopy', '90', '2500'),
+('OB/GYN', '60', '500'),
 ('Ultrasound', '30', '500'),
 ('Consultation', '30', '1000');
