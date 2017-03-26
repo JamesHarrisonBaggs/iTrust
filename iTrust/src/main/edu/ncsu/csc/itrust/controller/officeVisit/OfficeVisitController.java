@@ -284,16 +284,8 @@ public class OfficeVisitController extends iTrustController {
 	public List<OfficeVisit> getAdultOfficeVisitsForCurrentPatient() {
 		return getAdultOfficeVisitsForPatient(sessionUtils.getCurrentPatientMID());
 	}
-
-	public OfficeVisit getVisitByID(String VisitID) {
-		long id = -1;
-		try {
-			id = Long.parseLong(VisitID);
-		} catch (NumberFormatException ne) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to Retrieve Office Visit",
-					"Unable to Retrieve Office Visit", null);
-			return null;
-		}
+	
+	public OfficeVisit getVisitByID(long id) {
 		try {
 			return officeVisitData.getByID(id);
 		} catch (Exception e) {
@@ -301,6 +293,18 @@ public class OfficeVisitController extends iTrustController {
 					"Unable to Retrieve Office Visit", null);
 			return null;
 		}
+	}
+
+	public OfficeVisit getVisitByID(String visitID) {
+		long id = -1;
+		try {
+			id = Long.parseLong(visitID);
+		} catch (NumberFormatException ne) {
+			printFacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to Retrieve Office Visit",
+					"Unable to Retrieve Office Visit", null);
+			return null;
+		}
+		return this.getVisitByID(id);
 	}
 
 	/**
