@@ -1,9 +1,10 @@
 package edu.ncsu.csc.itrust.model.healthtracker;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.POJOValidator;
 import edu.ncsu.csc.itrust.exception.ErrorList;
 
-public class HealthTrackerValidator {
+public class HealthTrackerValidator extends POJOValidator<HealthTrackerBean> {
 	
 	private static HealthTrackerValidator instance = null;
 

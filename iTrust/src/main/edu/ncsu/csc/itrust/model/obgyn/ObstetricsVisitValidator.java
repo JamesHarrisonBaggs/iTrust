@@ -11,7 +11,7 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 	 * @throws FormValidationException
 	 */
 	@Override
-	public void validate(ObstetricsVisit obj) throws FormValidationException {
+	public void validate(ObstetricsVisit bean) throws FormValidationException {
 		// TODO Auto-generated method stub
 	}
 	

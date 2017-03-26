@@ -1,5 +1,7 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
+import java.time.LocalDateTime;
+
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name="ultrasound")
@@ -9,6 +11,8 @@ public class Ultrasound {
 	private long patientId;
 	/** ID of the associated office visit */
 	private long visitId;
+	/** Date of the associated office visit */
+	private LocalDateTime visitDate;
 	/** ID of the fetus */
 	private int fetusId;
 	/** Crown rump length (CRL) in mm */
@@ -34,6 +38,9 @@ public class Ultrasound {
 	}
 	public long getVisitId() {
 		return visitId;
+	}
+	public LocalDateTime getVisitDate() {
+		return visitDate;
 	}
 	public int getFetusId() {
 		return fetusId;
@@ -69,6 +76,9 @@ public class Ultrasound {
 	/** SETTERS **/
 	public void setVisitId(long visitId) {
 		this.visitId = visitId;
+	}
+	public void setVisitDate(LocalDateTime visitDate) {
+		this.visitDate = visitDate;
 	}
 	public void setFetusId(int fetusId) {
 		this.fetusId = fetusId;

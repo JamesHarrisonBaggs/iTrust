@@ -1,6 +1,6 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name="obstetrics_visit")
@@ -11,7 +11,7 @@ public class ObstetricsVisit {
 	/** ID of the associated office visit */
 	private long visitId;
 	/** The date of the office visit */
-	private LocalDate visitDate;
+	private LocalDateTime visitDate;
 	/** Number of weeks pregnant */
 	private int weeksPregnant;
 	/** The patient weight in lbs */
@@ -32,7 +32,7 @@ public class ObstetricsVisit {
 	public long getVisitId() {
 		return visitId;
 	}
-	public LocalDate getVisitDate() {
+	public LocalDateTime getVisitDate() {
 		return visitDate;
 	}
 	public int getWeeksPregnant() {
@@ -61,7 +61,7 @@ public class ObstetricsVisit {
 	public void setVisitId(long visitId) {
 		this.visitId = visitId;
 	}
-	public void setVisitDate(LocalDate visitDate) {
+	public void setVisitDate(LocalDateTime visitDate) {
 		this.visitDate = visitDate;
 	}
 	public void setWeeksPregnant(int weeksPregnant) {
