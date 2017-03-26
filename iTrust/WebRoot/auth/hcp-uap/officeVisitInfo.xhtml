@@ -21,6 +21,7 @@
 		<ui:define name="leftMenu">
 			<ui:include src="/auth/hcp/menu.xhtml" />
 		</ui:define>
+		
 		<ui:define name="mainContent">
 			<!-- this is a really sloppy message box -->
 			<h:message for="" id="officevisitinfo-message" class="iTrustError" />
@@ -34,14 +35,14 @@
 					<input id="tab-health-metrics" type="radio" name="ovtabs" />
 					<label for="tab-health-metrics">Health Metrics</label>
 					
-					<input id="tab-obstetrics" type="radio" name="ovtabs" />
-					<label for="tab-obstetrics">OB/GYN</label>
-					
 					<input id="tab-prescriptions" type="radio" name="ovtabs" />
 					<label for="tab-prescriptions">Prescriptions</label>
 
-					<input id="tab-diagnoses" type="radio" name="ovtabs" />
-					<label for="tab-diagnoses">Diagnoses</label>
+					<input id="tab-daignoses" type="radio" name="ovtabs" />
+					<label for="tab-daignoses">Diagnoses</label>
+
+					<input id="tab-obstetrics" type="radio" name="ovtabs" />
+					<label for="tab-obstetrics">Obstetrics</label>					
 					
 					<input id="tab-lab-procedure" type="radio" name="ovtabs" />
 					<label for="tab-lab-procedure">Lab Procedures</label>
@@ -62,20 +63,20 @@
 							<ui:include src="/auth/hcp-uap/basicHealthMetricsForm.xhtml"></ui:include>
 						</div>
 						
-						<div class="tab-panel" id="content-obstetrics">
-							<ui:include src="/auth/hcp-uap/managePrescriptions.xhtml"></ui:include>
-						</div>
-						
 						<div class="tab-panel" id="content-prescriptions">
 							<ui:include src="/auth/hcp-uap/managePrescriptions.xhtml"></ui:include>
+						</div>
+												
+						<div class="tab-panel" id="content-daignoses">
+							<ui:include src="/auth/hcp-uap/manageDiagnoses.xhtml"></ui:include>
+						</div>
+
+						<div class="tab-panel" id="content-obstetrics">
+							<ui:include src="/auth/hcp-obGyn/manageObstetrics.xhtml"></ui:include>
 						</div>
 						
 						<div class="tab-panel" id="content-lab-procedure">
 							<ui:include src="/auth/hcp-uap/manageLabProcedures.xhtml"></ui:include>
-						</div>
-						
-						<div class="tab-panel" id="content-diagnoses">
-							<ui:include src="/auth/hcp-uap/manageDiagnoses.xhtml"></ui:include>
 						</div>
 						
 						<div class="tab-panel" id="content-medical-procedures">
@@ -88,7 +89,6 @@
 					</c:if>
 				</div>
 			</div>
-
 		</ui:define>
 
 		<ui:define name="pageScripts">
