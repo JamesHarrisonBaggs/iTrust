@@ -33,7 +33,7 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
 	public ObstetricsVisit loadSingle(ResultSet rs) throws SQLException {
 		ObstetricsVisit bean = new ObstetricsVisit();
 		bean.setPatientId(rs.getLong("id"));
-		bean.setVisitId(rs.getLong("visitId"));
+		bean.setVisitId(rs.getLong("visitID"));
 		bean.setVisitDate(rs.getTimestamp("visitDate").toLocalDateTime());
 		bean.setWeeksPregnant(rs.getInt("weeksPregnant"));
 		bean.setWeight(rs.getDouble("weight"));
