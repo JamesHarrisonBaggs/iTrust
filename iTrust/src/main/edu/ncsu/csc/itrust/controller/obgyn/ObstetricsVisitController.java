@@ -47,7 +47,7 @@ public class ObstetricsVisitController extends iTrustController {
 			patientId = Long.parseLong(
 					(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pid"));
 		}
-		visitDate = ob.getVisitDate();
+		ob.setVisitDate(getOfficeVisit().getDate());
 		weeksPregnant = ob.getWeeksPregnant();
 		weight = ob.getWeight();
 		bloodPressure = ob.getBloodPressure();
