@@ -19,7 +19,7 @@ public class ObstetricsVisitMySQL {
 	private ObstetricsVisitSQLLoader loader;
 	private ObstetricsVisitValidator validator;
 	private DataSource ds;
-	
+
 	public ObstetricsVisitMySQL() throws DBException {
 		try {
 			Context ctx = new InitialContext();
@@ -30,13 +30,13 @@ public class ObstetricsVisitMySQL {
 		loader = new ObstetricsVisitSQLLoader();
 		validator = new ObstetricsVisitValidator();
 	}
-	
+
 	public ObstetricsVisitMySQL(DataSource ds) throws DBException {
 		this.ds = ds;
 		loader = new ObstetricsVisitSQLLoader();
 		validator = new ObstetricsVisitValidator();
 	}
-	
+
 	public int update(ObstetricsVisit bean) throws DBException {
 		try {
 			validator.validate(bean);
@@ -44,32 +44,45 @@ public class ObstetricsVisitMySQL {
 			throw new DBException(new SQLException(e));
 		}
 		try (Connection conn = ds.getConnection();
-			PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
+				PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
 			int results = stmt.executeUpdate();
 			return results;
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
 	}
-	
 	public List<ObstetricsVisit> getByID(long id) throws DBException {
 		// TODO implement
 		return null;
 	}
-	
+
 	public ObstetricsVisit getByFetus(long id, int fetus) throws DBException {
 		// TODO implement
 		return null;		
 	}
-	
-	public List<ObstetricsVisit> getByVisit(long visitId) throws DBException {
-		// TODO implement
-		return null;
+
+	public ObstetricsVisit getByVisit(long visitId) throws DBException {
+		try (Connection conn = ds.getConnection();) {
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("SELECT * FROM itrust.obstetrics_visits Where visitID='");
+			stringBuilder.append(visitId);
+			stringBuilder.append("';");
+			String statement = stringBuilder.toString();
+			PreparedStatement stmt = conn.prepareStatement(statement);
+			ResultSet results = stmt.executeQuery();
+			if(results.next()) {
+				return loader.loadSingle(results);
+			} else {
+				return new ObstetricsVisit();
+			}
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
 	}
-	
+
 	public ObstetricsVisit getByVisitAndFetus(long visitId, int fetus) throws DBException {
 		// TODO implement
 		return null;		
 	}
-	
+
 }

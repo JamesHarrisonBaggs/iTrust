@@ -28,9 +28,13 @@ public class ObstetricsVisitController extends iTrustController {
 		sql = new ObstetricsVisitMySQL(ds);
 	}
 	
-	private OfficeVisit getOfficeVisit() throws DBException {
+	public OfficeVisit getOfficeVisit() throws DBException {
 		long id = getSessionUtils().getCurrentOfficeVisitId();
 		return new OfficeVisitController().getVisitByID(id);
+	}
+	public ObstetricsVisit getObstetricsVisit() throws DBException {
+		long id = getSessionUtils().getCurrentOfficeVisitId();
+		return sql.getByVisit(id);
 	}
 	
 	public void add() throws DBException {
