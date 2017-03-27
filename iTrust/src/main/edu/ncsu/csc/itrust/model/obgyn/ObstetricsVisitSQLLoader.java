@@ -55,7 +55,7 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
 		// prepare statement
 		String statement = "INSERT INTO obstetrics_visits(id, visitID, visitDate, weeksPregnant, "
 				+ "weight, bloodPressure, fetalHR, amount, lowLying, rhFlag)"
-				+ "VALUES(?,?,?,?,?,?,?,?,?)"
+				+ "VALUES(?,?,?,?,?,?,?,?,?,?)"
 				+ "ON DUPLICATE KEY UPDATE id=?, visitID=?, visitDate=?, weeksPregnant=?, "
 				+ "weight=?, bloodPressure=?, fetalHR=?, amount=?, lowLying=?, rhFlag=?";
 		ps = conn.prepareStatement(statement);
