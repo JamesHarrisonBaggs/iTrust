@@ -1,6 +1,8 @@
 package edu.ncsu.csc.itrust.controller.obgyn;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -9,10 +11,13 @@ import javax.faces.context.FacesContext;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
 import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.webutils.LocalDateConverter;
 
 import javax.sql.DataSource;
 
@@ -31,12 +36,22 @@ public class ObstetricsVisitController extends iTrustController {
 	private int amount;
 	private boolean lowLyingPlacenta;
 	private boolean rhFlag;
+	private ObstetricsController obc;
+
+	private boolean eligible;
+	private boolean obgyn;
+
+	private List<ObstetricsInit> obstetricsList;
 
 	public ObstetricsVisitController() throws DBException {
 		super();
+		obc = new ObstetricsController();
 		sql = new ObstetricsVisitMySQL();
 		ob = getObstetricsVisit();
-		ob.setVisitDate(getOfficeVisit().getDate());
+		if (getOfficeVisit().getVisitID() != 0) {
+			ob.setVisitId(getOfficeVisit().getVisitID());
+			ob.setVisitDate(getOfficeVisit().getDate());
+		}
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", ob.getVisitId());
 		} catch (NullPointerException e) {
@@ -56,6 +71,9 @@ public class ObstetricsVisitController extends iTrustController {
 		amount = ob.getAmount();
 		lowLyingPlacenta = ob.isLowLyingPlacenta();
 		rhFlag = ob.isRhFlag();
+		setObgyn();
+		setObstetricsList();
+		setEligible();
 	}
 
 
@@ -73,10 +91,15 @@ public class ObstetricsVisitController extends iTrustController {
 		return sql.getByVisit(id);
 	}
 	public void update(ObstetricsVisit bean) throws DBException {
-		sql.update(bean);
+		try {
+			sql.update(bean);
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formSuccess", new FacesMessage("Obstetrics Visit Updated Successfully"));
+		} catch (FormValidationException e) {
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formError", new FacesMessage(e.getMessage()));
+		}
 	}
 
-	public void add() throws DBException {
+	public void add() throws DBException, FormValidationException {
 
 		// create bean
 		ObstetricsVisit bean = new ObstetricsVisit();
@@ -114,7 +137,8 @@ public class ObstetricsVisitController extends iTrustController {
 		ob.setRhFlag(rhFlag);
 		ob.setLowLyingPlacenta(lowLyingPlacenta);
 		update(ob);
-		
+
+
 	}
 
 	public long getVisitId() {
@@ -214,6 +238,49 @@ public class ObstetricsVisitController extends iTrustController {
 
 	public void setRhFlag(boolean rhFlag) {
 		this.rhFlag = rhFlag;
+	}
+
+
+	public boolean isEligible() {
+		return eligible;
+	}
+
+
+	public void setEligible() {
+		LocalDate tmp = LocalDate.MIN;
+		for(int i = 0; i < obstetricsList.size(); i++) {
+			boolean flag = obstetricsList.get(i).getInitDate().isAfter(tmp);
+			if (flag) {
+				tmp = obstetricsList.get(i).getInitDate();
+				break;
+			}
+		}
+		long days = 342;
+		if(tmp.plusDays(days).isBefore(visitDate.toLocalDate())) {
+			eligible = false;
+		} else {
+			eligible = true; 
+		}
+	}
+
+
+	public boolean isObgyn() {
+		return obgyn;
+	}
+
+
+	public void setObgyn() throws DBException {
+		this.obgyn = obc.getObGyn();
+	}
+
+
+	public List<ObstetricsInit> getObstetricsList() {
+		return obstetricsList;
+	}
+
+
+	public void setObstetricsList() throws DBException {
+		this.obstetricsList = obc.getObstetricsList();
 	}
 
 }

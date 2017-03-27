@@ -37,12 +37,8 @@ public class ObstetricsVisitMySQL {
 		validator = new ObstetricsVisitValidator();
 	}
 
-	public int update(ObstetricsVisit bean) throws DBException {
-		try {
-			validator.validate(bean);
-		} catch (FormValidationException e) {
-			throw new DBException(new SQLException(e));
-		}
+	public int update(ObstetricsVisit bean) throws DBException, FormValidationException {
+		validator.validate(bean);
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
 			int results = stmt.executeUpdate();

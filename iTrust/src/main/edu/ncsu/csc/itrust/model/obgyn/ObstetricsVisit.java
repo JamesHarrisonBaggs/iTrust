@@ -27,6 +27,9 @@ public class ObstetricsVisit {
 	/** Boolean for RH-Flag */
 	private boolean rhFlag;
 	
+	public ObstetricsVisit() {
+		bloodPressure = "000/000";
+	}
 	/** GETTERS **/
 	public long getPatientId() {
 		return patientId;

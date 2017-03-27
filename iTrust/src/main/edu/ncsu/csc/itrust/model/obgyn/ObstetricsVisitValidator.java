@@ -32,7 +32,7 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 		if (bean.getFetalHeartRate() < 0)
 			errorList.addIfNotNull("Fetal heart rate cannot be negative");
 		if (bean.getAmount() < 1)
-			errorList.addIfNotNull("Amount cannot be less than 1");
+			errorList.addIfNotNull("Multiples cannot be less than 1");
 		// doesn't validate booleans
 		if (errorList.hasErrors())
 			throw new FormValidationException(errorList);
