@@ -25,22 +25,23 @@
 						<h:outputLabel for="weeksPregnant" style="padding-right:20px">Weeks Pregnant:</h:outputLabel>
 						<h:inputText id="weeksPregnant" name="weeksPregnant"
 							value="#{obs_visit_controller.weeksPregnant}" />
-
+							<br/>
+						<outputLabel style="color:red" rendered="#{obs_visit_controller.notice}">NOTICE: Patient should be given RH immune globulin shot (pregnancy is past 28 weeks)</outputLabel>
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel for="Weight" style="padding-right:20px">Weight:</h:outputLabel>
+						<h:outputLabel for="Weight" style="padding-right:20px">Weight (lbs):</h:outputLabel>
 						<h:inputText id="weight" name="weight"
 							value="#{obs_visit_controller.weight}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel for="bloodPressure" style="padding-right:20px">Blood Pressure:</h:outputLabel>
+						<h:outputLabel for="bloodPressure" style="padding-right:20px">Blood Pressure (mmHg):</h:outputLabel>
 						<h:inputText id="bloodPressure" name="bloodPressure"
 							value="#{obs_visit_controller.bloodPressure}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel for="fetalHeartRate" style="padding-right:20px">Fetal Heart Rate:</h:outputLabel>
+						<h:outputLabel for="fetalHeartRate" style="padding-right:20px">Fetal Heart Rate (bpm):</h:outputLabel>
 						<h:inputText id="fetalHeartRate" name="fetalHeartRate"
 							value="#{obs_visit_controller.fetalHeartRate}" />
 

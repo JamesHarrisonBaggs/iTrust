@@ -40,6 +40,7 @@ public class ObstetricsVisitController extends iTrustController {
 
 	private boolean eligible;
 	private boolean obgyn;
+	private boolean notice;
 
 	private List<ObstetricsInit> obstetricsList;
 
@@ -74,6 +75,7 @@ public class ObstetricsVisitController extends iTrustController {
 		setObgyn();
 		setObstetricsList();
 		setEligible();
+		setNotice();
 	}
 
 
@@ -281,6 +283,17 @@ public class ObstetricsVisitController extends iTrustController {
 
 	public void setObstetricsList() throws DBException {
 		this.obstetricsList = obc.getObstetricsList();
+	}
+
+
+	public boolean isNotice() {
+		setNotice();
+		return notice;
+	}
+
+
+	public void setNotice() {
+		notice = (weeksPregnant > 28);
 	}
 
 }
