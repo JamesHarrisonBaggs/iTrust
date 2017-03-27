@@ -33,12 +33,9 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 			errorList.addIfNotNull("Fetal heart rate cannot be negative");
 		if (bean.getAmount() < 1)
 			errorList.addIfNotNull("Amount cannot be less than 1");
+		// doesn't validate booleans
 		if (errorList.hasErrors())
 			throw new FormValidationException(errorList);
 	}
-	
-//	if (checkFormat("Blood Pressure", bean.getBloodPressure(), ValidationFormat.BLOOD_PRESSURE_OV, false) != null) {
-//		errorList.addIfNotNull("Blood pressure is invalid");
-//	}
 
 }

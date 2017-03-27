@@ -41,6 +41,7 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
 		bean.setFetalHeartRate(rs.getInt("fetalHR"));
 		bean.setAmount(rs.getInt("amount"));
 		bean.setLowLyingPlacenta(rs.getBoolean("lowLying"));
+		bean.setRhFlag(rs.getBoolean("rhFlag"));
 		return bean;
 	}
 
@@ -53,10 +54,10 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
 		
 		// prepare statement
 		String statement = "INSERT INTO obstetrics_visits(id, visitID, visitDate, weeksPregnant, "
-				+ "weight, bloodPressure, fetalHR, amount, lowLying)"
+				+ "weight, bloodPressure, fetalHR, amount, lowLying, rhFlag)"
 				+ "VALUES(?,?,?,?,?,?,?,?,?)"
 				+ "ON DUPLICATE KEY UPDATE id=?, visitID=?, visitDate=?, weeksPregnant=?, "
-				+ "weight=?, bloodPressure=?, fetalHR=?, amount=?, lowLying=?";
+				+ "weight=?, bloodPressure=?, fetalHR=?, amount=?, lowLying=?, rhFlag=?";
 		ps = conn.prepareStatement(statement);
 		
 		// set parameters
@@ -70,6 +71,7 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
 		ps.setInt(i++, bean.getFetalHeartRate());
 		ps.setInt(i++, bean.getAmount());
 		ps.setBoolean(i++, bean.isLowLyingPlacenta());
+		ps.setBoolean(i++, bean.isRhFlag());
 		
 		// set again for duplicate
 		ps.setLong(i++, bean.getPatientId());
@@ -81,6 +83,7 @@ public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
 		ps.setInt(i++, bean.getFetalHeartRate());
 		ps.setInt(i++, bean.getAmount());
 		ps.setBoolean(i++, bean.isLowLyingPlacenta());
+		ps.setBoolean(i++, bean.isRhFlag());
 		
 		return ps;
 	}
