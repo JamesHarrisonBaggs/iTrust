@@ -30,7 +30,13 @@ public class Ultrasound {
 	/** Humerus length (HL) in mm */
 	private int humerusLength;
 	/** Estimated fetal weight (grams) */
-	private int estimatedFetalWeight;
+	private double estimatedFetalWeight;
+	
+	public Ultrasound() {
+		this.patientId = -1;
+		this.visitId = -1;
+		this.fetusId = -1;
+	}
 	
 	/** GETTERS **/
 	public long getPatientId() {
@@ -66,7 +72,7 @@ public class Ultrasound {
 	public int getHumerusLength() {
 		return humerusLength;
 	}
-	public int getEstimatedFetalWeight() {
+	public double getEstimatedFetalWeight() {
 		return estimatedFetalWeight;
 	}
 	public void setPatientId(long patientId) {
@@ -83,29 +89,29 @@ public class Ultrasound {
 	public void setFetusId(int fetusId) {
 		this.fetusId = fetusId;
 	}
-	public void setCrownRumpLength(int crownRumpLength) {
-		this.crownRumpLength = crownRumpLength;
+	public void setCrownRumpLength(int crl) {
+		this.crownRumpLength = crl;
 	}
-	public void setBiparietalDiameter(int biparietalDiameter) {
-		this.biparietalDiameter = biparietalDiameter;
+	public void setBiparietalDiameter(int bpd) {
+		this.biparietalDiameter = bpd;
 	}
-	public void setHeadCircumference(int headCircumference) {
-		this.headCircumference = headCircumference;
+	public void setHeadCircumference(int hc) {
+		this.headCircumference = hc;
 	}
-	public void setFemurLength(int femurLength) {
-		this.femurLength = femurLength;
+	public void setFemurLength(int fl) {
+		this.femurLength = fl;
 	}
-	public void setOccipitofrontalDiameter(int occipitofrontalDiameter) {
-		this.occipitofrontalDiameter = occipitofrontalDiameter;
+	public void setOccipitofrontalDiameter(int ofd) {
+		this.occipitofrontalDiameter = ofd;
 	}
-	public void setAbdominalCircumference(int abdominalCircumference) {
-		this.abdominalCircumference = abdominalCircumference;
+	public void setAbdominalCircumference(int ac) {
+		this.abdominalCircumference = ac;
 	}
-	public void setHumerusLength(int humerusLength) {
-		this.humerusLength = humerusLength;
+	public void setHumerusLength(int hl) {
+		this.humerusLength = hl;
 	}
-	public void setEstimatedFetalWeight(int estimateFetalWeight) {
-		this.estimatedFetalWeight = estimateFetalWeight;
+	public void setEstimatedFetalWeight(double efw) {
+		this.estimatedFetalWeight = efw;
 	}
 	
 }
