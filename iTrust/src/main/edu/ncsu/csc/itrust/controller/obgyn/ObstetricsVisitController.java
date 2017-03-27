@@ -36,6 +36,7 @@ public class ObstetricsVisitController extends iTrustController {
 		super();
 		sql = new ObstetricsVisitMySQL();
 		ob = getObstetricsVisit();
+		ob.setVisitDate(getOfficeVisit().getDate());
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", ob.getVisitId());
 		} catch (NullPointerException e) {
@@ -47,7 +48,7 @@ public class ObstetricsVisitController extends iTrustController {
 			patientId = Long.parseLong(
 					(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pid"));
 		}
-		ob.setVisitDate(getOfficeVisit().getDate());
+		visitDate = ob.getVisitDate();
 		weeksPregnant = ob.getWeeksPregnant();
 		weight = ob.getWeight();
 		bloodPressure = ob.getBloodPressure();
