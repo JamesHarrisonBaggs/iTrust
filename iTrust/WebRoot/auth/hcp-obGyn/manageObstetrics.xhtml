@@ -96,15 +96,18 @@
 	</h:panelGrid>
 	<h:panelGrid class="fTable"
 		rendered="#{!obs_visit_controller.eligible}">
-		<div style="width: 400px">
-			<h4>This office visit for
-				#{user.getUserNameForID(session.getAttribute("pid"))} is not in the
-				40 day range of the newest Obstetrics Initialization.</h4>
-			<h:button id="addUltraSound" style="font-size:11px; font-weight:bold"
-				align="left" value="Add New Initialization?"
-				outcome="/auth/hcp-obGyn/viewObstetricsInit.xhtml">
-			</h:button>
+		<h:panelGroup>
+			<div style="width: 400px">
+				<h4>This office visit for
+					#{user.getUserNameForID(session.getAttribute("pid"))} is not in the
+					40 day range of the newest Obstetrics Initialization.</h4>
+				<h:button id="addUltraSound"
+					style="font-size:11px; font-weight:bold" align="left"
+					value="Add New Initialization?"
+					outcome="/auth/hcp-obGyn/viewObstetricsInit.xhtml">
+				</h:button>
 			</div>
+		</h:panelGroup>
 	</h:panelGrid>
 </h:body>
 </html>
