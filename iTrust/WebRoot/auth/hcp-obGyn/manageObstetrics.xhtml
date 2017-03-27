@@ -10,70 +10,69 @@
 		<h:panelGroup>
 			<h:form id="manage_obstetrics_form">
 				<h:panelGrid>
-					<c:set var="obstetrics_visit1" value="#{obs_visit_controller.getObstetricsVisit()}"/>
 					<h:panelGroup>
 						<h:outputLabel for="date" style="padding-right:20px">Date:</h:outputLabel>
 						<h:outputText id="date" name="date"
-							value="#{obs_visit_controller.getOfficeVisit().date}" />
+							value="#{obs_visit_controller.visitDate}" />
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="weeksPregnant" style="padding-right:20px">Weeks Pregnant:</h:outputLabel>
 						<h:inputText id="weeksPregnant" name="weeksPregnant"
-							value="#{obstetrics_visit1.weeksPregnant}" />
+							value="#{obs_visit_controller.weeksPregnant}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="Weight" style="padding-right:20px">Weight:</h:outputLabel>
 						<h:inputText id="weight" name="weight"
-							value="#{obstetrics_visit1.weight}" />
+							value="#{obs_visit_controller.weight}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="bloodPressure" style="padding-right:20px">Blood Pressure:</h:outputLabel>
 						<h:inputText id="bloodPressure" name="bloodPressure"
-							value="#{obstetrics_visit1.bloodPressure}" />
+							value="#{obs_visit_controller.bloodPressure}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="fetalHeartRate" style="padding-right:20px">Fetal Heart Rate:</h:outputLabel>
 						<h:inputText id="fetalHeartRate" name="fetalHeartRate"
-							value="#{obstetrics_visit1.fetalHeartRate}" />
+							value="#{obs_visit_controller.fetalHeartRate}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="multiples" style="padding-right:20px">Multiples:</h:outputLabel>
 						<h:inputText id="multiples" name="multiples"
-							value="#{obstetrics_visit1.amount}" />
+							value="#{obs_visit_controller.amount}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="lowLyingPlacenta" style="padding-right:20px">Low Lying Placenta:</h:outputLabel>
 						<h:selectOneMenu id="lowLyingPlacenta" name="lowLyingPlacenta"
-							value="#{obstetrics_visit1.rhFlag}">
+							value="#{obs_visit_controller.rhFlag}">
 							<f:selectItem
-								itemValue="#{obstetrics_visit1.lowLyingPlacenta}"
-								itemLabel="#{obstetrics_visit1.lowLyingPlacenta}" />
+								itemValue="#{obs_visit_controller.lowLyingPlacenta}"
+								itemLabel="#{obs_visit_controller.lowLyingPlacenta}" />
 							<f:selectItem
-								itemValue="#{!obstetrics_visit1.lowLyingPlacenta}"
-								itemLabel="#{!obstetrics_visit1.lowLyingPlacenta}" />
+								itemValue="#{!obs_visit_controller.lowLyingPlacenta}"
+								itemLabel="#{!obs_visit_controller.lowLyingPlacenta}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="rhFlag" style="padding-right:20px">RH-flag:</h:outputLabel>
 						<h:selectOneMenu id="rhFlag" name="rhFlag"
-							value="#{obstetrics_visit1.rhFlag}">
+							value="#{obs_visit_controller.rhFlag}">
 							<f:selectItem
-								itemValue="#{obstetrics_visit1.rhFlag}"
-								itemLabel="#{obstetrics_visit1.rhFlag}" />
+								itemValue="#{obs_visit_controller.rhFlag}"
+								itemLabel="#{obs_visit_controller.rhFlag}" />
 							<f:selectItem
-								itemValue="#{!obstetrics_visit1.rhFlag}"
-								itemLabel="#{!obstetrics_visit1.rhFlag}" />
+								itemValue="#{!obs_visit_controller.rhFlag}"
+								itemLabel="#{!obs_visit_controller.rhFlag}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:commandButton id="editObstetricVisit"
 							style="font-size:11px; font-weight:bold" align="left"
-							value="Edit Obstetrics Visit" action="#{obs_visit_controller.update(obstetrics_visit1)}">
+							value="Edit Obstetrics Visit" action="#{obs_visit_controller.submit}">
 						</h:commandButton>
 					</h:panelGroup>
 				</h:panelGrid>
