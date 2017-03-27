@@ -11,8 +11,8 @@
 		<h:panelGroup id="manage_obstetrics_formSuccess">
 			<h4>Edit Obstetric Visit</h4>
 			<h:form id="manage_obstetrics_formError">
-				<div style="width : 300px">
-					<h:message for="manage_obstetrics_formError" class="iTrustError"/>
+				<div style="width: 300px">
+					<h:message for="manage_obstetrics_formError" class="iTrustError" />
 					<h:message for="manage_obstetrics_formSuccess" style="color:green" />
 				</div>
 				<h:panelGrid>
@@ -94,15 +94,17 @@
 			</h:form>
 		</h:panelGroup>
 	</h:panelGrid>
-	<h:panelGrid columns="2" class="fTable"
+	<h:panelGrid class="fTable"
 		rendered="#{!obs_visit_controller.eligible}">
-		<h4>This office visit for
-			#{user.getUserNameForID(session.getAttribute("pid"))} is not in the
-			40 day range of the newest Obstetrics Initialization.</h4>
-		<h:button id="addUltraSound" style="font-size:11px; font-weight:bold"
-			align="left" value="Add New Initialization?"
-			outcome="/auth/hcp-obGyn/newObstetricsInit.xhtml">
-		</h:button>
+		<div style="width: 400px">
+			<h4>This office visit for
+				#{user.getUserNameForID(session.getAttribute("pid"))} is not in the
+				40 day range of the newest Obstetrics Initialization.</h4>
+			<h:button id="addUltraSound" style="font-size:11px; font-weight:bold"
+				align="left" value="Add New Initialization?"
+				outcome="/auth/hcp-obGyn/viewObstetricsInit.xhtml">
+			</h:button>
+			</div>
 	</h:panelGrid>
 </h:body>
 </html>
