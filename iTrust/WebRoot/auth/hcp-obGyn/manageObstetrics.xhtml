@@ -10,6 +10,7 @@
 		<h:panelGroup>
 			<h:form id="manage_obstetrics_form">
 				<h:panelGrid>
+					<c:set var="obstetrics_visit1" value="#{obs_visit_controller.getObstetricsVisit()}"/>
 					<h:panelGroup>
 						<h:outputLabel for="date" style="padding-right:20px">Date:</h:outputLabel>
 						<h:outputText id="date" name="date"
@@ -18,63 +19,62 @@
 					<h:panelGroup>
 						<h:outputLabel for="weeksPregnant" style="padding-right:20px">Weeks Pregnant:</h:outputLabel>
 						<h:inputText id="weeksPregnant" name="weeksPregnant"
-							value="#{obs_visit_controller.getObstetricsVisit().weeksPregnant}" />
+							value="#{obstetrics_visit1.weeksPregnant}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="Weight" style="padding-right:20px">Weight:</h:outputLabel>
 						<h:inputText id="weight" name="weight"
-							value="#{obs_visit_controller.getObstetricsVisit().weight}" />
+							value="#{obstetrics_visit1.weight}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="bloodPressure" style="padding-right:20px">Blood Pressure:</h:outputLabel>
 						<h:inputText id="bloodPressure" name="bloodPressure"
-							value="#{obs_visit_controller.getObstetricsVisit().bloodPressure}" />
+							value="#{obstetrics_visit1.bloodPressure}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="fetalHeartRate" style="padding-right:20px">Fetal Heart Rate:</h:outputLabel>
 						<h:inputText id="fetalHeartRate" name="fetalHeartRate"
-							value="#{obs_visit_controller.getObstetricsVisit().fetalHeartRate}" />
+							value="#{obstetrics_visit1.fetalHeartRate}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="multiples" style="padding-right:20px">Multiples:</h:outputLabel>
 						<h:inputText id="multiples" name="multiples"
-							value="#{obs_visit_controller.getObstetricsVisit().amount}" />
+							value="#{obstetrics_visit1.amount}" />
 
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="lowLyingPlacenta" style="padding-right:20px">Low Lying Placenta:</h:outputLabel>
 						<h:selectOneMenu id="lowLyingPlacenta" name="lowLyingPlacenta"
-							value="#{obs_visit_controller.getObstetricsVisit().rhFlag}">
+							value="#{obstetrics_visit1.rhFlag}">
 							<f:selectItem
-								itemValue="#{obs_visit_controller.getObstetricsVisit().lowLyingPlacenta}"
-								itemLabel="#{obs_visit_controller.getObstetricsVisit().lowLyingPlacenta}" />
+								itemValue="#{obstetrics_visit1.lowLyingPlacenta}"
+								itemLabel="#{obstetrics_visit1.lowLyingPlacenta}" />
 							<f:selectItem
-								itemValue="#{!obs_visit_controller.getObstetricsVisit().lowLyingPlacenta}"
-								itemLabel="#{!obs_visit_controller.getObstetricsVisit().lowLyingPlacenta}" />
+								itemValue="#{!obstetrics_visit1.lowLyingPlacenta}"
+								itemLabel="#{!obstetrics_visit1.lowLyingPlacenta}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="rhFlag" style="padding-right:20px">RH-flag:</h:outputLabel>
 						<h:selectOneMenu id="rhFlag" name="rhFlag"
-							value="#{obs_visit_controller.getObstetricsVisit().rhFlag}">
+							value="#{obstetrics_visit1.rhFlag}">
 							<f:selectItem
-								itemValue="#{obs_visit_controller.getObstetricsVisit().rhFlag}"
-								itemLabel="#{obs_visit_controller.getObstetricsVisit().rhFlag}" />
+								itemValue="#{obstetrics_visit1.rhFlag}"
+								itemLabel="#{obstetrics_visit1.rhFlag}" />
 							<f:selectItem
-								itemValue="#{!obs_visit_controller.getObstetricsVisit().rhFlag}"
-								itemLabel="#{!obs_visit_controller.getObstetricsVisit().rhFlag}" />
+								itemValue="#{!obstetrics_visit1.rhFlag}"
+								itemLabel="#{!obstetrics_visit1.rhFlag}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h:panelGroup>
-					<h:commandButton id="editObstetricVisit"
-												style="font-size:11px; font-weight:bold" align="left"
-												value="Edit Obstetrics Visit"
-												action="#{obs_visit_controller.update(obs_visit_controller.getObstetricsVisit())}">
-											</h:commandButton>
+						<h:commandButton id="editObstetricVisit"
+							style="font-size:11px; font-weight:bold" align="left"
+							value="Edit Obstetrics Visit" action="#{obs_visit_controller.update(obstetrics_visit1)}">
+						</h:commandButton>
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>

@@ -36,6 +36,9 @@ public class ObstetricsVisitController extends iTrustController {
 		long id = getSessionUtils().getCurrentOfficeVisitId();
 		return sql.getByVisit(id);
 	}
+	public void update(ObstetricsVisit bean) throws DBException {
+		sql.update(bean);
+	}
 	
 	public void add() throws DBException {
 		
