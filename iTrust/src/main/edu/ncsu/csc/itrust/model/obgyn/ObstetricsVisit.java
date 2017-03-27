@@ -24,6 +24,8 @@ public class ObstetricsVisit {
 	private int amount;
 	/** Boolean for if the placenta is low lying */
 	private boolean lowLyingPlacenta;
+	/** Boolean for RH-Flag */
+	private boolean rhFlag;
 	
 	/** GETTERS **/
 	public long getPatientId() {
@@ -81,6 +83,12 @@ public class ObstetricsVisit {
 	}
 	public void setLowLyingPlacenta(boolean lowLyingPlacenta) {
 		this.lowLyingPlacenta = lowLyingPlacenta;
+	}
+	public boolean isRhFlag() {
+		return rhFlag;
+	}
+	public void setRhFlag(boolean rhFlag) {
+		this.rhFlag = rhFlag;
 	}
 	
 }
