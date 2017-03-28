@@ -86,11 +86,43 @@
 		</h:panelGroup>
 		<h:panelGroup>
 			<h4>Ultrasounds</h4>
+			<h:dataTable id="ultrasounds" styleClass="fTable" value="#{ultrasound_controller.getUltrasoundsForCurrentPatient()}" 
+						var="us"  border="1">
+						<br/>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Fetus"/>
+							</f:facet>
+						   <h:link outcome="manageUltrasound" value="#{us.fetusId}">
+	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
+	      						 	<f:param name="visitID" value="#{us.visitId}" />
+	   						</h:link>
+						</h:column>
+	 					<h:column>
+							<f:facet name="header">
+								<h:outputText value="Link"/>
+							</f:facet>
+							 <h:link outcome="manageUltrasound" value="View/Edit">
+	      						 	<f:param name="visitID" value="#{us.visitID}" />
+	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
+	   						</h:link>
+						</h:column>	
+						 <h:column>
+							<f:facet name="header">
+								<h:outputText value="Link"/>
+							</f:facet>
+							 <h:link outcome="manageUltrasound" value="Delete">
+	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
+	      						 	<f:param name="visitID" value="#{us.visitId}" />
+	   						</h:link>
+						</h:column>	  
+					</h:dataTable>
 			<h:form>
 				<h:button id="addUltraSound"
 					style="font-size:11px; font-weight:bold" align="left"
 					value="Add Ultrasound"
 					outcome="/auth/hcp-obGyn/manageUltrasound.xhtml">
+					<f:param name="visitID" value="0" />
 				</h:button>
 			</h:form>
 		</h:panelGroup>
