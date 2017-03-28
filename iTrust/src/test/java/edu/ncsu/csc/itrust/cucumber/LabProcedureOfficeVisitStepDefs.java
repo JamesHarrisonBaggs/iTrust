@@ -16,9 +16,7 @@ import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
-import edu.ncsu.csc.itrust.model.old.beans.HospitalBean;
 import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
-import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.HospitalsDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PersonnelDAO;
@@ -29,19 +27,17 @@ import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
 import static org.junit.Assert.fail;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.junit.Assert;
  
- 
+ @SuppressWarnings("unused")
  public class LabProcedureOfficeVisitStepDefs {
 	 
 	 

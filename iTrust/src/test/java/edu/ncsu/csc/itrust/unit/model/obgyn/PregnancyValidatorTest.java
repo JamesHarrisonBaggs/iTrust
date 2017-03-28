@@ -1,14 +1,11 @@
 package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
-
-import java.time.LocalDate;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyValidator;
 
