@@ -514,7 +514,20 @@ public enum TransactionType {
 	/** View Obstetrics Record **/
 	VIEW_OBSTETRIC_RECORD(9301, "View Initial Obstetric Record", " viewed obstetric record", true),
 	/** Update Obstetrics Record **/
-	UPDATE_OBSTETRIC_RECORD(9302, "Update Obstetric Record", "updated obstetric record", true)
+	UPDATE_OBSTETRIC_RECORD(9302, "Update Obstetric Record", "updated obstetric record", true),
+	
+	/** Create Obstetric Office Visit **/
+	CREATE_OBSTETRIC_OFFICE_VISIT(9400, "Create Obstetric Office Visit", " created obstetric office visit", true),
+	/** View Obstetric Office Visit **/
+	VIEW_OBSTETRIC_OFFIC_VISIT(9401, "View Obstetric Office Visit", " viewed obstetric office visit", true),
+	/** Edit Obstetric Office Visit **/
+	EDIT_OBSTETRIC_OFFICE_VISIT(9402, "Edit Obstetric Office Visit", " edited obstetric office visit", true),
+	/** Edit Ultrasound **/
+	EDIT_ULTRASOUND(9403, "Edit Ultrasound", " edited ultrasound", true),
+	/** Schedule Obstetric Office Visit **/
+	SCHEDULE_OFFICE_VISIT(9404, "Schedule Office Visit", " scheduled obstetric office visit", true),
+	/** Schedule Childbirth Appointment **/
+	SCHEDULE_CHILDBIRTH(9405, "Schedule Childbirth", " scheduled childbirth appointment", true)
 	;
 	
 	/**
