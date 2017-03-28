@@ -6,24 +6,6 @@ import edu.ncsu.csc.itrust.model.POJOValidator;
 
 public class ObstetricsInitValidator extends POJOValidator<ObstetricsInit> {
 
-	private static ObstetricsInitValidator instance = null;
-
-	/**
-	 * Constructor for ObstetricsValidator
-	 */
-	public ObstetricsInitValidator() {
-		
-	}
-	
-	/**
-	 * Returns the singleton instance of ObstetricsInitValidator
-	 * @return the singleton instance of ObstetricsInitValidator
-	 */
-	public static ObstetricsInitValidator getInstance() {
-		if (instance == null) instance = new ObstetricsInitValidator();
-		return instance;
-	}
-	
 	/**
 	 * Validates the contents of a Obstetrics Bean
 	 * @param obj - the bean to validate
