@@ -11,7 +11,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
-import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
@@ -28,7 +28,7 @@ public class ObstetricsController extends iTrustController {
 	private PatientDAO patientDB;
 
 	private List<ObstetricsInit> obstetricsList;
-	private List<PregnancyBean> pregnancyList;
+	private List<Pregnancy> pregnancyList;
 	
 	private boolean obGyn;
 	private boolean eligible;
@@ -111,7 +111,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return all pregnancies for the current patient
 	 * @throws DBException
 	 */
-	public List<PregnancyBean> getPregnancyList() throws DBException {
+	public List<Pregnancy> getPregnancyList() throws DBException {
 		long id = getSessionUtils().getCurrentPatientMIDLong();
 		return pregDB.getByID(id);
 	}
@@ -120,7 +120,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return the pregnancy for the current patient for the given date
 	 * @throws DBException
 	 */
-	public List<PregnancyBean> getPregnancyByDate(LocalDate date) throws DBException {
+	public List<Pregnancy> getPregnancyByDate(LocalDate date) throws DBException {
 		long id = getSessionUtils().getCurrentPatientMIDLong();
 		return pregDB.getByDate(id, Timestamp.valueOf(date.atStartOfDay()));
 	}
@@ -142,7 +142,7 @@ public class ObstetricsController extends iTrustController {
 	 * Add or update the pregnancy specified in the given bean
 	 * @throws DBException
 	 */
-	public void updatePregnancy(PregnancyBean bean) throws DBException {
+	public void updatePregnancy(Pregnancy bean) throws DBException {
 		bean.setPatientId(mid);
 		try {
 			pregDB.update(bean);
@@ -218,7 +218,7 @@ public class ObstetricsController extends iTrustController {
 		return obstetricsList;
 	}
 
-	public List<PregnancyBean> getPriorPregList() {
+	public List<Pregnancy> getPriorPregList() {
 		return pregnancyList;
 	}
 
