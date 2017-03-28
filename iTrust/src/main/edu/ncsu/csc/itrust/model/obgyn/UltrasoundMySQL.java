@@ -67,6 +67,26 @@ public class UltrasoundMySQL {
 			throw new DBException(e);
 		}
 	}
+	public List<Ultrasound> getByPatientIdVisitId(long pid,long vid) throws DBException {
+		try (Connection conn = ds.getConnection();) {
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("SELECT * FROM itrust.ultrasounds Where id='");
+			stringBuilder.append(pid);
+			stringBuilder.append("' and visitID='");
+			stringBuilder.append(vid);
+			stringBuilder.append("';");
+			String statement = stringBuilder.toString();
+			PreparedStatement stmt = conn.prepareStatement(statement);
+			ResultSet results = stmt.executeQuery();
+			if(results.next()) {
+				return loader.loadList(results);
+			} else {
+				return new ArrayList<Ultrasound>();
+			}
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
 	public List<Ultrasound> getByPatientId(long id) throws DBException {
 		try (Connection conn = ds.getConnection();) {
 			StringBuilder stringBuilder = new StringBuilder();

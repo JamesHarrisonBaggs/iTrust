@@ -25,8 +25,10 @@
 						<h:outputLabel for="weeksPregnant" style="padding-right:20px">Weeks Pregnant:</h:outputLabel>
 						<h:inputText id="weeksPregnant" name="weeksPregnant"
 							value="#{obs_visit_controller.weeksPregnant}" />
-							<br/>
-						<outputLabel style="color:red" rendered="#{obs_visit_controller.notice}">NOTICE: Patient should be given RH immune globulin shot (pregnancy is past 28 weeks)</outputLabel>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{obs_visit_controller.notice}">
+						<outputText style="color:red">"NOTICE: Patient should
+						be given RH immune globulin shot (pregnancy is past 28 weeks)"</outputText>
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:outputLabel for="Weight" style="padding-right:20px">Weight (lbs):</h:outputLabel>
@@ -80,47 +82,54 @@
 							value="Save Obstetrics Visit"
 							action="#{obs_visit_controller.submit}">
 						</h:commandButton>
+
+						<h:commandButton id="cancelObstetricVisit"
+							style="font-size:11px; font-weight:bold" align="left"
+							value="Cancel" action="#{navigation_controller.baseOfficeVisit}">
+						</h:commandButton>
 					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
 		</h:panelGroup>
 		<h:panelGroup>
 			<h4>Ultrasounds</h4>
-			<h:dataTable id="ultrasounds" styleClass="fTable" value="#{ultrasound_controller.getUltrasoundsForCurrentPatient()}" 
-						var="us"  border="1">
-						<br/>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="Fetus"/>
-							</f:facet>
-						   <h:link outcome="manageUltrasound" value="#{us.fetusId}">
-	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
-	      						 	<f:param name="visitID" value="#{us.visitId}" />
-	      						 	
-	   						</h:link>
-						</h:column>
-	 					<h:column>
-							<f:facet name="header">
-								<h:outputText value="Link"/>
-							</f:facet>
-							 <h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml" value="View/Edit">
-	      						 	<f:param name="visitID" value="#{us.visitId}" />
-	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
-	      						 	<f:param name="action" value="view" />
-	   						</h:link>
-						</h:column>	
-						 <h:column>
-							<f:facet name="header">
-								<h:outputText value="Link"/>
-							</f:facet>
-							 <h:link outcome="/auth/hcp-uap/officeVisitInfo.xhtml" value="Delete">
-	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
-	      						 	<f:param name="visitID" value="#{us.visitId}" />
-	      						 	<f:param name="action" value="delete" />
-	   						</h:link>
-						</h:column>	  
-					</h:dataTable>
-			<h:form>
+			<h:dataTable id="ultrasounds" styleClass="fTable"
+				value="#{ultrasound_controller.getUltrasoundsForCurrentPatientVisitID()}"
+				var="us" border="1">
+				<br />
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Fetus" />
+					</f:facet>
+					<h:link outcome="manageUltrasound" value="#{us.fetusId}">
+						<f:param name="fetusID" value="#{us.fetusId}" />
+						<f:param name="visitID" value="#{us.visitId}" />
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Link" />
+					</f:facet>
+					<h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml"
+						value="View/Edit">
+						<f:param name="visitID" value="#{us.visitId}" />
+						<f:param name="fetusID" value="#{us.fetusId}" />
+						<f:param name="action" value="view" />
+					</h:link>
+				</h:column>
+				<h:column rendered="#{ultrasound_controller.obgyn}">
+					<f:facet name="header">
+						<h:outputText value="Link" />
+					</f:facet>
+					<h:link outcome="/auth/hcp-uap/officeVisitInfo.xhtml"
+						value="Delete">
+						<f:param name="fetusID" value="#{us.fetusId}" />
+						<f:param name="visitID" value="#{us.visitId}" />
+						<f:param name="action" value="delete" />
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<h:form rendered="#{ultrasound_controller.obgyn}">
 				<h:button id="addUltraSound"
 					style="font-size:11px; font-weight:bold" align="left"
 					value="Add Ultrasound"
@@ -131,7 +140,7 @@
 				</h:button>
 			</h:form>
 		</h:panelGroup>
-	</h:panelGrid>0
+	</h:panelGrid>
 	<h:panelGrid class="fTable"
 		rendered="#{!obs_visit_controller.eligible}">
 		<h:panelGroup>

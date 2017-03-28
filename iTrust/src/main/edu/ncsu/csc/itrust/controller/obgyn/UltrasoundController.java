@@ -35,11 +35,15 @@ public class UltrasoundController extends iTrustController {
 	private long patientId;
 	private LocalDateTime visitDate;
 	private SessionUtils sessionUtils;
+	private boolean eligible;
+	private boolean obgyn;
+	private ObstetricsController obc;
 
 	public UltrasoundController() throws DBException {
 		super();
 		sessionUtils = getSessionUtils();
 		sql = new UltrasoundMySQL();
+		obc = new ObstetricsController();
 		String fetusId1 = sessionUtils.getRequestParameter("fetusID");
 		if (fetusId1 != null) {
 			fetusId = Integer.parseInt(fetusId1);
@@ -70,13 +74,17 @@ public class UltrasoundController extends iTrustController {
 				hl = us.getHumerusLength();
 				efw = us.getEstimatedFetalWeight();
 				fetusId = us.getFetusId();
+				setObgyn();
 			} else if ((action.equals("view") || action.equals("add"))){
 				us = new Ultrasound();
+				setObgyn();
 			} else {
 				removeUltrasound(visitId, fetusId);
+				setObgyn();
 			}
 		} else {
 			us = new Ultrasound();
+			setObgyn();
 		}
 	}
 
@@ -98,6 +106,11 @@ public class UltrasoundController extends iTrustController {
 		String tmp = sessionUtils.getRequestParameter("fetusID");
 		int fetusId = Integer.parseInt(tmp);
 		return sql.getByVisitFetus(id, fetusId);
+	}
+	public List<Ultrasound> getUltrasoundsForCurrentPatientVisitID() throws DBException {
+		long vid = sessionUtils.getCurrentOfficeVisitId();
+		long pid = sessionUtils.getCurrentPatientMIDLong();
+		return sql.getByPatientIdVisitId(pid, vid);
 	}
 	public void submit() throws DBException {
 		us.setPatientId(sessionUtils.getCurrentPatientMIDLong());
@@ -198,7 +211,14 @@ public class UltrasoundController extends iTrustController {
 	public void setFetusId(int fetusId) {
 		this.fetusId = fetusId;
 	}
+	public boolean isObgyn() {
+		return obgyn;
+	}
 
+
+	public void setObgyn() throws DBException {
+		this.obgyn = obc.getObGyn();
+	}
 }
 
 

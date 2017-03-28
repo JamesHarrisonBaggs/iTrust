@@ -292,7 +292,8 @@ public class ObstetricsVisitController extends iTrustController {
 
 
 	public void setNotice() {
-		notice = (weeksPregnant > 28);
+		boolean tmp = (weeksPregnant > 28);
+		notice = tmp;
 	}
 
 }
