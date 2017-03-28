@@ -3,12 +3,10 @@ package edu.ncsu.csc.itrust.unit.model.obgyn;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -18,7 +16,6 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
-@Ignore
 public class ObstetricsInitMySQLTest {
 
 	private ObstetricsInitMySQL db;
@@ -37,7 +34,7 @@ public class ObstetricsInitMySQLTest {
 		// generate UC93
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
-		gen.uc93();
+		gen.standardData();
 	}
 
 	@Test

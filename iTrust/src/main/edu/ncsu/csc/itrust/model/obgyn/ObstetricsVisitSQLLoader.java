@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.Statement;
-
 import edu.ncsu.csc.itrust.model.SQLLoader;
 
 public class ObstetricsVisitSQLLoader implements SQLLoader<ObstetricsVisit> {
