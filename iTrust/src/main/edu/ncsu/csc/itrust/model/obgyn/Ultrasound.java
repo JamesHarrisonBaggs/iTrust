@@ -30,7 +30,7 @@ public class Ultrasound {
 	/** Humerus length (HL) in mm */
 	private int humerusLength;
 	/** Estimated fetal weight (grams) */
-	private int estimatedFetalWeight;
+	private double estimatedFetalWeight;
 	
 	public Ultrasound() {
 		this.patientId = -1;
@@ -72,7 +72,7 @@ public class Ultrasound {
 	public int getHumerusLength() {
 		return humerusLength;
 	}
-	public int getEstimatedFetalWeight() {
+	public double getEstimatedFetalWeight() {
 		return estimatedFetalWeight;
 	}
 	public void setPatientId(long patientId) {
@@ -110,7 +110,7 @@ public class Ultrasound {
 	public void setHumerusLength(int hl) {
 		this.humerusLength = hl;
 	}
-	public void setEstimatedFetalWeight(int efw) {
+	public void setEstimatedFetalWeight(double efw) {
 		this.estimatedFetalWeight = efw;
 	}
 	

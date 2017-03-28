@@ -2,7 +2,6 @@ package edu.ncsu.csc.itrust.controller.obgyn;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +19,11 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "ultrasound_controller")
 public class UltrasoundController extends iTrustController {
+
+	private long patientId;
+	private LocalDateTime visitDate;
 	private long visitId;
+	private int fetusId; 
 	private int crl;
 	private int bpd;
 	private int hc;
@@ -28,12 +31,10 @@ public class UltrasoundController extends iTrustController {
 	private int ofd;
 	private int ac;
 	private int hl;
-	private int efw;
-	private int fetusId; 
+	private double efw;
+	
 	private Ultrasound us;
 	private UltrasoundMySQL sql;
-	private long patientId;
-	private LocalDateTime visitDate;
 	private SessionUtils sessionUtils;
 
 	public UltrasoundController() throws DBException {
@@ -93,12 +94,14 @@ public class UltrasoundController extends iTrustController {
 		long id = sessionUtils.getCurrentOfficeVisitId();
 		return new OfficeVisitController().getVisitByID(id);
 	}
+	
 	public Ultrasound getUltrasoundVisitIDFetus() throws DBException {
 		long id = sessionUtils.getCurrentOfficeVisitId();
 		String tmp = sessionUtils.getRequestParameter("fetusID");
 		int fetusId = Integer.parseInt(tmp);
 		return sql.getByVisitFetus(id, fetusId);
 	}
+	
 	public void submit() throws DBException {
 		us.setPatientId(sessionUtils.getCurrentPatientMIDLong());
 		us.setVisitDate(getOfficeVisit().getDate());
@@ -114,6 +117,7 @@ public class UltrasoundController extends iTrustController {
 		us.setFetusId(fetusId);
 		update(us);
 	}
+	
 	public void update(Ultrasound bean) throws DBException {
 		try {
 			sql.update(bean);
@@ -122,9 +126,26 @@ public class UltrasoundController extends iTrustController {
 			FacesContext.getCurrentInstance().addMessage("ultrasound_formError", new FacesMessage(e.getMessage()));
 		}
 	}
+	
 	public List<Ultrasound> getUltrasoundsForCurrentPatient() throws DBException {
 		long id = sessionUtils.getCurrentPatientMIDLong();
 		return sql.getByPatientId(id);
+	}
+
+	public long getPatientId() {
+		return patientId;
+	}
+
+	public LocalDateTime getVisitDate() {
+		return visitDate;
+	}
+
+	public long getVisitId() {
+		return visitId;
+	}
+
+	public int getFetusId() {
+		return fetusId;
 	}
 
 	public int getCrl() {
@@ -155,8 +176,24 @@ public class UltrasoundController extends iTrustController {
 		return hl;
 	}
 
-	public int getEfw() {
+	public double getEfw() {
 		return efw;
+	}
+
+	public void setPatientId(long patientId) {
+		this.patientId = patientId;
+	}
+
+	public void setVisitDate(LocalDateTime visitDate) {
+		this.visitDate = visitDate;
+	}
+
+	public void setVisitId(long visitId) {
+		this.visitId = visitId;
+	}
+
+	public void setFetusId(int fetusId) {
+		this.fetusId = fetusId;
 	}
 
 	public void setCrl(int crl) {
@@ -187,16 +224,8 @@ public class UltrasoundController extends iTrustController {
 		this.hl = hl;
 	}
 
-	public void setEfw(int efw) {
+	public void setEfw(double efw) {
 		this.efw = efw;
-	}
-
-	public int getFetusId() {
-		return fetusId;
-	}
-
-	public void setFetusId(int fetusId) {
-		this.fetusId = fetusId;
 	}
 
 }
