@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
+import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyValidator;
 
 public class PregnancyValidatorTest {
 	
 	private PregnancyValidator validator;
-	private PregnancyBean bean;
+	private Pregnancy bean;
 
 	@Before
 	public void setUp() {
@@ -23,7 +23,7 @@ public class PregnancyValidatorTest {
 	public void testValidBeans() {
 		
 		// valid bean
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setPatientId(10);
 		bean.setDateOfBirth(LocalDate.now().minusDays(20));
 		bean.setYearOfConception(2016);
@@ -45,28 +45,28 @@ public class PregnancyValidatorTest {
 	public void testInvalidBeans() {
 		
 		// default bean
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		invalidate(bean, "");
 				
 		// test id < 0
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setPatientId(-1);
 		invalidate(bean, "Patient id cannot be negative");
 				
 		// test date == null
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setDateOfBirth(null);
 		invalidate(bean, "Date of birth cannot be null");
 		
 		// TODO not sure how to validate year
 		
 		// test days pregnant < 0
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setDaysPregnant(-5);
 		invalidate(bean, "Days pregnant cannot be negative");
 		
 		// test hours in labor < 0
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setHoursInLabor(-5);
 		invalidate(bean, "Hours in labor cannot be negative");
 		
@@ -83,12 +83,12 @@ public class PregnancyValidatorTest {
 //		}
 		
 		// test amount < 1
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setAmount(0);
 		invalidate(bean, "Amount cannot be zero or less");
 		
 		// test amount < 0
-		bean = new PregnancyBean();
+		bean = new Pregnancy();
 		bean.setAmount(-2);
 		invalidate(bean, "Amount cannot be zero or less");
 		
@@ -97,7 +97,7 @@ public class PregnancyValidatorTest {
 	/**
 	 * Assert that a given bean is invalid
 	 */
-	private void invalidate(PregnancyBean bean, String errorMsg) {
+	private void invalidate(Pregnancy bean, String errorMsg) {
 		try {
 			validator.validate(bean);
 			fail("Validation passed unexpectedly");

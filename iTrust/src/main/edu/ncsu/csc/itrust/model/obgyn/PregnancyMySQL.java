@@ -35,8 +35,8 @@ public class PregnancyMySQL {
 	/**
 	 * Returns all pregnancies for a patient
 	 */
-	public List<PregnancyBean> getByID(long id) throws DBException {
-		ArrayList<PregnancyBean> beans = new ArrayList<PregnancyBean>();
+	public List<Pregnancy> getByID(long id) throws DBException {
+		ArrayList<Pregnancy> beans = new ArrayList<Pregnancy>();
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ?")) {
 			stmt.setLong(1, id);
@@ -54,8 +54,8 @@ public class PregnancyMySQL {
 	/**
 	 * Returns all pregnancies for a patient before a specific date
 	 */
-	public List<PregnancyBean> getByDate(long id, Timestamp date) throws DBException {
-		ArrayList<PregnancyBean> beans = new ArrayList<PregnancyBean>();
+	public List<Pregnancy> getByDate(long id, Timestamp date) throws DBException {
+		ArrayList<Pregnancy> beans = new ArrayList<Pregnancy>();
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ? AND birth_date < ?")) {
 			stmt.setLong(1, id);
@@ -74,7 +74,7 @@ public class PregnancyMySQL {
 	/**
 	 * Adds or updates an obstetrics record in the database
 	 */
-	public int update(PregnancyBean bean) throws DBException, FormValidationException {
+	public int update(Pregnancy bean) throws DBException, FormValidationException {
 		validator.validate(bean);
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = loader.loadUpdate(conn.prepareStatement(""

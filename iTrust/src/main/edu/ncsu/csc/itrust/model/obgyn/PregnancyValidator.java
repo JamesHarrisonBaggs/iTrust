@@ -4,14 +4,14 @@ import edu.ncsu.csc.itrust.exception.ErrorList;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.POJOValidator;
 
-public class PregnancyValidator extends POJOValidator<PregnancyBean> {
+public class PregnancyValidator extends POJOValidator<Pregnancy> {
 
 	/**
 	 * Validates the contents of a PregnancyBean
 	 * @param bean - the bean to validate
 	 * @throws FormValidationException
 	 */
-	public void validate(PregnancyBean bean) throws FormValidationException {
+	public void validate(Pregnancy bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
 		
 		if (bean.getPatientId() < 0)

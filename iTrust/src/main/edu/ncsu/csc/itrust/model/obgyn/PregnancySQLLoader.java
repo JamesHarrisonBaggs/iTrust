@@ -15,7 +15,7 @@ public class PregnancySQLLoader {
 	 * For database updates.
 	 * Loads data from an Obstetrics Bean to a PreparedStatement
 	 */
-	public PreparedStatement loadUpdate(PreparedStatement ps, PregnancyBean bean) throws SQLException {
+	public PreparedStatement loadUpdate(PreparedStatement ps, Pregnancy bean) throws SQLException {
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
 		ps.setTimestamp(i++, bean.getDOBTimestamp());
@@ -43,8 +43,8 @@ public class PregnancySQLLoader {
 	 * For database queries.
 	 * Loads data from a ResultsSet to an Obstetrics Bean
 	 */
-	public PregnancyBean loadResults(ResultSet results) throws SQLException {
-		PregnancyBean bean = new PregnancyBean();
+	public Pregnancy loadResults(ResultSet results) throws SQLException {
+		Pregnancy bean = new Pregnancy();
 		
 		bean.setPatientId(results.getLong("id"));
 		bean.setDOBTimestamp(results.getTimestamp("birth_date"));
