@@ -10,16 +10,6 @@ import java.sql.SQLException;
  *
  */
 public class PregnancySQLLoader {
-
-	private static PregnancySQLLoader instance;
-	
-	/**
-	 * Returns the singleton instance of PregnancySQLLoader
-	 */
-	public static PregnancySQLLoader getInstance() {
-		if (instance == null) instance = new PregnancySQLLoader();
-		return instance;
-	}
 	
 	/**
 	 * For database updates.

@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.unit.model.obgyn;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Timestamp;
@@ -17,6 +18,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
+@Ignore
 public class ObstetricsInitMySQLTest {
 
 	private ObstetricsInitMySQL db;

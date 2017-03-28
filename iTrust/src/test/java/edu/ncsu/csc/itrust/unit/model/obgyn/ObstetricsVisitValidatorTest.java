@@ -119,7 +119,7 @@ public class ObstetricsVisitValidatorTest {
 			validator.validate(bean);
 			fail("Validation passed unexpectedly");
 		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Amount cannot be less than 1"));
+			assertTrue(e.getMessage().contains("Multiples cannot be less than 1"));
 		}
 		
 		// amount < 0
@@ -129,7 +129,7 @@ public class ObstetricsVisitValidatorTest {
 			validator.validate(bean);
 			fail("Validation passed unexpectedly");
 		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Amount cannot be less than 1"));
+			assertTrue(e.getMessage().contains("Multiples cannot be less than 1"));
 		}
 		
 	}

@@ -8,7 +8,6 @@ import org.junit.Test;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitValidator;
-import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
 
 public class ObstetricsInitValidatorTest {
 
@@ -22,7 +21,7 @@ public class ObstetricsInitValidatorTest {
 	
 	@Test
 	public void testGetInstance() {
-		ObstetricsInitValidator val = ObstetricsInitValidator.getInstance();
+		ObstetricsInitValidator val = new ObstetricsInitValidator();
 		assertNotNull(val);
 	}
 
@@ -49,72 +48,45 @@ public class ObstetricsInitValidatorTest {
 		
 		// default bean
 		bean = new ObstetricsInit();
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertNotNull(e.getMessage());
-		}
+		invalidate(bean, "Initialization date cannot be null");
 		
 		// test id < 0
 		bean = new ObstetricsInit();
 		bean.setPatientId(-7);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Patient id cannot be negative"));
-		}
+		invalidate(bean, "Patient id cannot be negative");
 		
 		// test date == null
 		bean = new ObstetricsInit();
 		bean.setInitDate(null);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Initialization date cannot be null"));
-		}
+		invalidate(bean, "Initialization date cannot be null");
 		
 		// test LMP == null
 		bean = new ObstetricsInit();
 		bean.setLastMenstrualPeriod(null);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Last menstrual period cannot be null"));
-		}
+		invalidate(bean, "Last menstrual period cannot be null");
 		
 		// test EDD == null
 		bean = new ObstetricsInit();
 		bean.setEstimatedDueDate(null);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Expected due date cannot be null"));
-		}
+		invalidate(bean, "Expected due date cannot be null");
 		
 		// test days pregnant < 0
 		bean = new ObstetricsInit();
 		bean.setDaysPregnant(-5);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Days pregnant cannot be negative"));
-		}
+		invalidate(bean, "Days pregnant cannot be negative");
 		
 	}
 	
 	/**
-	 * Validates a specified bean. Throws exception if validation fails.
-	 * @param bean
-	 * @throws FormValidationException
+	 * Assert that a given bean is invalid
 	 */
-	private void validate(ObstetricsInit bean) throws FormValidationException {
-		validator.validate(bean);
+	private void invalidate(ObstetricsInit bean, String errorMsg) {
+		try {
+			validator.validate(bean);
+			fail("Validation passed unexpectedly");
+		} catch (FormValidationException e) {
+			assertTrue(e.getMessage().contains(errorMsg));
+		}
 	}
-	
+
 }

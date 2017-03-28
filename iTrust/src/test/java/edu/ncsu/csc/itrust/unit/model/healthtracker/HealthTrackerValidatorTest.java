@@ -22,12 +22,6 @@ public class HealthTrackerValidatorTest {
 	}
 	
 	@Test
-	public void testGetInstance() {
-		HealthTrackerValidator hv = HealthTrackerValidator.getInstance();
-		assertNotNull(hv);
-	}
-	
-	@Test
 	public void testValidate() {
 		// tests valid bean
 		HealthTrackerBean bean = new HealthTrackerBean(0, date, 5, 5, 5.0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);

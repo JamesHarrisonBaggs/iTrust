@@ -3,8 +3,6 @@ package edu.ncsu.csc.itrust.model.obgyn;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Calendar;
 
 /**
  * Interface between SQL objects and ObstetricsInitBean
@@ -12,16 +10,6 @@ import java.util.Calendar;
  *
  */
 public class ObstetricsInitSQLLoader {
-	
-	private static ObstetricsInitSQLLoader instance;
-	
-	/**
-	 * Returns the singleton instance of ObstetricsInitSQLLoader
-	 */
-	public static ObstetricsInitSQLLoader getInstance() {
-		if (instance == null) instance = new ObstetricsInitSQLLoader();
-		return instance;
-	}
 	
 	/**
 	 * For database updates.

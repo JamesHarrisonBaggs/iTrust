@@ -29,8 +29,8 @@ public class PregnancyMySQL {
 	 */
 	public PregnancyMySQL(DAOFactory factory) {
 		this.factory = factory;
-		this.loader = PregnancySQLLoader.getInstance();
-		this.validator = PregnancyValidator.getInstance();
+		this.loader = new PregnancySQLLoader();
+		this.validator = new PregnancyValidator();
 	}
 	
 	/**

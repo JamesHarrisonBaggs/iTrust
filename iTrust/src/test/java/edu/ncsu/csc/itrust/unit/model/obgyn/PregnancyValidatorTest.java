@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyBean;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyValidator;
 
@@ -19,12 +20,6 @@ public class PregnancyValidatorTest {
 	@Before
 	public void setUp() {
 		validator = new PregnancyValidator();
-	}
-	
-	@Test
-	public void testGetInstance() {
-		PregnancyValidator val = PregnancyValidator.getInstance();
-		assertNotNull(val);
 	}
 
 	@Test
@@ -39,7 +34,8 @@ public class PregnancyValidatorTest {
 		bean.setHoursInLabor(7);
 		bean.setWeightGain(7.2);
 		bean.setDeliveryType("Vaginal delivery");
-		bean.setAmount(2);		
+		bean.setAmount(2);
+		
 		try {
 			validator.validate(bean);
 		} catch (FormValidationException e) {
@@ -53,53 +49,29 @@ public class PregnancyValidatorTest {
 		
 		// default bean
 		bean = new PregnancyBean();
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertNotNull(e.getMessage());
-		}
+		invalidate(bean, "");
 				
 		// test id < 0
 		bean = new PregnancyBean();
 		bean.setPatientId(-1);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Patient id cannot be negative"));
-		}
+		invalidate(bean, "Patient id cannot be negative");
 				
 		// test date == null
 		bean = new PregnancyBean();
 		bean.setDateOfBirth(null);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Date of birth cannot be null"));
-		}
+		invalidate(bean, "Date of birth cannot be null");
 		
-		// not sure how to validate year
+		// TODO not sure how to validate year
 		
 		// test days pregnant < 0
 		bean = new PregnancyBean();
 		bean.setDaysPregnant(-5);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Days pregnant cannot be negative"));
-		}
+		invalidate(bean, "Days pregnant cannot be negative");
 		
 		// test hours in labor < 0
 		bean = new PregnancyBean();
 		bean.setHoursInLabor(-5);
-		try {
-			validator.validate(bean);
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Hours in labor cannot be negative"));
-		}
+		invalidate(bean, "Hours in labor cannot be negative");
 		
 		// TODO negative weight gain might be OK
 		
@@ -107,7 +79,7 @@ public class PregnancyValidatorTest {
 //		bean = new PregnancyBean();
 //		bean.setDeliveryType("meh");
 //		try {
-//			validate(bean);
+//			validator.validate(bean);
 //			fail("Validation passed unexpectedly");
 //		} catch (FormValidationException e) {
 //			assertTrue(e.getMessage().contains("Delivery type is invalid"));
@@ -116,32 +88,25 @@ public class PregnancyValidatorTest {
 		// test amount < 1
 		bean = new PregnancyBean();
 		bean.setAmount(0);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Amount cannot be zero"));
-		}
+		invalidate(bean, "Amount cannot be zero or less");
 		
 		// test amount < 0
 		bean = new PregnancyBean();
 		bean.setAmount(-2);
-		try {
-			validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Amount cannot be negative"));
-		}
+		invalidate(bean, "Amount cannot be zero or less");
 		
 	}
-
+	
 	/**
-	 * Validates a specified bean. Throws exception if validation fails.
-	 * @param bean
-	 * @throws FormValidationException
+	 * Assert that a given bean is invalid
 	 */
-	private void validate(PregnancyBean bean) throws FormValidationException {
-		validator.validate(bean);
+	private void invalidate(PregnancyBean bean, String errorMsg) {
+		try {
+			validator.validate(bean);
+			fail("Validation passed unexpectedly");
+		} catch (FormValidationException e) {
+			assertTrue(e.getMessage().contains(errorMsg));
+		}
 	}
 	
 }
