@@ -11,6 +11,7 @@ import java.util.List;
 import edu.ncsu.csc.itrust.model.SQLLoader;
 
 public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
+	
 	@Override
 	public List<Ultrasound> loadList(ResultSet rs) throws SQLException {
 		List<Ultrasound> list = new ArrayList<Ultrasound>();
@@ -21,6 +22,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		return list;
 	}
 	
+	@Override
 	public Ultrasound loadSingle(ResultSet rs) throws SQLException {
 		Ultrasound bean = new Ultrasound();
 		bean.setPatientId(rs.getLong("id"));
@@ -34,7 +36,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		bean.setOccipitofrontalDiameter(rs.getInt("ofd"));
 		bean.setAbdominalCircumference(rs.getInt("ac"));
 		bean.setHumerusLength(rs.getInt("hl"));
-		bean.setEstimatedFetalWeight(rs.getInt("efw"));
+		bean.setEstimatedFetalWeight(rs.getDouble("efw"));
 		return bean;
 	}
 	
@@ -66,8 +68,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		ps.setInt(i++, bean.getOccipitofrontalDiameter());
 		ps.setInt(i++, bean.getAbdominalCircumference());
 		ps.setInt(i++, bean.getHumerusLength());
-		ps.setInt(i++, bean.getEstimatedFetalWeight());
-		
+		ps.setDouble(i++, bean.getEstimatedFetalWeight());
 		
 		// set again for duplicate
 		ps.setLong(i++, bean.getPatientId());
@@ -81,7 +82,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		ps.setInt(i++, bean.getOccipitofrontalDiameter());
 		ps.setInt(i++, bean.getAbdominalCircumference());
 		ps.setInt(i++, bean.getHumerusLength());
-		ps.setInt(i++, bean.getEstimatedFetalWeight());
+		ps.setDouble(i++, bean.getEstimatedFetalWeight());
 		
 		return ps;
 	}

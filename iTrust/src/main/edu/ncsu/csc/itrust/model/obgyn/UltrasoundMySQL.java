@@ -16,10 +16,11 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 
 public class UltrasoundMySQL {
+
 	private DataSource ds;
-	private UltrasoundValidator validator;
 	private UltrasoundSQLLoader loader;
-	
+	private UltrasoundValidator validator;
+
 	public UltrasoundMySQL() throws DBException {
 		try {
 			Context ctx = new InitialContext();
@@ -30,12 +31,13 @@ public class UltrasoundMySQL {
 		loader = new UltrasoundSQLLoader();
 		validator = new UltrasoundValidator();
 	}
-	
+
 	public UltrasoundMySQL(DataSource ds) throws DBException {
 		this.ds = ds;
 		loader = new UltrasoundSQLLoader();
 		validator = new UltrasoundValidator();
 	}
+
 	public int update(Ultrasound bean) throws DBException, FormValidationException {
 		validator.validate(bean);
 		try (Connection conn = ds.getConnection();
@@ -46,13 +48,13 @@ public class UltrasoundMySQL {
 			throw new DBException(e);
 		}
 	}
-	
+
 	public Ultrasound getByVisitFetus(long id, int fetus) throws DBException {
 		try (Connection conn = ds.getConnection();) {
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds Where visitID='");
+			stringBuilder.append("SELECT * FROM itrust.ultrasounds WHERE visitID='");
 			stringBuilder.append(id);
-			stringBuilder.append("' and fetus='");
+			stringBuilder.append("' AND fetus='");
 			stringBuilder.append(fetus);
 			stringBuilder.append("';");
 			String statement = stringBuilder.toString();
@@ -87,10 +89,11 @@ public class UltrasoundMySQL {
 			throw new DBException(e);
 		}
 	}
+
 	public List<Ultrasound> getByPatientId(long id) throws DBException {
 		try (Connection conn = ds.getConnection();) {
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds Where id='");
+			stringBuilder.append("SELECT * FROM itrust.ultrasounds WHERE id='");
 			stringBuilder.append(id);
 			stringBuilder.append("';");
 			String statement = stringBuilder.toString();
@@ -109,7 +112,7 @@ public class UltrasoundMySQL {
 	public Ultrasound getByVisit(long id) throws DBException {
 		try (Connection conn = ds.getConnection();) {
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds Where visitID='");
+			stringBuilder.append("SELECT * FROM itrust.ultrasounds WHERE visitID='");
 			stringBuilder.append(id);
 			stringBuilder.append("';");
 			String statement = stringBuilder.toString();
@@ -128,7 +131,7 @@ public class UltrasoundMySQL {
 	public void removeUltrasound(long visitId2, int fetusId2) throws DBException {
 		try (Connection conn = ds.getConnection();) {
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("DELETE FROM itrust.ultrasounds Where visitID='");
+			stringBuilder.append("DELETE FROM itrust.ultrasounds WHERE visitID='");
 			stringBuilder.append(visitId2);
 			stringBuilder.append("' and fetus='");
 			stringBuilder.append(fetusId2);
@@ -140,5 +143,5 @@ public class UltrasoundMySQL {
 			throw new DBException(e);
 		}	
 	}
-	
+
 }
