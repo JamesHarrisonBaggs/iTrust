@@ -2,6 +2,7 @@ package edu.ncsu.csc.itrust.controller.obgyn;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -33,38 +34,55 @@ public class UltrasoundController extends iTrustController {
 	private UltrasoundMySQL sql;
 	private long patientId;
 	private LocalDateTime visitDate;
-	
+	private SessionUtils sessionUtils;
+
 	public UltrasoundController() throws DBException {
 		super();
+		sessionUtils = getSessionUtils();
 		sql = new UltrasoundMySQL();
-		us = getUltrasoundVisitID();
-		if (getOfficeVisit().getVisitID() == 0) {
-			us.setVisitId(getOfficeVisit().getVisitID());
-			us.setVisitDate(getOfficeVisit().getDate());
-		
-		try {
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", us.getVisitId());
-		} catch (NullPointerException e) {
-			// Do nothing
-		}
-		visitId = us.getVisitId();
-		patientId = us.getPatientId();
-		if (patientId == 0) {
-			patientId = Long.parseLong(
-					(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pid"));
-		}
-		crl = us.getCrownRumpLength();
-		bpd = us.getBiparietalDiameter();
-		hc = us.getHeadCircumference();
-		fl = us.getFemurLength();
-		ofd = us.getOccipitofrontalDiameter();
-		ac = us.getAbdominalCircumference();
-		hl = us.getHumerusLength();
-		efw = us.getEstimatedFetalWeight();
-		fetusId = us.getFetusId();
+		String fetusId1 = sessionUtils.getRequestParameter("fetusID");
+		if (fetusId1 != null) {
+			fetusId = Integer.parseInt(fetusId1);
+			visitId = getOfficeVisit().getVisitID();
+			String action = sessionUtils.getRequestParameter("action");
+			if (visitId != 0 && fetusId != 0 && (action.equals("view") || action.equals("add"))) {
+				us = getUltrasoundVisitIDFetus();
+				us.setVisitId(getOfficeVisit().getVisitID());
+				us.setVisitDate(getOfficeVisit().getDate());
+
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("officeVisitId", us.getVisitId());
+				} catch (NullPointerException e) {
+					// Do nothing
+				}
+				visitId = us.getVisitId();
+				patientId = us.getPatientId();
+				if (patientId == 0) {
+					patientId = Long.parseLong(
+							(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pid"));
+				}
+				crl = us.getCrownRumpLength();
+				bpd = us.getBiparietalDiameter();
+				hc = us.getHeadCircumference();
+				fl = us.getFemurLength();
+				ofd = us.getOccipitofrontalDiameter();
+				ac = us.getAbdominalCircumference();
+				hl = us.getHumerusLength();
+				efw = us.getEstimatedFetalWeight();
+				fetusId = us.getFetusId();
+			} else if ((action.equals("view") || action.equals("add"))){
+				us = new Ultrasound();
+			} else {
+				removeUltrasound(visitId, fetusId);
+			}
 		} else {
 			us = new Ultrasound();
 		}
+	}
+
+	private void removeUltrasound(long visitId2, int fetusId2) throws DBException {
+		sql.removeUltrasound(visitId2,fetusId2);
+		
 	}
 
 	public UltrasoundController(SessionUtils sessionUtils, TransactionLogger logger) {
@@ -72,17 +90,19 @@ public class UltrasoundController extends iTrustController {
 	}
 
 	public OfficeVisit getOfficeVisit() throws DBException {
-		long id = getSessionUtils().getCurrentOfficeVisitId();
+		long id = sessionUtils.getCurrentOfficeVisitId();
 		return new OfficeVisitController().getVisitByID(id);
 	}
-	public Ultrasound getUltrasoundVisitID() throws DBException {
-		long id = getSessionUtils().getCurrentOfficeVisitId();
-		return sql.getByVisit(id);
+	public Ultrasound getUltrasoundVisitIDFetus() throws DBException {
+		long id = sessionUtils.getCurrentOfficeVisitId();
+		String tmp = sessionUtils.getRequestParameter("fetusID");
+		int fetusId = Integer.parseInt(tmp);
+		return sql.getByVisitFetus(id, fetusId);
 	}
 	public void submit() throws DBException {
-		us.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
+		us.setPatientId(sessionUtils.getCurrentPatientMIDLong());
 		us.setVisitDate(getOfficeVisit().getDate());
-		us.setVisitId(getSessionUtils().getCurrentOfficeVisitId());
+		us.setVisitId(sessionUtils.getCurrentOfficeVisitId());
 		us.setCrownRumpLength(crl);
 		us.setBiparietalDiameter(bpd);
 		us.setHeadCircumference(hc);
@@ -103,10 +123,10 @@ public class UltrasoundController extends iTrustController {
 		}
 	}
 	public List<Ultrasound> getUltrasoundsForCurrentPatient() throws DBException {
-		long id = getSessionUtils().getCurrentPatientMIDLong();
+		long id = sessionUtils.getCurrentPatientMIDLong();
 		return sql.getByPatientId(id);
 	}
-	
+
 	public int getCrl() {
 		return crl;
 	}

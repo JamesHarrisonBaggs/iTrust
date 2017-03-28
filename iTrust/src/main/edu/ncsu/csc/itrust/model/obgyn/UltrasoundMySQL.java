@@ -52,7 +52,7 @@ public class UltrasoundMySQL {
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append("SELECT * FROM itrust.ultrasounds Where visitID='");
 			stringBuilder.append(id);
-			stringBuilder.append("' and fetusId='");
+			stringBuilder.append("' and fetus='");
 			stringBuilder.append(fetus);
 			stringBuilder.append("';");
 			String statement = stringBuilder.toString();
@@ -103,6 +103,22 @@ public class UltrasoundMySQL {
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
+	}
+
+	public void removeUltrasound(long visitId2, int fetusId2) throws DBException {
+		try (Connection conn = ds.getConnection();) {
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("DELETE FROM itrust.ultrasounds Where visitID='");
+			stringBuilder.append(visitId2);
+			stringBuilder.append("' and fetus='");
+			stringBuilder.append(fetusId2);
+			stringBuilder.append("';");
+			String statement = stringBuilder.toString();
+			PreparedStatement stmt = conn.prepareStatement(statement);
+			stmt.execute();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}	
 	}
 	
 }

@@ -96,24 +96,27 @@
 						   <h:link outcome="manageUltrasound" value="#{us.fetusId}">
 	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
 	      						 	<f:param name="visitID" value="#{us.visitId}" />
+	      						 	
 	   						</h:link>
 						</h:column>
 	 					<h:column>
 							<f:facet name="header">
 								<h:outputText value="Link"/>
 							</f:facet>
-							 <h:link outcome="manageUltrasound" value="View/Edit">
-	      						 	<f:param name="visitID" value="#{us.visitID}" />
+							 <h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml" value="View/Edit">
+	      						 	<f:param name="visitID" value="#{us.visitId}" />
 	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
+	      						 	<f:param name="action" value="view" />
 	   						</h:link>
 						</h:column>	
 						 <h:column>
 							<f:facet name="header">
 								<h:outputText value="Link"/>
 							</f:facet>
-							 <h:link outcome="manageUltrasound" value="Delete">
+							 <h:link outcome="/auth/hcp-uap/officeVisitInfo.xhtml" value="Delete">
 	      						 	<f:param name="fetusID" value="#{us.fetusId}" />
 	      						 	<f:param name="visitID" value="#{us.visitId}" />
+	      						 	<f:param name="action" value="delete" />
 	   						</h:link>
 						</h:column>	  
 					</h:dataTable>
@@ -123,10 +126,12 @@
 					value="Add Ultrasound"
 					outcome="/auth/hcp-obGyn/manageUltrasound.xhtml">
 					<f:param name="visitID" value="0" />
+					<f:param name="fetusID" value="0" />
+					<f:param name="action" value="add" />
 				</h:button>
 			</h:form>
 		</h:panelGroup>
-	</h:panelGrid>
+	</h:panelGrid>0
 	<h:panelGrid class="fTable"
 		rendered="#{!obs_visit_controller.eligible}">
 		<h:panelGroup>
