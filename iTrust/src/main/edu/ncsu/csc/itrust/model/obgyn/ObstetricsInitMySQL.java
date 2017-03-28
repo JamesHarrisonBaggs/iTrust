@@ -28,8 +28,8 @@ public class ObstetricsInitMySQL {
 	 */
 	public ObstetricsInitMySQL(DAOFactory factory) {
 		this.factory = factory;
-		this.loader = ObstetricsInitSQLLoader.getInstance();
-		this.validator = ObstetricsInitValidator.getInstance();
+		this.loader = new ObstetricsInitSQLLoader();
+		this.validator = new ObstetricsInitValidator();
 	}
 	
 	/**
