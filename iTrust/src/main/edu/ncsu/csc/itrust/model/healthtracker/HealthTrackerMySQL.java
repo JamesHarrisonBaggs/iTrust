@@ -20,9 +20,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
  *
  */
 public class HealthTrackerMySQL {
-	
-	// Should eventually implement HealthTrackerData Interface
-	
+		
 	private DAOFactory factory;
 	private HealthTrackerSQLLoader loader;
 	private HealthTrackerValidator validator;
@@ -34,7 +32,7 @@ public class HealthTrackerMySQL {
 	public HealthTrackerMySQL(DAOFactory factory) {
 		this.factory = factory;
 		this.loader = new HealthTrackerSQLLoader();
-		this.validator = HealthTrackerValidator.getInstance();
+		this.validator = new HealthTrackerValidator();
 	}
 
 	/**

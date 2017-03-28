@@ -3,37 +3,24 @@ package edu.ncsu.csc.itrust.unit.model.healthtracker;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.junit.Ignore;
+
+import junit.framework.TestCase;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.diagnosis.Diagnosis;
-import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecord;
-import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecordMySQL;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
-import edu.ncsu.csc.itrust.model.immunization.Immunization;
-import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
-import edu.ncsu.csc.itrust.model.old.enums.Gender;
-import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
-import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
-import junit.framework.TestCase;
 
-
-
+@Ignore
 public class HealthTrackerMySQLTest extends TestCase {
 
 	private DataSource ds;
