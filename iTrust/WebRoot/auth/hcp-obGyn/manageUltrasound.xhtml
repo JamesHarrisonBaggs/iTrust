@@ -18,16 +18,15 @@
 			<h:message for="" class="iTrustError"></h:message>
 			<h3 style="margin-bottom: 3rem;">Ultrasound Info</h3>
 			<h:panelGrid columns="2" class="fTable">
-				<h:panelGroup>
+				<h:panelGroup id="ultrasound_formError">
 					<h:form id="ultrasound_formSuccess">
-						<h:panelGrid id="ultrasound_formError">
+						<h:panelGrid >
 							<h:panelGroup>
 								<div style="width: 300px">
 									<h:message for="ultrasound_formError" class="iTrustError" />
 									<h:message for="ultrasound_formSuccess" style="color:green" />
 								</div>
-								<h:outputLabel for="fetusId"
-									style="padding-right:20px">Fetus Id:</h:outputLabel>
+								<h:outputLabel for="fetusId" style="padding-right:20px">Fetus Id:</h:outputLabel>
 								<h:inputText id="fetusId" name="fetusId"
 									value="#{ultrasound_controller.fetusId}" />
 							</h:panelGroup>
@@ -91,37 +90,31 @@
 
 							<h:panelGroup>
 								<h:commandButton id="saveUltraSound"
-									style="font-size:11px; font-weight:bold" align="right"
-									value="Save Ultrasound" action="#{ultrasound_controller.submit}">
+									style="font-size:11px; font-weight:bold " align="right"
+									value="Save Ultrasound"
+									action="#{ultrasound_controller.submit}">
 								</h:commandButton>
+								<h:commandButton id="goBack"
+									style="font-size:11px; font-weight:bold; width:50%"
+									align="left" value="Go Back To Office Visit"
+									action="#{navigation_controller.officeVisitInfo}">
+								</h:commandButton>
+
 							</h:panelGroup>
 						</h:panelGrid>
 					</h:form>
 				</h:panelGroup>
 				<h:panelGroup>
-
 					<h:form>
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg"
+							alt="Mountain View" style="width: 304px; height: 228px;"></img>
 						<h:button id="addUltraSoundPhoto"
 							style="font-size:11px; font-weight:bold" align="left"
 							value="Add Ultrasound Photo"
 							outcome="/auth/hcp-obGyn/manageUltrasound.xhtml">
 						</h:button>
 					</h:form>
-
-					<h:form>
-						<img
-							src="https://upload.wikimedia.org/wikipedia/commons/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg"
-							alt="Mountain View" style="width: 304px; height: 228px;"></img>
-					</h:form>
-
-					<h:form>
-						<h:commandButton id="goBack"
-							style="font-size:11px; font-weight:bold" align="left"
-							value="Go Back To Office Visit"
-							action="#{navigation_controller.officeVisitInfo}">
-						</h:commandButton>
-					</h:form>
-
 				</h:panelGroup>
 			</h:panelGrid>
 		</ui:define>
