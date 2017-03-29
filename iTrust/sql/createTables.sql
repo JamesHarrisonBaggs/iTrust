@@ -531,7 +531,7 @@ CREATE TABLE obstetrics_visits(
 	amount			INTEGER(15)		UNSIGNED NOT NULL,
 	lowLying		BOOLEAN			NOT NULL,
 	rhFlag			BOOLEAN			NOT NULL,
-	PRIMARY KEY(id),
+	PRIMARY KEY(id, visitID),
 	FOREIGN KEY(visitID) 			REFERENCES officeVisit(visitID)
 ) ENGINE = MyISAM;
 
