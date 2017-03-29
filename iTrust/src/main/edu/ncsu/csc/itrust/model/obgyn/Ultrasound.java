@@ -1,5 +1,6 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 import javax.faces.bean.ManagedBean;
@@ -31,6 +32,8 @@ public class Ultrasound {
 	private int humerusLength;
 	/** Estimated fetal weight (grams) */
 	private double estimatedFetalWeight;
+	/** Binary stream for file */
+	private InputStream uploadFile;
 	
 	public Ultrasound() {
 		this.patientId = -1;
@@ -75,11 +78,14 @@ public class Ultrasound {
 	public double getEstimatedFetalWeight() {
 		return estimatedFetalWeight;
 	}
+	public InputStream getUploadFile() {
+		return uploadFile;
+	}
+
+	/** SETTERS **/
 	public void setPatientId(long patientId) {
 		this.patientId = patientId;
 	}
-	
-	/** SETTERS **/
 	public void setVisitId(long visitId) {
 		this.visitId = visitId;
 	}
@@ -112,6 +118,9 @@ public class Ultrasound {
 	}
 	public void setEstimatedFetalWeight(double efw) {
 		this.estimatedFetalWeight = efw;
+	}
+	public void setUploadFile(InputStream uploadFile) {
+		this.uploadFile = uploadFile;
 	}
 	
 }

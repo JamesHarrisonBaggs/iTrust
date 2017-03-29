@@ -36,6 +36,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		bean.setAbdominalCircumference(rs.getInt("ac"));
 		bean.setHumerusLength(rs.getInt("hl"));
 		bean.setEstimatedFetalWeight(rs.getDouble("efw"));
+		bean.setUploadFile(rs.getBlob("file").getBinaryStream());
 		return bean;
 	}
 	
@@ -48,10 +49,10 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		
 		// prepare statement
 		String statement = "INSERT INTO ultrasounds(id, visitID, visitDate, fetus, "
-				+ "crl, bpd, hc, fl, ofd, ac, hl, efw)"
-				+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"
+				+ "crl, bpd, hc, fl, ofd, ac, hl, efw, file)"
+				+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"
 				+ "ON DUPLICATE KEY UPDATE id=?, visitID=?, visitDate=?, fetus=?, "
-				+ "crl=?, bpd=?, hc=?, fl=?, ofd=?, ac=?, hl=?, efw=?";
+				+ "crl=?, bpd=?, hc=?, fl=?, ofd=?, ac=?, hl=?, efw=?, file=?";
 		ps = conn.prepareStatement(statement);
 		
 		// set parameters
@@ -68,6 +69,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		ps.setInt(i++, bean.getAbdominalCircumference());
 		ps.setInt(i++, bean.getHumerusLength());
 		ps.setDouble(i++, bean.getEstimatedFetalWeight());
+		ps.setBlob(i++, bean.getUploadFile());
 		
 		// set again for duplicate
 		ps.setLong(i++, bean.getPatientId());
@@ -82,6 +84,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		ps.setInt(i++, bean.getAbdominalCircumference());
 		ps.setInt(i++, bean.getHumerusLength());
 		ps.setDouble(i++, bean.getEstimatedFetalWeight());
+		ps.setBlob(i++, bean.getUploadFile());
 		
 		return ps;
 	}

@@ -560,6 +560,7 @@ CREATE TABLE ultrasounds(
 	ac			INTEGER(15)		UNSIGNED NOT NULL,
 	hl			INTEGER(15)		UNSIGNED NOT NULL,
 	efw			FLOAT(19)		UNSIGNED NOT NULL,
+	file		LONGBLOB,
 	PRIMARY KEY(id, visitID, fetus),
 	FOREIGN KEY(visitID) 		REFERENCES officeVisit(visitID)
 ) ENGINE=MyISAM;
