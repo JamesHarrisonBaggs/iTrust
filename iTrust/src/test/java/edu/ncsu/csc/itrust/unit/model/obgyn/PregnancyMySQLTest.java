@@ -5,8 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Mockito.when;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import com.mysql.jdbc.Connection;
+
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -18,16 +26,19 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 
 public class PregnancyMySQLTest {
 	
-	private PregnancyMySQL sql;
-	private TestDataGenerator gen;
-	private DataSource ds;
+	TestDataGenerator gen;
+	DataSource ds;
+	@Mock
+	DataSource mockDS;
 	
-	private List<Pregnancy> list;
-	private Pregnancy bean;
+	PregnancyMySQL sql;
+	List<Pregnancy> list;
+	Pregnancy bean;
 
 	@Before
 	public void testUltrasoundMySQL() throws Exception {
 		ds = ConverterDAO.getDataSource();
+		mockDS = Mockito.mock(DataSource.class);
 		sql = new PregnancyMySQL(ds);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
@@ -125,6 +136,59 @@ public class PregnancyMySQLTest {
 		assertEquals(1, bean.getHoursInLabor());
 		assertEquals(41.1, bean.getWeightGain(), 0.01);
 		assertEquals("forceps", bean.getDeliveryType());
+	}
+	
+	@Test
+	public void testUpdateException() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new PregnancyMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.update(defaultBean());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new PregnancyMySQL(mockDS);
+		Connection mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByID(1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new PregnancyMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByDate(1L, Timestamp.valueOf(LocalDateTime.now()));
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+
+	private Pregnancy defaultBean() {
+		Pregnancy bean = new Pregnancy();
+		bean.setPatientId(2);
+		bean.setDateOfBirth(LocalDate.of(1996, 3, 24));
+		bean.setYearOfConception(1995);
+		bean.setDaysPregnant(20);
+		bean.setHoursInLabor(7);
+		bean.setWeightGain(8.62);
+		bean.setDeliveryType("vaginal");
+		bean.setAmount(1);
+		return bean;
 	}
 
 }

@@ -24,14 +24,14 @@ public class UltrasoundMySQL {
 	 * Constructs an UltrasoundMySQL
 	 */
 	public UltrasoundMySQL() throws DBException {
+		loader = new UltrasoundSQLLoader();
+		validator = new UltrasoundValidator();
 		try {
 			Context ctx = new InitialContext();
 			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
 		} catch (NamingException e) {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
-		loader = new UltrasoundSQLLoader();
-		validator = new UltrasoundValidator();
 	}
 	
 	/**

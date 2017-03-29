@@ -1,10 +1,16 @@
 package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Mockito.when;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import com.mysql.jdbc.Connection;
+
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.sql.DataSource;
@@ -17,16 +23,19 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 
 public class ObstetricsVisitMySQLTest {
 	
-	private ObstetricsVisitMySQL sql;	
-	private TestDataGenerator gen;
-	private DataSource ds;
+	TestDataGenerator gen;
+	DataSource ds;
+	@Mock
+	DataSource mockDS;
 	
-	private List<ObstetricsVisit> list;
-	private ObstetricsVisit bean;
+	ObstetricsVisitMySQL sql;	
+	List<ObstetricsVisit> list;
+	ObstetricsVisit bean;
 	
 	@Before
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
+		mockDS = Mockito.mock(DataSource.class);
 		sql = new ObstetricsVisitMySQL(ds);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
@@ -100,7 +109,7 @@ public class ObstetricsVisitMySQLTest {
 				visitId = b.getVisitId();
 			}
 		}
-
+	
 		// update bean
 		bean = new ObstetricsVisit();
 		bean.setPatientId(2);
@@ -114,7 +123,7 @@ public class ObstetricsVisitMySQLTest {
 		bean.setAmount(1);
 		bean.setLowLyingPlacenta(false);
 		bean.setRhFlag(true);
-
+	
 		// perform update
 		sql.update(bean);
 		
@@ -134,6 +143,85 @@ public class ObstetricsVisitMySQLTest {
 		assertFalse(bean.isLowLyingPlacenta());
 		assertTrue(bean.isRhFlag());
 		
+	}
+
+	@Test
+	public void testUpdateException() throws Exception {
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.update(defaultBean());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		Connection mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByID(1);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByVisit(1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByPatientVisit(2L, 1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetByNoVisit() throws Exception {
+		bean = sql.getByVisit(18L);
+		assertEquals("000/000", bean.getBloodPressure());
+		assertNull(bean.getVisitDate());
+	}
+	
+	/**
+	 * Returns a default ObstetricsVisit bean
+	 */
+	private ObstetricsVisit defaultBean() {
+		ObstetricsVisit bean = new ObstetricsVisit();
+		bean.setPatientId(1);
+		bean.setVisitId(1);
+		bean.setVisitDate(LocalDateTime.now());		
+		bean.setBloodPressure("120/60");
+		bean.setWeeksPregnant(20);
+		bean.setWeight(125.7);
+		bean.setFetalHeartRate(120);
+		bean.setAmount(1);
+		bean.setLowLyingPlacenta(false);
+		return bean;
 	}
 
 }

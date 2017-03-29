@@ -5,8 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Mockito.when;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import com.mysql.jdbc.Connection;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.sql.DataSource;
 
@@ -18,18 +26,21 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 
 public class ObstetricsInitMySQLTest {
 
-	private ObstetricsInitMySQL db;
-	private DataSource ds;
-	private TestDataGenerator gen;
-	
-	private List<ObstetricsInit> list;
-	private ObstetricsInit bean;
+	DataSource ds;
+	TestDataGenerator gen;
+	@Mock
+	DataSource mockDS;
+
+	ObstetricsInitMySQL sql;
+	List<ObstetricsInit> list;
+	ObstetricsInit bean;
 		
 	@Before
 	public void setUp() throws Exception {
 		// get database
 		ds = ConverterDAO.getDataSource();
-		db = new ObstetricsInitMySQL(ds);
+		mockDS = Mockito.mock(DataSource.class);
+		sql = new ObstetricsInitMySQL(ds);
 		
 		// standard data
 		gen = new TestDataGenerator();
@@ -56,7 +67,7 @@ public class ObstetricsInitMySQLTest {
 	 */
 	@Test
 	public void testGetByID() throws Exception {
-		list = db.getByID(2);
+		list = sql.getByID(2);
 		assertEquals(3, list.size());
 		assertEquals(LocalDate.of(2016, 01, 01), list.get(0).getInitDate());
 		assertEquals(LocalDate.of(1996, 05, 03), list.get(1).getInitDate());
@@ -68,7 +79,7 @@ public class ObstetricsInitMySQLTest {
 
 	@Test
 	public void testGetByDate() throws Exception {
-		list = db.getByDate(2, Timestamp.valueOf("1992-05-02 00:00:00"));
+		list = sql.getByDate(2, Timestamp.valueOf("1992-05-02 00:00:00"));
 		assertEquals(1, list.size());
 		assertEquals(LocalDate.of(1992, 5, 2), list.get(0).getInitDate());
 		assertEquals(LocalDate.of(1992, 1, 1), list.get(0).getLastMenstrualPeriod());
@@ -88,7 +99,7 @@ public class ObstetricsInitMySQLTest {
 		
 		// add bean
 		try {
-			int res = db.update(bean);
+			int res = sql.update(bean);
 			assertEquals(1, res);
 		} catch (DBException e) {
 			System.err.println(e.getMessage());
@@ -97,7 +108,7 @@ public class ObstetricsInitMySQLTest {
 		
 		// get bean by date
 		try {
-			list = db.getByDate(3, Timestamp.valueOf("2017-03-24 00:00:00"));
+			list = sql.getByDate(3, Timestamp.valueOf("2017-03-24 00:00:00"));
 		} catch (DBException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
@@ -111,6 +122,55 @@ public class ObstetricsInitMySQLTest {
 		assertEquals(LocalDate.of(2017, 02, 04), b.getLastMenstrualPeriod());
 		assertEquals(false, b.isCurrent());
 
+	}
+	
+	@Test
+	public void testUpdateException() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsInitMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.update(defaultBean());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsInitMySQL(mockDS);
+		Connection mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByID(1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsInitMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByDate(1L, Timestamp.valueOf(LocalDateTime.now()));
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	private ObstetricsInit defaultBean() {
+		bean = new ObstetricsInit();
+		bean.setPatientId(101);
+		bean.setInitDate(LocalDate.of(2016, 3, 24));
+		bean.setLastMenstrualPeriod(LocalDate.now().minusDays(9));
+		bean.setCurrent(true);
+		return bean;
 	}
 
 }

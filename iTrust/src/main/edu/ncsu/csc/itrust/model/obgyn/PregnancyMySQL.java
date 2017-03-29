@@ -27,14 +27,14 @@ public class PregnancyMySQL {
 	 * Constructs a new PregnancyMySQL
 	 */
 	public PregnancyMySQL() throws DBException {
+		this.loader = new PregnancySQLLoader();
+		this.validator = new PregnancyValidator();
 		try {
 			Context ctx = new InitialContext();
 			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
 		} catch (NamingException e) {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
-		this.loader = new PregnancySQLLoader();
-		this.validator = new PregnancyValidator();
 	}
 	
 	/**
