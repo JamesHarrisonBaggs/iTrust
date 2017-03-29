@@ -108,32 +108,33 @@ public class ObstetricsVisitController extends iTrustController {
 		}
 	}
 
-
 	public ObstetricsVisitController(DataSource ds) throws DBException {
 		super();
 		sql = new ObstetricsVisitMySQL(ds);
+	}
+	
+	/**
+	 * Creates or updates an ObstetricsVisit
+	 */
+	public void update(ObstetricsVisit bean) throws DBException {
+		try {
+			int result = sql.update(bean);
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formSuccess", new FacesMessage("Obstetrics Visit Updated Successfully"));
+			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_OFFICE_VISIT : TransactionType.EDIT_OBSTETRIC_OFFICE_VISIT, "");
+		} catch (FormValidationException e) {
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formError", new FacesMessage(e.getMessage()));
+		}
 	}
 
 	public OfficeVisit getOfficeVisit() throws DBException {
 		long id = sessionUtils.getCurrentOfficeVisitId();
 		return new OfficeVisitController().getVisitByID(id);
 	}
+	
 	public ObstetricsVisit getObstetricsVisit() throws DBException {
 		long id = sessionUtils.getCurrentOfficeVisitId();
+		logTransaction(TransactionType.VIEW_OBSTETRIC_OFFICE_VISIT, "");
 		return sql.getByVisit(id);
-	}
-	
-	/**
-	 * Updates an ObstetricsVisit
-	 * @param bean
-	 */
-	public void update(ObstetricsVisit bean) throws DBException {
-		try {
-			sql.update(bean);
-			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formSuccess", new FacesMessage("Obstetrics Visit Updated Successfully"));
-		} catch (FormValidationException e) {
-			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formError", new FacesMessage(e.getMessage()));
-		}
 	}
 
 	public void submit() throws DBException {

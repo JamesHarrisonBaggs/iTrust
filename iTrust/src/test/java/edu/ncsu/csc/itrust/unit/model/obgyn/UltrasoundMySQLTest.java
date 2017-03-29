@@ -1,16 +1,21 @@
 package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.sql.DataSource;
+import static org.mockito.Mockito.when;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import com.mysql.jdbc.Connection;
+
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
@@ -20,16 +25,19 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 
 public class UltrasoundMySQLTest {
 	
-	private UltrasoundMySQL sql;
 	private TestDataGenerator gen;
 	private DataSource ds;
+	@Mock
+	DataSource mockDS;
 	
+	private UltrasoundMySQL sql;
 	private List<Ultrasound> list;
 	private Ultrasound bean;
 
 	@Before
 	public void testUltrasoundMySQL() throws Exception {
 		ds = ConverterDAO.getDataSource();
+		mockDS = Mockito.mock(DataSource.class);
 		sql = new UltrasoundMySQL(ds);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
@@ -161,4 +169,73 @@ public class UltrasoundMySQLTest {
 		assertEquals(0.0, bean.getEstimatedFetalWeight(), 0.01);
 	}
 
+	@Test
+	public void testUpdateException() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new UltrasoundMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.update(defaultBean());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new UltrasoundMySQL(mockDS);
+		Connection mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByVisitFetus(1L, 1);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new UltrasoundMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByPatientId(1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new UltrasoundMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByPatientIdVisitId(2L, 1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+
+	private Ultrasound defaultBean() {
+		Ultrasound bean = new Ultrasound();
+		bean.setPatientId(0);
+		bean.setVisitId(1);
+		bean.setVisitDate(LocalDateTime.now());
+		bean.setFetusId(1);
+		bean.setCrownRumpLength(80);
+		bean.setBiparietalDiameter(40);
+		bean.setHeadCircumference(130);
+		bean.setFemurLength(25);
+		bean.setOccipitofrontalDiameter(40);
+		bean.setAbdominalCircumference(110);
+		bean.setHumerusLength(30);
+		bean.setEstimatedFetalWeight(201.55);
+		return bean;
+	}
+	
 }

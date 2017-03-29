@@ -111,7 +111,7 @@ public class UltrasoundMySQL {
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}	
-	}
+	} 
 	
 	public boolean removeUltrasoundImage(long visitID, int fetus) throws DBException{
 		try (Connection conn = ds.getConnection();

@@ -25,14 +25,14 @@ public class ObstetricsInitMySQL {
 	 * Constructs ObstetricsInitMySQL
 	 */
 	public ObstetricsInitMySQL() throws DBException {
+		this.loader = new ObstetricsInitSQLLoader();
+		this.validator = new ObstetricsInitValidator();
 		try {
 			Context ctx = new InitialContext();
 			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
 		} catch (NamingException e) {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
-		this.loader = new ObstetricsInitSQLLoader();
-		this.validator = new ObstetricsInitValidator();
 	}
 	
 	/**

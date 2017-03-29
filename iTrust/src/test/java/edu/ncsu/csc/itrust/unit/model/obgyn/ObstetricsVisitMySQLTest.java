@@ -1,39 +1,59 @@
 package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.IOException;
-import java.time.LocalDate;
+import static org.mockito.Mockito.when;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import com.mysql.jdbc.Connection;
+
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.sql.DataSource;
-
-import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
-import junit.framework.TestCase;
 
-public class ObstetricsVisitMySQLTest extends TestCase {
+public class ObstetricsVisitMySQLTest {
 	
-	private ObstetricsVisitMySQL sql;	
-	private TestDataGenerator gen;
-	private DataSource ds;
+	TestDataGenerator gen;
+	DataSource ds;
+	@Mock
+	DataSource mockDS;
 	
-	private List<ObstetricsVisit> list;
-	private ObstetricsVisit bean;
+	ObstetricsVisitMySQL sql;	
+	List<ObstetricsVisit> list;
+	ObstetricsVisit bean;
 	
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
+		mockDS = Mockito.mock(DataSource.class);
 		sql = new ObstetricsVisitMySQL(ds);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();
+	}
+	
+	/**
+	 * Tests the constructor fails without a context
+	 */
+	@Test
+	public void testConstructor() throws Exception {
+		ObstetricsVisitMySQL ob = null;
+		try {
+			ob = new ObstetricsVisitMySQL();			
+		} catch (DBException e) {
+			assertNull(ob);
+			assertTrue(e.getExtendedMessage().contains("Context Lookup Naming Exception"));
+		}
 	}
 
 	@Test
@@ -70,7 +90,7 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		assertEquals(420, bean.getVisitId());
 		assertEquals(now.toLocalDate(), bean.getVisitDate().toLocalDate());
 		assertEquals(25, bean.getWeeksPregnant());
-		assertEquals(113.76, bean.getWeight());
+		assertEquals(113.76, bean.getWeight(), 0);
 		assertEquals("110/70", bean.getBloodPressure());
 		assertEquals(118, bean.getFetalHeartRate());
 		assertEquals(2, bean.getAmount());
@@ -85,11 +105,11 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		long visitId = -1;
 		list = sql.getByID(2);
 		for (ObstetricsVisit b : list) {
-			if (b.getBloodPressure().equals("120/60")) {
+			if (b.getBloodPressure().equals("120/60") && b.getFetalHeartRate() == 120) {
 				visitId = b.getVisitId();
 			}
 		}
-
+	
 		// update bean
 		bean = new ObstetricsVisit();
 		bean.setPatientId(2);
@@ -103,7 +123,7 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		bean.setAmount(1);
 		bean.setLowLyingPlacenta(false);
 		bean.setRhFlag(true);
-
+	
 		// perform update
 		sql.update(bean);
 		
@@ -116,7 +136,7 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		assertEquals(visitId, bean.getVisitId());
 		assertEquals(now.toLocalDate(), bean.getVisitDate().toLocalDate());
 		assertEquals(22, bean.getWeeksPregnant());
-		assertEquals(127.9, bean.getWeight());
+		assertEquals(127.9, bean.getWeight(), 0);
 		assertEquals("120/60", bean.getBloodPressure());
 		assertEquals(120, bean.getFetalHeartRate());
 		assertEquals(1, bean.getAmount());
@@ -125,14 +145,83 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		
 	}
 
-//	@Test
-//	public void testGetByID() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetByVisit() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testUpdateException() throws Exception {
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.update(defaultBean());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void testGetExceptions() throws Exception {
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		Connection mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByID(1);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByVisit(1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsVisitMySQL(mockDS);
+		mockConn = Mockito.mock(Connection.class);
+		when(mockDS.getConnection()).thenReturn(mockConn);
+		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
+		try {
+			sql.getByPatientVisit(2L, 1L);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetByNoVisit() throws Exception {
+		bean = sql.getByVisit(18L);
+		assertEquals("000/000", bean.getBloodPressure());
+		assertNull(bean.getVisitDate());
+	}
+	
+	/**
+	 * Returns a default ObstetricsVisit bean
+	 */
+	private ObstetricsVisit defaultBean() {
+		ObstetricsVisit bean = new ObstetricsVisit();
+		bean.setPatientId(1);
+		bean.setVisitId(1);
+		bean.setVisitDate(LocalDateTime.now());		
+		bean.setBloodPressure("120/60");
+		bean.setWeeksPregnant(20);
+		bean.setWeight(125.7);
+		bean.setFetalHeartRate(120);
+		bean.setAmount(1);
+		bean.setLowLyingPlacenta(false);
+		return bean;
+	}
 
 }

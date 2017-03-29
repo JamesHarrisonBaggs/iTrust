@@ -13,9 +13,8 @@ VALUES
 INSERT INTO pregnancies
 (id, birth_date, conception_year, days_pregnant, hours_labor, weight_gain, delivery_type, amount)
 VALUES 
-(2, '1971-01-01 00:00:01', 1970, 280, 9, 50, 'miscarriage', 1),
-(2, '1972-01-01 00:00:01', 1972, 300, 9, 50, 'caesarean section', 1),
-(2, '1973-01-01 00:00:01', 1973, 290, 1, 40, 'vaginal delivery forceps assist', 1),
-(2, '1974-01-01 00:00:01', 1974, 290, 1, 40, 'vaginal delivery vacuum assist', 1),
-(2, '1991-01-01 00:00:01', 1992, 290, 1, 40, 'vaginal delivery', 1);
-
+(2, '1971-01-01 00:00:00', 1970, 280, 9, 50, 'miscarriage', 1),
+(2, '1972-01-01 00:00:00', 1972, 300, 9, 50, 'caesarean', 1),
+(2, '1973-01-01 00:00:00', 1973, 290, 1, 41.1, 'forceps', 1),
+(2, '1974-01-01 00:00:00', 1974, 290, 1, 40, 'vacuum', 1),
+(2, '1991-01-01 00:00:00', 1990, 290, 1, 40, 'vaginal', 1);

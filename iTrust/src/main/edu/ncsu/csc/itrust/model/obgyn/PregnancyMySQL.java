@@ -27,14 +27,14 @@ public class PregnancyMySQL {
 	 * Constructs a new PregnancyMySQL
 	 */
 	public PregnancyMySQL() throws DBException {
+		this.loader = new PregnancySQLLoader();
+		this.validator = new PregnancyValidator();
 		try {
 			Context ctx = new InitialContext();
 			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
 		} catch (NamingException e) {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
-		this.loader = new PregnancySQLLoader();
-		this.validator = new PregnancyValidator();
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class PregnancyMySQL {
 	 */
 	public List<Pregnancy> getByDate(long id, Timestamp date) throws DBException {
 		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ? AND birth_date < ?")) {
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ? AND birth_date <= ?")) {
 			stmt.setLong(1, id);
 			stmt.setTimestamp(2, date);
 			ResultSet results = stmt.executeQuery();

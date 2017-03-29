@@ -178,7 +178,7 @@ public class UltrasoundController extends iTrustController {
 		upload();
 		update(us);
 	}
-	
+	 
 	public void deleteImage() throws DBException{
 		sql.removeUltrasoundImage(visitId, fetusId);
 	}
