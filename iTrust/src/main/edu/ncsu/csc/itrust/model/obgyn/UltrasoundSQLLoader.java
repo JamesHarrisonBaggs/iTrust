@@ -39,8 +39,8 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		bean.setHumerusLength(rs.getInt("hl"));
 		bean.setEstimatedFetalWeight(rs.getDouble("efw"));
 		Blob hold = rs.getBlob("file");
-		if( hold != null ){
-			bean.setUploadFile(rs.getBlob("file").getBinaryStream());
+		if (hold != null){
+			bean.setUploadFile(hold.getBinaryStream());
 		}
 		return bean;
 	}
