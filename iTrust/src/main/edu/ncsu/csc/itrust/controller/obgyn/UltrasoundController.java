@@ -1,5 +1,8 @@
 package edu.ncsu.csc.itrust.controller.obgyn;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -8,7 +11,12 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.servlet.http.Part;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
@@ -85,6 +93,9 @@ public class UltrasoundController extends iTrustController {
 				efw = us.getEstimatedFetalWeight();
 				fetusId = us.getFetusId();
 				file = us.getUploadFile();
+				if (file != null){
+					setIsFileUploaded(true);
+				}
 				setObgyn();
 			} else if ((action.equals("view") || action.equals("add"))){
 				us = new Ultrasound();
@@ -101,9 +112,25 @@ public class UltrasoundController extends iTrustController {
 	
 	public void upload() throws IOException{
 		if (uploadedFile != null){
-			FacesContext.getCurrentInstance().addMessage("ultrasound_formSuccess", new FacesMessage("Image Updated Successfully"));
+			FacesContext.getCurrentInstance().addMessage("ultrasound_imgSuccess", new FacesMessage("Image Updated Successfully"));
 			setIsFileUploaded(true);
-			us.setUploadFile(uploadedFile.getInputStream());
+			if(uploadedFile.getSubmittedFileName().contains(".pdf")){
+				PDDocument document = PDDocument.load(uploadedFile.getInputStream());
+				PDFRenderer pdfRenderer = new PDFRenderer(document);
+				for (int page = 0; page < document.getNumberOfPages(); ++page)
+				{ 
+				    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
+
+				    // suffix in filename will be used as the file format
+				    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				    ImageIO.write(bim, "png", baos);
+				    InputStream is = new ByteArrayInputStream(baos.toByteArray());
+				    us.setUploadFile(is);
+				}
+				document.close();
+			} else {
+				us.setUploadFile(uploadedFile.getInputStream());
+			}
 			
 			//TODO remove
 			System.out.println(uploadedFile.getInputStream().available());
@@ -153,6 +180,10 @@ public class UltrasoundController extends iTrustController {
 		setVisitId(us.getVisitId());
 		upload();
 		update(us);
+	}
+	
+	public void deleteImage() throws DBException{
+		sql.removeUltrasoundImage(visitId, fetusId);
 	}
 	
 	public void update(Ultrasound bean) throws DBException {

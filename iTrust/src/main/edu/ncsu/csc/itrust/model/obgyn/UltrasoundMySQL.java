@@ -24,14 +24,14 @@ public class UltrasoundMySQL {
 	 * Constructs an UltrasoundMySQL
 	 */
 	public UltrasoundMySQL() throws DBException {
+		loader = new UltrasoundSQLLoader();
+		validator = new UltrasoundValidator();
 		try {
 			Context ctx = new InitialContext();
 			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
 		} catch (NamingException e) {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
-		loader = new UltrasoundSQLLoader();
-		validator = new UltrasoundValidator();
 	}
 	
 	/**
@@ -107,6 +107,15 @@ public class UltrasoundMySQL {
 	public boolean removeUltrasound(long visitID, int fetus) throws DBException {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("DELETE FROM ultrasounds WHERE visitID="+visitID+" AND fetus="+fetus)) {
+			return stmt.executeUpdate() > 0;
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}	
+	}
+	
+	public boolean removeUltrasoundImage(long visitID, int fetus) throws DBException{
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("Update ultrasounds SET file=null WHERE visitID=" + visitID +" AND fetus=" + fetus)) {
 			return stmt.executeUpdate() > 0;
 		} catch (SQLException e) {
 			throw new DBException(e);

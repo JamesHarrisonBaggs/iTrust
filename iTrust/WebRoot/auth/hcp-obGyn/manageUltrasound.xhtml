@@ -87,11 +87,12 @@
 										src="https://upload.wikimedia.org/wikipedia/commons/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg"
 										alt="Mountain View" style="width: 304px; height: 228px;"></img>
 								</ui:fragment>
+								<h:outputText value="Ultrasound Placeholder Image" rendered="#{!(ultrasound_controller.isFileUploaded)}"></h:outputText>
 								<h:graphicImage
 									rendered="#{(ultrasound_controller.isFileUploaded)}"
 									value="/ultrasoundImageServlet?id=#{ultrasound_controller.patientId}&amp;visitId=#{ultrasound_controller.visitId}&amp;fetus=#{ultrasound_controller.fetusId}">
 								</h:graphicImage>
-								<h:outputText value="hi">test</h:outputText>
+								<h:outputText value="Ultrasound Image" rendered="#{(ultrasound_controller.isFileUploaded)}"></h:outputText>
 								<h:inputFile id="uploadFile"
 									value="#{ultrasound_controller.uploadedFile}">
 								</h:inputFile>
@@ -100,7 +101,12 @@
 						<h:panelGroup>
 							<h:commandButton id="saveUltraSound"
 								style="font-size:11px; font-weight:bold " align="right"
-								value="Save Ultrasound" action="#{ultrasound_controller.submit}"
+								value="Save Ultrasound and Form" action="#{ultrasound_controller.submit}"
+								rendered="#{ultrasound_controller.obgyn}">
+							</h:commandButton>
+							<h:commandButton id="deleteUltraSound"
+								style="font-size:11px; font-weight:bold " align="right"
+								value="Delete Ultrasound image" action="#{ultrasound_controller.deleteImage}"
 								rendered="#{ultrasound_controller.obgyn}">
 							</h:commandButton>
 							<h:commandButton id="goBack"

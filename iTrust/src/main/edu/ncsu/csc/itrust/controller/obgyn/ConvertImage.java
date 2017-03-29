@@ -52,7 +52,6 @@ public class ConvertImage extends HttpServlet {
 			String imgLen = "";
 			if (results.next()) {
 				imgLen = results.getString(1);
-				System.out.println(imgLen.length());
 			}
 			results = stmt.executeQuery();
 			if (results.next()) {
@@ -60,14 +59,10 @@ public class ConvertImage extends HttpServlet {
 				byte[] rb = new byte[len];
 				InputStream file = results.getBlob("file").getBinaryStream();
 				int index = file.read(rb, 0, len);
-				System.out.println("index" + index);
 				stmt.close();
-				//response.reset();
 				response.setContentType("image/jpg");
 				response.getOutputStream().write(rb, 0, len);
 				response.getOutputStream().flush();
-				//response.reset();
-				//response.setContentType("image/jpg");
 
 			}
 		} catch (SQLException e) {
