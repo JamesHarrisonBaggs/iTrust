@@ -39,20 +39,7 @@ public class ObstetricsController extends iTrustController {
 	private Long hcpid;
 	private String currentDate;
 	private String newInitDate;
-	/**
-	 * @return the newInitDate
-	 */
-	public String getNewInitDate() {
-		return newInitDate;
-	}
-
-	/**
-	 * @param newInitDate the newInitDate to set
-	 */
-	public void setNewInitDate(String newInitDate) {
-		this.newInitDate = newInitDate;
-	}
-
+	
 	private ObstetricsInit obData;
 
 	public ObstetricsController() throws DBException {
@@ -60,8 +47,8 @@ public class ObstetricsController extends iTrustController {
 
 		// get databases
 		this.factory = DAOFactory.getProductionInstance();
-		this.initDB = factory.getObstetricsInitDAO();
-		this.pregDB = factory.getPregnanciesDAO();
+		this.initDB = new ObstetricsInitMySQL();
+		this.pregDB = new PregnancyMySQL();
 		this.patientDB = factory.getPatientDAO();
 
 		obstetricsList = getObstetricsList();
@@ -236,6 +223,14 @@ public class ObstetricsController extends iTrustController {
 		} else {
 			return "-1";
 		}
+	}
+	
+	public String getNewInitDate() {
+		return newInitDate;
+	}
+	
+	public void setNewInitDate(String newInitDate) {
+		this.newInitDate = newInitDate;
 	}
 
 	public void setViewDate(String viewDate) {

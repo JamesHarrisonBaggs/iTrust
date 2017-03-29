@@ -224,13 +224,9 @@ public class DAOFactory {
 		return new RemoteMonitoringDAO(this);
 	}
 
-	/**
-	 * 
-	 * @return this DAOFactory's ObstetricsInitMySQL
-	 */
-	public ObstetricsInitMySQL getObstetricsInitDAO() {
-		return new ObstetricsInitMySQL(this);
-	}
+//	public ObstetricsInitMySQL getObstetricsInitDAO() {
+//		return new ObstetricsInitMySQL(this);
+//	}
 
 	/**
 	 * 
@@ -240,14 +236,9 @@ public class DAOFactory {
 		return new DrugReactionOverrideCodesDAO(this);
 	}
 	
-	/**
-	 * 
-	 * @return this DAOFactory's PregnancyMySQL
-	 */
-	public PregnancyMySQL getPregnanciesDAO() {
-		return new PregnancyMySQL(this);
-	}
-
+//	public PregnancyMySQL getPregnanciesDAO() {
+//		return new PregnancyMySQL(this);
+//	}
 
 	/**
 	 * Gets the DAO for reviews with the DB table reviews.

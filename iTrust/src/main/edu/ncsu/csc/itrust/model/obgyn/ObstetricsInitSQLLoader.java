@@ -1,21 +1,55 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Interface between SQL objects and ObstetricsInitBean
- * @author erein
- *
- */
-public class ObstetricsInitSQLLoader {
+import edu.ncsu.csc.itrust.model.SQLLoader;
+
+public class ObstetricsInitSQLLoader implements SQLLoader<ObstetricsInit> {
 	
 	/**
-	 * For database updates.
-	 * Loads data from an Obstetrics Bean to a PreparedStatement
+	 * Returns a list of beans from a result set
 	 */
-	public PreparedStatement loadUpdate(PreparedStatement ps, ObstetricsInit bean) throws SQLException {
+	@Override
+	public List<ObstetricsInit> loadList(ResultSet rs) throws SQLException {
+		List<ObstetricsInit> list = new ArrayList<ObstetricsInit>();
+		while(rs.next()) {
+			list.add(loadSingle(rs));
+		}
+		return list;
+	}
+	
+	/**
+	 * Maps a row in a results set to a bean
+	 */
+	@Override
+	public ObstetricsInit loadSingle(ResultSet rs) throws SQLException {
+		ObstetricsInit bean = new ObstetricsInit();
+		bean.setPatientId(rs.getLong("id"));
+		bean.setInitTimestamp(rs.getTimestamp("init_date"));
+		bean.setLMPTimestamp(rs.getTimestamp("lmp_date"));
+		bean.setCurrent(rs.getBoolean("current"));
+		return bean;
+	}
+	
+	/**
+	 * Creates a prepared statement from a bean; used for updates
+	 */
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, ObstetricsInit bean,
+			boolean newInstance) throws SQLException {	
+		
+		// prepare statement
+		String statement = "INSERT INTO obstetrics(id, init_date, lmp_date, current) "
+				+ "VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE "
+				+ "id=?, init_date=?, lmp_date=?, current=?";
+		ps = conn.prepareStatement(statement);
+		
+		// set parameters
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
 		ps.setTimestamp(i++, bean.getInitTimestamp());
@@ -29,19 +63,7 @@ public class ObstetricsInitSQLLoader {
 		ps.setBoolean(i++, bean.isCurrent());
 		
 		return ps;
+		
 	}
 	
-	/**
-	 * For database queries.
-	 * Loads data from a ResultsSet to an Obstetrics Bean
-	 */
-	public ObstetricsInit loadResults(ResultSet results) throws SQLException {
-		ObstetricsInit bean = new ObstetricsInit();
-		bean.setPatientId(results.getLong("id"));
-		bean.setInitTimestamp(results.getTimestamp("init_date"));
-		bean.setLMPTimestamp(results.getTimestamp("lmp_date"));
-		bean.setCurrent(results.getBoolean("current"));
-		return bean;
-	}
-
 }
