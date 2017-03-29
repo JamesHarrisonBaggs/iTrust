@@ -2,23 +2,20 @@ package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.sql.DataSource;
-
-import org.junit.Test;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
-import junit.framework.TestCase;
 
-public class ObstetricsVisitMySQLTest extends TestCase {
+public class ObstetricsVisitMySQLTest {
 	
 	private ObstetricsVisitMySQL sql;	
 	private TestDataGenerator gen;
@@ -27,13 +24,27 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 	private List<ObstetricsVisit> list;
 	private ObstetricsVisit bean;
 	
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
 		sql = new ObstetricsVisitMySQL(ds);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();
+	}
+	
+	/**
+	 * Tests the constructor fails without a context
+	 */
+	@Test
+	public void testConstructor() throws Exception {
+		ObstetricsVisitMySQL ob = null;
+		try {
+			ob = new ObstetricsVisitMySQL();			
+		} catch (DBException e) {
+			assertNull(ob);
+			assertTrue(e.getExtendedMessage().contains("Context Lookup Naming Exception"));
+		}
 	}
 
 	@Test
@@ -70,7 +81,7 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		assertEquals(420, bean.getVisitId());
 		assertEquals(now.toLocalDate(), bean.getVisitDate().toLocalDate());
 		assertEquals(25, bean.getWeeksPregnant());
-		assertEquals(113.76, bean.getWeight());
+		assertEquals(113.76, bean.getWeight(), 0);
 		assertEquals("110/70", bean.getBloodPressure());
 		assertEquals(118, bean.getFetalHeartRate());
 		assertEquals(2, bean.getAmount());
@@ -85,7 +96,7 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		long visitId = -1;
 		list = sql.getByID(2);
 		for (ObstetricsVisit b : list) {
-			if (b.getBloodPressure().equals("120/60")) {
+			if (b.getBloodPressure().equals("120/60") && b.getFetalHeartRate() == 120) {
 				visitId = b.getVisitId();
 			}
 		}
@@ -116,7 +127,7 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		assertEquals(visitId, bean.getVisitId());
 		assertEquals(now.toLocalDate(), bean.getVisitDate().toLocalDate());
 		assertEquals(22, bean.getWeeksPregnant());
-		assertEquals(127.9, bean.getWeight());
+		assertEquals(127.9, bean.getWeight(), 0);
 		assertEquals("120/60", bean.getBloodPressure());
 		assertEquals(120, bean.getFetalHeartRate());
 		assertEquals(1, bean.getAmount());
@@ -124,15 +135,5 @@ public class ObstetricsVisitMySQLTest extends TestCase {
 		assertTrue(bean.isRhFlag());
 		
 	}
-
-//	@Test
-//	public void testGetByID() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetByVisit() {
-//		fail("Not yet implemented");
-//	}
 
 }

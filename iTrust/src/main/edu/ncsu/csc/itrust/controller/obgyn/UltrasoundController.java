@@ -104,9 +104,6 @@ public class UltrasoundController extends iTrustController {
 			FacesContext.getCurrentInstance().addMessage("ultrasound_formSuccess", new FacesMessage("Image Updated Successfully"));
 			setIsFileUploaded(true);
 			us.setUploadFile(uploadedFile.getInputStream());
-			
-			//TODO remove
-			System.out.println(uploadedFile.getInputStream().available());
 		}
 	}
 
