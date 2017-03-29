@@ -19,8 +19,8 @@
 			<h3 style="margin-bottom: 3rem;">Ultrasound Info</h3>
 			<h:panelGrid columns="2" class="fTable">
 				<h:panelGroup id="ultrasound_formError">
-					<h:form id="ultrasound_formSuccess">
-						<h:panelGrid >
+					<h:form id="ultrasound_formSuccess" enctype="multipart/form-data">
+						<h:panelGrid>
 							<h:panelGroup>
 								<div style="width: 300px">
 									<h:message for="ultrasound_formError" class="iTrustError" />
@@ -31,89 +31,83 @@
 									value="#{ultrasound_controller.fetusId}" />
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="crl"
-									style="padding-right:20px">Crown Rump Length (CRL):</h:outputLabel>
+								<h:outputLabel for="crl" style="padding-right:20px">Crown Rump Length (CRL):</h:outputLabel>
 								<h:inputText id="crl" name="crl"
 									value="#{ultrasound_controller.crl}" />
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="bpd"
-									style="padding-right:20px">Biparietal Diameter (BPD):</h:outputLabel>
+								<h:outputLabel for="bpd" style="padding-right:20px">Biparietal Diameter (BPD):</h:outputLabel>
 								<h:inputText id="bpd" name="bpd"
 									value="#{ultrasound_controller.bpd}" />
 
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="hc"
-									style="padding-right:20px">Head Circumference (HC):</h:outputLabel>
+								<h:outputLabel for="hc" style="padding-right:20px">Head Circumference (HC):</h:outputLabel>
 								<h:inputText id="hc" name="hc"
 									value="#{ultrasound_controller.hc}" />
 
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="fl"
-									style="padding-right:20px">Femur Length (FL):</h:outputLabel>
+								<h:outputLabel for="fl" style="padding-right:20px">Femur Length (FL):</h:outputLabel>
 								<h:inputText id="fl" name="fl"
 									value="#{ultrasound_controller.fl}" />
 
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="ofd"
-									style="padding-right:20px">Occipitofrontal Diameter (OFD):</h:outputLabel>
+								<h:outputLabel for="ofd" style="padding-right:20px">Occipitofrontal Diameter (OFD):</h:outputLabel>
 								<h:inputText id="ofd" name="ofd"
 									value="#{ultrasound_controller.ofd}" />
 
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="ac"
-									style="padding-right:20px">Abdominal Circumference (AC):</h:outputLabel>
+								<h:outputLabel for="ac" style="padding-right:20px">Abdominal Circumference (AC):</h:outputLabel>
 								<h:inputText id="ac" name="ac"
 									value="#{ultrasound_controller.ac}" />
 
 							</h:panelGroup>
 
 							<h:panelGroup>
-								<h:outputLabel for="hl"
-									style="padding-right:20px">Humerus Length (HL):</h:outputLabel>
+								<h:outputLabel for="hl" style="padding-right:20px">Humerus Length (HL):</h:outputLabel>
 								<h:inputText id="hl" name="hl"
 									value="#{ultrasound_controller.hl}" />
 
 							</h:panelGroup>
 
 							<h:panelGroup>
-								<h:outputLabel for="efw"
-									style="padding-right:20px">Estimated Fetal Weight (EFW):</h:outputLabel>
+								<h:outputLabel for="efw" style="padding-right:20px">Estimated Fetal Weight (EFW):</h:outputLabel>
 								<h:inputText id="efw" name="efw"
 									value="#{ultrasound_controller.efw}" />
 
 							</h:panelGroup>
 
-							<h:panelGroup >
-								<h:commandButton id="saveUltraSound"
-									style="font-size:11px; font-weight:bold " align="right"
-									value="Save Ultrasound"
-									action="#{ultrasound_controller.submit}" rendered="#{ultrasound_controller.obgyn}">
-								</h:commandButton>
-								<h:commandButton id="goBack"
-									style="font-size:11px; font-weight:bold; width:50%"
-									align="left" value="Go Back To Office Visit"
-									action="#{navigation_controller.officeVisitInfo}">
-								</h:commandButton>
-
+							<h:panelGroup>
+								<ui:fragment
+									rendered="#{!(ultrasound_controller.isFileUploaded)}">
+									<img
+										src="https://upload.wikimedia.org/wikipedia/commons/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg"
+										alt="Mountain View" style="width: 304px; height: 228px;"></img>
+								</ui:fragment>
+								<h:graphicImage rendered="#{(ultrasound_controller.isFileUploaded)}"
+									value="/ultrasoundImageServlet?id=#{ultrasound_controller.patientID}&visitId=#{ultrasound_controller.visitId}&fetus=#{ultrasound_controller.fetusId}">
+								</h:graphicImage>
+								<h:inputFile id="uploadFile"
+									value="#{ultrasound_controller.uploadedFile}">
+								</h:inputFile>
 							</h:panelGroup>
 						</h:panelGrid>
-					</h:form>
-				</h:panelGroup>
-				<h:panelGroup>
-					<h:form >
-						<img
-							src="https://upload.wikimedia.org/wikipedia/commons/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg"
-							alt="Mountain View" style="width: 304px; height: 228px;"></img>
-						<h:button id="addUltraSoundPhoto"
-							style="font-size:11px; font-weight:bold" align="left"
-							value="Add Ultrasound Photo"
-							outcome="/auth/hcp-obGyn/manageUltrasound.xhtml" rendered="#{ultrasound_controller.obgyn}">
-						</h:button>
+						<h:panelGroup>
+							<h:commandButton id="saveUltraSound"
+								style="font-size:11px; font-weight:bold " align="right"
+								value="Save Ultrasound" action="#{ultrasound_controller.submit}"
+								rendered="#{ultrasound_controller.obgyn}">
+							</h:commandButton>
+							<h:commandButton id="goBack"
+								style="font-size:11px; font-weight:bold; width:50%" align="left"
+								value="Go Back To Office Visit"
+								action="#{navigation_controller.officeVisitInfo}">
+							</h:commandButton>
+
+						</h:panelGroup>
 					</h:form>
 				</h:panelGroup>
 			</h:panelGrid>

@@ -1,11 +1,14 @@
 package edu.ncsu.csc.itrust.controller.obgyn;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Part;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
@@ -32,6 +35,7 @@ public class UltrasoundController extends iTrustController {
 	private int ac;
 	private int hl;
 	private double efw;
+	private InputStream file;
 	
 	private Ultrasound us;
 	private UltrasoundMySQL sql;
@@ -40,11 +44,16 @@ public class UltrasoundController extends iTrustController {
 	private boolean obgyn;
 	private ObstetricsController obc;
 
+
+	private Part uploadedFile;
+	private boolean isFileUploaded;
+
 	public UltrasoundController() throws DBException {
 		super();
 		sessionUtils = getSessionUtils();
 		sql = new UltrasoundMySQL();
 		obc = new ObstetricsController();
+		setIsFileUploaded(false);
 		String fetusId1 = sessionUtils.getRequestParameter("fetusID");
 		if (fetusId1 != null) {
 			fetusId = Integer.parseInt(fetusId1);
@@ -75,6 +84,7 @@ public class UltrasoundController extends iTrustController {
 				hl = us.getHumerusLength();
 				efw = us.getEstimatedFetalWeight();
 				fetusId = us.getFetusId();
+				file = us.getUploadFile();
 				setObgyn();
 			} else if ((action.equals("view") || action.equals("add"))){
 				us = new Ultrasound();
@@ -86,6 +96,14 @@ public class UltrasoundController extends iTrustController {
 		} else {
 			us = new Ultrasound();
 			setObgyn();
+		}
+	}
+	
+	public void upload() throws IOException{
+		if (uploadedFile != null){
+			FacesContext.getCurrentInstance().addMessage("ultrasound_formSuccess", new FacesMessage("Image Updated Successfully"));
+			setIsFileUploaded(true);
+			us.setUploadFile(uploadedFile.getInputStream());
 		}
 	}
 
@@ -115,7 +133,7 @@ public class UltrasoundController extends iTrustController {
 		return sql.getByPatientIdVisitId(pid, vid);
 	}
 	
-	public void submit() throws DBException {
+	public void submit() throws DBException, IOException {
 		us.setPatientId(sessionUtils.getCurrentPatientMIDLong());
 		us.setVisitDate(getOfficeVisit().getDate());
 		us.setVisitId(sessionUtils.getCurrentOfficeVisitId());
@@ -128,6 +146,7 @@ public class UltrasoundController extends iTrustController {
 		us.setHumerusLength(hl);
 		us.setEstimatedFetalWeight(efw);
 		us.setFetusId(fetusId);
+		upload();
 		update(us);
 	}
 	
@@ -144,7 +163,7 @@ public class UltrasoundController extends iTrustController {
 		long id = sessionUtils.getCurrentPatientMIDLong();
 		return sql.getByPatientId(id);
 	}
-
+	
 	public long getPatientId() {
 		return patientId;
 	}
@@ -243,10 +262,32 @@ public class UltrasoundController extends iTrustController {
 	public boolean isObgyn() {
 		return obgyn;
 	}
+	/**
+	 * @return the uploadedFile
+	 */
+	public Part getUploadedFile() {
+		return uploadedFile;
+	}
+
+	/**
+	 * @param uploadedFile the uploadedFile to set
+	 */
+	public void setUploadedFile(Part uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
 
 
 	public void setObgyn() throws DBException {
 		this.obgyn = obc.getObGyn();
+	}
+
+	public boolean getIsFileUploaded() {
+		return isFileUploaded;
+	}
+
+	public void setIsFileUploaded(boolean isFileUploaded) {
+		this.isFileUploaded = isFileUploaded;
 	}
 }
 
