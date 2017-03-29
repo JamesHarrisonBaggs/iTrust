@@ -122,6 +122,11 @@ public class ObstetricsVisitController extends iTrustController {
 		long id = sessionUtils.getCurrentOfficeVisitId();
 		return sql.getByVisit(id);
 	}
+	
+	/**
+	 * Updates an ObstetricsVisit
+	 * @param bean
+	 */
 	public void update(ObstetricsVisit bean) throws DBException {
 		try {
 			sql.update(bean);
@@ -131,31 +136,6 @@ public class ObstetricsVisitController extends iTrustController {
 		}
 	}
 
-	public void add() throws DBException, FormValidationException {
-
-		// create bean
-		ObstetricsVisit bean = new ObstetricsVisit();
-		bean.setPatientId(sessionUtils.getCurrentPatientMIDLong());
-		bean.setVisitId(sessionUtils.getCurrentOfficeVisitId());
-		bean.setVisitDate(getOfficeVisit().getDate());
-		// test data
-		bean.setBloodPressure("120/90");
-		bean.setWeeksPregnant(20);
-		bean.setWeight(120.2);
-		bean.setFetalHeartRate(60);
-		bean.setAmount(2);
-		bean.setLowLyingPlacenta(false);
-
-		// update
-		try {
-			int result = sql.update(bean);
-			printFacesMessage(FacesMessage.SEVERITY_INFO, "Visit added", "Visit added", "addBtn");
-			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_RECORD : TransactionType.UPDATE_OBSTETRIC_RECORD, "");
-		} catch (DBException e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to add visit", "Failed to add visit", "add");
-		}
-
-	}
 	public void submit() throws DBException {
 		ob.setPatientId(patientId);
 		ob.setVisitDate(visitDate);
@@ -168,11 +148,11 @@ public class ObstetricsVisitController extends iTrustController {
 		ob.setLowLyingPlacenta(lowLyingPlacenta);
 		ob.setRhFlag(rhFlag);
 		ob.setLowLyingPlacenta(lowLyingPlacenta);
-		setAutoSchedule(false);
-		update(ob);
-		setAutoSchedule(true);
-
+		this.setAutoSchedule(false);
+		this.update(ob);
+		this.setAutoSchedule(true);
 	}
+	
 	public boolean autoScheduleAppt() throws DBException, SQLException {
 		factory = DAOFactory.getProductionInstance();
 		aDAO = new ApptDAO(factory);
@@ -246,16 +226,13 @@ public class ObstetricsVisitController extends iTrustController {
 		return visitId;
 	}
 
-
 	public long getPatientId() {
 		return patientId;
 	}
 
-
 	public LocalDateTime getVisitDate() {
 		return visitDate;
 	}
-
 
 	public int getWeeksPregnant() throws DBException {
 		LocalDate lmp = obc.getObstetricsList().get(0).getLastMenstrualPeriod();
@@ -266,46 +243,37 @@ public class ObstetricsVisitController extends iTrustController {
 		return weeksPregnant;
 	}
 
-
 	public double getWeight() {
 		return weight;
 	}
-
 
 	public String getBloodPressure() {
 		return bloodPressure;
 	}
 
-
 	public int getFetalHeartRate() {
 		return fetalHeartRate;
 	}
-
 
 	public int getAmount() {
 		return amount;
 	}
 
-
 	public boolean isLowLyingPlacenta() {
 		return lowLyingPlacenta;
 	}
-
 
 	public boolean isRhFlag() {
 		return rhFlag;
 	}
 
-
 	public void setVisitId(long visitId) {
 		this.visitId = visitId;
 	}
 
-
 	public void setPatientId(long patientMID) {
 		this.patientId = patientMID;
 	}
-
 
 	public void setVisitDate(LocalDateTime visitDate) {
 		this.visitDate = visitDate;
@@ -315,91 +283,70 @@ public class ObstetricsVisitController extends iTrustController {
 		this.weight = weight;
 	}
 
-
 	public void setBloodPressure(String bloodPressure) {
 		this.bloodPressure = bloodPressure;
 	}
-
 
 	public void setFetalHeartRate(int fetalHeartRate) {
 		this.fetalHeartRate = fetalHeartRate;
 	}
 
-
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-
 
 	public void setLowLyingPlacenta(boolean lowLyingPlacenta) {
 		this.lowLyingPlacenta = lowLyingPlacenta;
 	}
 
-
 	public void setRhFlag(boolean rhFlag) {
 		this.rhFlag = rhFlag;
 	}
-
 
 	public boolean isEligible() {
 		return eligible;
 	}
 
-
 	public void setEligible() {
 		LocalDate tmp = LocalDate.MIN;
-		for(int i = 0; i < obstetricsList.size(); i++) {
-			boolean flag = obstetricsList.get(i).getInitDate().isAfter(tmp);
-			if (flag) {
-				tmp = obstetricsList.get(i).getInitDate();
+		for (int i = 0; i < obstetricsList.size(); i++) {
+			LocalDate date = obstetricsList.get(i).getInitDate();
+			if (date.isAfter(tmp)) {
+				tmp = date;
 				break;
 			}
 		}
-		long days = 342;
-		if(tmp.plusDays(days).isBefore(visitDate.toLocalDate())) {
-			eligible = false;
-		} else {
-			eligible = true; 
-		}
+		eligible = !tmp.plusWeeks(49).isBefore(visitDate.toLocalDate());
 	}
-
 
 	public boolean isObgyn() {
 		return obgyn;
 	}
 
-
 	public void setObgyn() throws DBException {
 		this.obgyn = obc.getObGyn();
 	}
-
 
 	public List<ObstetricsInit> getObstetricsList() {
 		return obstetricsList;
 	}
 
-
 	public void setObstetricsList() throws DBException {
 		this.obstetricsList = obc.getObstetricsList();
 	}
-
 
 	public boolean isNotice() {
 		setNotice();
 		return notice;
 	}
 
-
 	public void setNotice() {
-		boolean tmp = (weeksPregnant > 28);
-		notice = tmp;
+		notice = (weeksPregnant > 28);
 	}
-
 
 	public boolean isAutoSchedule() {
 		return autoSchedule;
 	}
-
 
 	public void setAutoSchedule(boolean autoSchedule) {
 		this.autoSchedule = autoSchedule;
