@@ -131,9 +131,6 @@ public class UltrasoundController extends iTrustController {
 			} else {
 				us.setUploadFile(uploadedFile.getInputStream());
 			}
-			
-			//TODO remove
-			System.out.println(uploadedFile.getInputStream().available());
 		}
 	}
 
