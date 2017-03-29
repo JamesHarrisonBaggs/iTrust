@@ -1,5 +1,7 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +38,10 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		bean.setAbdominalCircumference(rs.getInt("ac"));
 		bean.setHumerusLength(rs.getInt("hl"));
 		bean.setEstimatedFetalWeight(rs.getDouble("efw"));
-		bean.setUploadFile(rs.getBlob("file").getBinaryStream());
+		Blob hold = rs.getBlob("file");
+		if( hold != null ){
+			bean.setUploadFile(rs.getBlob("file").getBinaryStream());
+		}
 		return bean;
 	}
 	
@@ -54,7 +59,13 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 				+ "ON DUPLICATE KEY UPDATE id=?, visitID=?, visitDate=?, fetus=?, "
 				+ "crl=?, bpd=?, hc=?, fl=?, ofd=?, ac=?, hl=?, efw=?, file=?";
 		ps = conn.prepareStatement(statement);
-		
+		//TODO remove
+		try {
+			System.out.println(bean.getUploadFile().available());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// set parameters
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
