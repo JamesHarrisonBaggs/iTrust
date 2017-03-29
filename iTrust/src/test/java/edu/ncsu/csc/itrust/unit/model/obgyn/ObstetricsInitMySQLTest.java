@@ -5,19 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
-
+import java.sql.Timestamp;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
-import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
-import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
 public class ObstetricsInitMySQLTest {
 
@@ -39,38 +36,51 @@ public class ObstetricsInitMySQLTest {
 		gen.clearAllTables();
 		gen.standardData();
 	}
+	
+	/**
+	 * Tests the constructor fails without a context
+	 */
+	@Test
+	public void testConstructor() throws Exception {
+		ObstetricsInitMySQL ob = null;
+		try {
+			ob = new ObstetricsInitMySQL();			
+		} catch (DBException e) {
+			assertNull(ob);
+			assertTrue(e.getExtendedMessage().contains("Context Lookup Naming Exception"));
+		}
+	}
 
+	/**
+	 * Tests that getID returns the proper set of data 
+	 */
 	@Test
 	public void testGetByID() throws Exception {
-		
-		try {
-			list = db.getByID(2);
-		} catch (DBException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
-		
+		list = db.getByID(2);
 		assertEquals(3, list.size());
-		assertEquals(true, list.get(2).isCurrent());
-		assertEquals(false, list.get(1).isCurrent());
-		assertEquals(false, list.get(00).isCurrent());
 
+//		(2,'2002-05-01 00:00:01','2016-01-01 00:00:01', 1),
+//		(2,'1996-05-03 00:00:01','1990-01-01 00:00:01', 0),
+//		(2, '1992-05-02 00:00:01', '1992-01-01 00:00:01', 0),
+
+		assertEquals(list.get(0).getInitDate(), LocalDate.of(2002, 05, 01));
+		assertEquals(list.get(1).getInitDate(), LocalDate.of(1996, 05, 03));
+		assertEquals(list.get(2).getInitDate(), LocalDate.of(1992, 05, 02));
+		
+		assertEquals(list.get(0).getLastMenstrualPeriod(), LocalDate.of(2016, 1, 1));
+		assertEquals(list.get(1).getLastMenstrualPeriod(), LocalDate.of(1990, 1, 1));
+		assertEquals(list.get(2).getLastMenstrualPeriod(), LocalDate.of(1992, 1, 1));
+		
 	}
 
 	@Test
 	public void testGetByDate() throws Exception {
-		try {
-			list = db.getByDate(2, Timestamp.valueOf("1972-01-01 00:00:01"));
-		} catch (DBException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
-		
+		list = db.getByDate(2, Timestamp.valueOf("1992-05-02 00:00:00"));
 		assertEquals(1, list.size());
-		ObstetricsInit b = list.get(0);		
-		assertEquals(true, b.isCurrent());
-		assertEquals(2, b.getPatientId());
-		assertEquals(LocalDate.of(1972, 01, 01), b.getInitDate());
+		assertEquals(LocalDate.of(1992, 5, 2), list.get(0).getInitDate());
+		assertEquals(LocalDate.of(1992, 1, 1), list.get(0).getLastMenstrualPeriod());
+		assertEquals(2, list.get(0).getPatientId());
+		assertFalse(list.get(0).isCurrent());
 	}
 
 	@Test
@@ -110,12 +120,4 @@ public class ObstetricsInitMySQLTest {
 
 	}
 
-	@SuppressWarnings("unused")
-	private void printList(List<ObstetricsInit> list) {
-		System.err.println(list.size());
-		for (ObstetricsInit b : list) {
-			System.err.println(b.getPatientId() + ", " + b.getInitDate());
-		}
-	} 
-	
 }
