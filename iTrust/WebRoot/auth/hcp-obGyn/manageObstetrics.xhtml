@@ -185,9 +185,8 @@
 		rendered="#{!obs_visit_controller.eligible}">
 		<h:panelGroup>
 			<div style="width: 400px">
-				<h4>This office visit for
-					#{user.getUserNameForID(session.getAttribute("pid"))} is not in the
-					40 day range of the newest Obstetrics Initialization.</h4>
+				<h4>This visit for #{user.getUserNameForID(session.getAttribute("pid"))} is not
+					within 49 weeks of the current obstetrics patient initialization.</h4>
 				<h:button id="addUltraSound"
 					style="font-size:11px; font-weight:bold" align="left"
 					value="Add New Initialization?"
