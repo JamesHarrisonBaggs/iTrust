@@ -87,9 +87,11 @@
 										src="https://upload.wikimedia.org/wikipedia/commons/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg"
 										alt="Mountain View" style="width: 304px; height: 228px;"></img>
 								</ui:fragment>
-								<h:graphicImage rendered="#{(ultrasound_controller.isFileUploaded)}"
-									value="/ultrasoundImageServlet?id=#{ultrasound_controller.patientID}&visitId=#{ultrasound_controller.visitId}&fetus=#{ultrasound_controller.fetusId}">
+								<h:graphicImage
+									rendered="#{(ultrasound_controller.isFileUploaded)}"
+									value="/ultrasoundImageServlet?id=#{ultrasound_controller.patientId}&amp;visitId=#{ultrasound_controller.visitId}&amp;fetus=#{ultrasound_controller.fetusId}">
 								</h:graphicImage>
+								<h:outputText value="hi">test</h:outputText>
 								<h:inputFile id="uploadFile"
 									value="#{ultrasound_controller.uploadedFile}">
 								</h:inputFile>

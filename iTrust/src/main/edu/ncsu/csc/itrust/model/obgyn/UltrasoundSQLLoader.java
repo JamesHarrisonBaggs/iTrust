@@ -57,7 +57,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 				+ "crl, bpd, hc, fl, ofd, ac, hl, efw, file)"
 				+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"
 				+ "ON DUPLICATE KEY UPDATE id=?, visitID=?, visitDate=?, fetus=?, "
-				+ "crl=?, bpd=?, hc=?, fl=?, ofd=?, ac=?, hl=?, efw=?, file=?";
+				+ "crl=?, bpd=?, hc=?, fl=?, ofd=?, ac=?, hl=?, efw=?";
 		ps = conn.prepareStatement(statement);
 		//TODO remove
 		try {
@@ -95,7 +95,8 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		ps.setInt(i++, bean.getAbdominalCircumference());
 		ps.setInt(i++, bean.getHumerusLength());
 		ps.setDouble(i++, bean.getEstimatedFetalWeight());
-		ps.setBlob(i++, bean.getUploadFile());
+		
+		System.out.println(ps.toString());
 		
 		return ps;
 	}

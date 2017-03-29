@@ -104,6 +104,9 @@ public class UltrasoundController extends iTrustController {
 			FacesContext.getCurrentInstance().addMessage("ultrasound_formSuccess", new FacesMessage("Image Updated Successfully"));
 			setIsFileUploaded(true);
 			us.setUploadFile(uploadedFile.getInputStream());
+			
+			//TODO remove
+			System.out.println(uploadedFile.getInputStream().available());
 		}
 	}
 
@@ -146,6 +149,8 @@ public class UltrasoundController extends iTrustController {
 		us.setHumerusLength(hl);
 		us.setEstimatedFetalWeight(efw);
 		us.setFetusId(fetusId);
+		setPatientId(us.getPatientId());
+		setVisitId(us.getVisitId());
 		upload();
 		update(us);
 	}
