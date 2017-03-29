@@ -157,7 +157,12 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 
 
-	public int getWeeksPregnant() {
+	public int getWeeksPregnant() throws DBException {
+		LocalDate lmp = obc.getObstetricsList().get(0).getLastMenstrualPeriod();
+		LocalDate visitDateLD = visitDate.toLocalDate();
+		long days = Math.abs(lmp.toEpochDay() - visitDateLD.toEpochDay());
+		weeksPregnant = (int) (days/7);
+		ob.setWeeksPregnant(weeksPregnant);
 		return weeksPregnant;
 	}
 
@@ -205,12 +210,6 @@ public class ObstetricsVisitController extends iTrustController {
 	public void setVisitDate(LocalDateTime visitDate) {
 		this.visitDate = visitDate;
 	}
-
-
-	public void setWeeksPregnant(int weeksPregnant) {
-		this.weeksPregnant = weeksPregnant;
-	}
-
 
 	public void setWeight(double weight) {
 		this.weight = weight;
