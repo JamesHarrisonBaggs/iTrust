@@ -519,7 +519,7 @@ public enum TransactionType {
 	/** Create Obstetric Office Visit **/
 	CREATE_OBSTETRIC_OFFICE_VISIT(9400, "Create Obstetric Office Visit", " created obstetric office visit", true),
 	/** View Obstetric Office Visit **/
-	VIEW_OBSTETRIC_OFFIC_VISIT(9401, "View Obstetric Office Visit", " viewed obstetric office visit", true),
+	VIEW_OBSTETRIC_OFFICE_VISIT(9401, "View Obstetric Office Visit", " viewed obstetric office visit", true),
 	/** Edit Obstetric Office Visit **/
 	EDIT_OBSTETRIC_OFFICE_VISIT(9402, "Edit Obstetric Office Visit", " edited obstetric office visit", true),
 	/** Edit Ultrasound **/

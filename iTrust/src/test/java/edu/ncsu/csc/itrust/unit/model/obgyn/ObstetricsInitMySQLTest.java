@@ -58,19 +58,12 @@ public class ObstetricsInitMySQLTest {
 	public void testGetByID() throws Exception {
 		list = db.getByID(2);
 		assertEquals(3, list.size());
-
-//		(2,'2002-05-01 00:00:01','2016-01-01 00:00:01', 1),
-//		(2,'1996-05-03 00:00:01','1990-01-01 00:00:01', 0),
-//		(2, '1992-05-02 00:00:01', '1992-01-01 00:00:01', 0),
-
-		assertEquals(list.get(0).getInitDate(), LocalDate.of(2002, 05, 01));
-		assertEquals(list.get(1).getInitDate(), LocalDate.of(1996, 05, 03));
-		assertEquals(list.get(2).getInitDate(), LocalDate.of(1992, 05, 02));
-		
-		assertEquals(list.get(0).getLastMenstrualPeriod(), LocalDate.of(2016, 1, 1));
-		assertEquals(list.get(1).getLastMenstrualPeriod(), LocalDate.of(1990, 1, 1));
-		assertEquals(list.get(2).getLastMenstrualPeriod(), LocalDate.of(1992, 1, 1));
-		
+		assertEquals(LocalDate.of(2016, 01, 01), list.get(0).getInitDate());
+		assertEquals(LocalDate.of(1996, 05, 03), list.get(1).getInitDate());
+		assertEquals(LocalDate.of(1992, 05, 02), list.get(2).getInitDate());
+		assertEquals(LocalDate.of(2016, 1, 1), list.get(0).getLastMenstrualPeriod());
+		assertEquals(LocalDate.of(1990, 1, 1), list.get(1).getLastMenstrualPeriod());
+		assertEquals(LocalDate.of(1992, 1, 1), list.get(2).getLastMenstrualPeriod());
 	}
 
 	@Test
