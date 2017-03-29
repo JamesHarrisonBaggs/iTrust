@@ -1,5 +1,8 @@
 package edu.ncsu.csc.itrust.controller.obgyn;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import edu.ncsu.csc.itrust.action.ApptAction;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -16,7 +20,14 @@ import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
+import edu.ncsu.csc.itrust.model.old.beans.ApptBean;
+import edu.ncsu.csc.itrust.model.old.beans.ApptTypeBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptRequestDAO;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptTypeDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 import javax.sql.DataSource;
 
@@ -36,17 +47,26 @@ public class ObstetricsVisitController extends iTrustController {
 	private boolean lowLyingPlacenta;
 	private boolean rhFlag;
 	private ObstetricsController obc;
+	private ApptDAO aDAO;
+	private ApptRequestDAO arDAO;
+	private ApptTypeDAO atDAO;
+	private ApptAction aa;
 
 	private boolean eligible;
 	private boolean obgyn;
 	private boolean notice;
 
 	private List<ObstetricsInit> obstetricsList;
+	private DAOFactory factory;
+	private SessionUtils sessionUtils;
+	private boolean run;
+	private boolean autoSchedule;
 
 	public ObstetricsVisitController() throws DBException {
 		super();
 		obc = new ObstetricsController();
 		sql = new ObstetricsVisitMySQL();
+		sessionUtils = getSessionUtils();
 		ob = getObstetricsVisit();
 		if (getOfficeVisit().getVisitID() != 0) {
 			ob.setVisitId(getOfficeVisit().getVisitID());
@@ -75,6 +95,17 @@ public class ObstetricsVisitController extends iTrustController {
 		setObstetricsList();
 		setEligible();
 		setNotice();
+		String run = sessionUtils.getRequestParameter("run");
+		if (run != null) {
+			if(Boolean.parseBoolean(sessionUtils.getRequestParameter("run"))) {
+				try {
+					autoScheduleAppt();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 
@@ -84,11 +115,11 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 
 	public OfficeVisit getOfficeVisit() throws DBException {
-		long id = getSessionUtils().getCurrentOfficeVisitId();
+		long id = sessionUtils.getCurrentOfficeVisitId();
 		return new OfficeVisitController().getVisitByID(id);
 	}
 	public ObstetricsVisit getObstetricsVisit() throws DBException {
-		long id = getSessionUtils().getCurrentOfficeVisitId();
+		long id = sessionUtils.getCurrentOfficeVisitId();
 		return sql.getByVisit(id);
 	}
 	public void update(ObstetricsVisit bean) throws DBException {
@@ -104,8 +135,8 @@ public class ObstetricsVisitController extends iTrustController {
 
 		// create bean
 		ObstetricsVisit bean = new ObstetricsVisit();
-		bean.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
-		bean.setVisitId(getSessionUtils().getCurrentOfficeVisitId());
+		bean.setPatientId(sessionUtils.getCurrentPatientMIDLong());
+		bean.setVisitId(sessionUtils.getCurrentOfficeVisitId());
 		bean.setVisitDate(getOfficeVisit().getDate());
 		// test data
 		bean.setBloodPressure("120/90");
@@ -137,9 +168,78 @@ public class ObstetricsVisitController extends iTrustController {
 		ob.setLowLyingPlacenta(lowLyingPlacenta);
 		ob.setRhFlag(rhFlag);
 		ob.setLowLyingPlacenta(lowLyingPlacenta);
+		setAutoSchedule(false);
 		update(ob);
+		setAutoSchedule(true);
 
-
+	}
+	public boolean autoScheduleAppt() throws DBException, SQLException {
+		factory = DAOFactory.getProductionInstance();
+		aDAO = new ApptDAO(factory);
+		arDAO = new ApptRequestDAO(factory);
+		atDAO = new ApptTypeDAO(factory);
+		LocalDateTime visitDate2 = visitDate;
+		long pid = sessionUtils.getCurrentPatientMIDLong();
+		long mid = sessionUtils.getSessionLoggedInMIDLong();
+		ApptBean appt = new ApptBean();
+		ApptTypeBean apptType = atDAO.getApptType("OB/GYN");
+		appt.setApptType(apptType.getName());
+		appt.setPrice(apptType.getPrice());
+		appt.setHcp(mid);
+		appt.setPatient(pid);
+		if(visitDate2.getHour() > 16 || visitDate2.getHour() < 9) {
+			visitDate2 = visitDate2.withHour(12);
+		}
+		if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
+			visitDate2 = visitDate2.plusDays(2);
+		}
+		if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			visitDate2 = visitDate2.plusDays(1);
+		}
+		if (weeksPregnant >= 0 && weeksPregnant <= 13) {
+			long months = 1;
+			visitDate2 = visitDate2.plusMonths(months);
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} else if (weeksPregnant >= 14 && weeksPregnant <= 28) {
+			long weeks = 2;
+			visitDate2 = visitDate2.plusWeeks(weeks);
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} else if (weeksPregnant >= 29 && weeksPregnant <= 40) {
+			long weeks = 1;
+			visitDate2 = visitDate2.plusWeeks(weeks);
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} else if (weeksPregnant >= 40 && weeksPregnant <= 42) {
+			long days = 2;
+			visitDate2 = visitDate2.plusDays(days);
+			if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
+				visitDate2 = visitDate2.plusDays(2);
+			}
+			if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
+				visitDate2 = visitDate2.plusDays(1);
+			}
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} 
+		List<ApptBean> conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
+		List<ApptBean> conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
+		if (conflictsHCP.isEmpty() && conflictsPatient.isEmpty()) {
+			aDAO.scheduleAppt(appt);
+			return true;
+		} else {
+			while(!conflictsHCP.isEmpty() || !conflictsPatient.isEmpty()) {
+				long days = 2;
+				visitDate2 = visitDate2.plusDays(days);
+				Timestamp timestamp = Timestamp.valueOf(visitDate2);
+				appt.setDate(timestamp);
+				conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
+				conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
+			}
+			aDAO.scheduleAppt(appt);
+			return true;
+		}
 	}
 
 	public long getVisitId() {
@@ -293,6 +393,16 @@ public class ObstetricsVisitController extends iTrustController {
 	public void setNotice() {
 		boolean tmp = (weeksPregnant > 28);
 		notice = tmp;
+	}
+
+
+	public boolean isAutoSchedule() {
+		return autoSchedule;
+	}
+
+
+	public void setAutoSchedule(boolean autoSchedule) {
+		this.autoSchedule = autoSchedule;
 	}
 
 }
