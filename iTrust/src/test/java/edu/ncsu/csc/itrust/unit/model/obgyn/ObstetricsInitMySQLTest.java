@@ -9,7 +9,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
@@ -19,19 +22,19 @@ import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 public class ObstetricsInitMySQLTest {
 
 	private ObstetricsInitMySQL db;
-	private DAOFactory dao;
+	private DataSource ds;
 	private TestDataGenerator gen;
 	
 	private List<ObstetricsInit> list;
 	private ObstetricsInit bean;
-	
+		
 	@Before
 	public void setUp() throws Exception {
 		// get database
-		dao = TestDAOFactory.getTestInstance();
-		db = new ObstetricsInitMySQL(dao);
+		ds = ConverterDAO.getDataSource();
+		db = new ObstetricsInitMySQL(ds);
 		
-		// generate UC93
+		// standard data
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();

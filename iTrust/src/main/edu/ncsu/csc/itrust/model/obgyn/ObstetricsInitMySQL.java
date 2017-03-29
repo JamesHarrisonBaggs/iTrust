@@ -5,89 +5,83 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
-/**
- * 
- * @author erein
- *
- */
 public class ObstetricsInitMySQL {
 
-	private DAOFactory factory;
 	private ObstetricsInitSQLLoader loader;
 	private ObstetricsInitValidator validator;
+	private DataSource ds;
 	
 	/**
-	 * Constructs a new ObstetricsInitMySQL
+	 * Constructs ObstetricsInitMySQL
 	 */
-	public ObstetricsInitMySQL(DAOFactory factory) {
-		this.factory = factory;
+	public ObstetricsInitMySQL() throws DBException {
+		try {
+			Context ctx = new InitialContext();
+			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
+		} catch (NamingException e) {
+			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
+		}
 		this.loader = new ObstetricsInitSQLLoader();
 		this.validator = new ObstetricsInitValidator();
+	}
+	
+	/**
+	 * Constructs ObstetricsInitMySQL with a data source
+	 */
+	public ObstetricsInitMySQL(DataSource ds) throws DBException {
+		this.ds = ds;
+		this.loader = new ObstetricsInitSQLLoader();
+		this.validator = new ObstetricsInitValidator();
+	}
+	
+	/**
+	 * Creates or updates an obstetrics record in the database
+	 */
+	public int update(ObstetricsInit bean) throws DBException, FormValidationException {
+		validator.validate(bean);
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}		
 	}
 	
 	/**
 	 * Returns all obstetrics records for a patient
 	 */
 	public List<ObstetricsInit> getByID(long id) throws DBException {
-		ArrayList<ObstetricsInit> beans = new ArrayList<ObstetricsInit>();
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id=? ORDER BY init_date DESC")) {
-			stmt.setLong(1, id);
-			final ResultSet results = stmt.executeQuery();
-			while (results.next()) {
-				beans.add(loader.loadResults(results));
-			}
-			results.close();
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id="+id+" ORDER BY init_date DESC");
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
-		return beans;
 	}
 	
 	/**
 	 * Returns a single obstetric record for a patient on a date
 	 */
 	public List<ObstetricsInit> getByDate(long id, Timestamp date) throws DBException {
-		ArrayList<ObstetricsInit> beans = new ArrayList<ObstetricsInit>();
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id=? AND init_date=?")) {
-			stmt.setLong(1, id);
-			stmt.setTimestamp(2, date);
-			final ResultSet results = stmt.executeQuery();
-			while (results.next()) {
-				beans.add(loader.loadResults(results));
-			}
-			results.close();
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id="+id+" AND init_date=?")) {
+			stmt.setTimestamp(1, date);
+			ResultSet results = stmt.executeQuery();
+			return loader.loadList(results);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
-		return beans;
-	}
-	
-	/**
-	 * Adds or updates an obstetrics record in the database
-	 */
-	public int update(ObstetricsInit bean) throws DBException, FormValidationException {
-		validator.validate(bean);
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = loader.loadUpdate(conn.prepareStatement(""
-						+ "INSERT INTO obstetrics "
-						+ "(id, init_date, lmp_date, current) "
-						+ "VALUES(?,?,?,?) "
-						+ "ON DUPLICATE KEY UPDATE "
-						+ "id=?, init_date=?, lmp_date=?, current=?"), bean)) {
-			int result = stmt.executeUpdate();
-			return result;
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}		
 	}
 	
 }

@@ -1,21 +1,62 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Interface between SQL objects and PregnancyBean
- * @author erein
- *
- */
-public class PregnancySQLLoader {
-	
+import edu.ncsu.csc.itrust.model.SQLLoader;
+
+public class PregnancySQLLoader implements SQLLoader<Pregnancy> {
+
 	/**
-	 * For database updates.
-	 * Loads data from an Obstetrics Bean to a PreparedStatement
+	 * Returns a list of beans from a result set
 	 */
-	public PreparedStatement loadUpdate(PreparedStatement ps, Pregnancy bean) throws SQLException {
+	@Override
+	public List<Pregnancy> loadList(ResultSet results) throws SQLException {
+		List<Pregnancy> list = new ArrayList<Pregnancy>();
+		while (results.next()) {
+			list.add(loadSingle(results));
+		}
+		return list;
+	}
+
+	/**
+	 * Maps a row in a results set to a bean
+	 */
+	@Override
+	public Pregnancy loadSingle(ResultSet results) throws SQLException {
+		Pregnancy bean = new Pregnancy();
+		bean.setPatientId(results.getLong("id"));
+		bean.setDateOfBirth(results.getTimestamp("birth_date").toLocalDateTime().toLocalDate());
+		bean.setYearOfConception(results.getInt("conception_year"));
+		bean.setDaysPregnant(results.getInt("days_pregnant"));
+		bean.setHoursInLabor(results.getInt("hours_labor"));
+		bean.setWeightGain(results.getDouble("weight_gain"));
+		bean.setDeliveryType(results.getString("delivery_type"));
+		bean.setAmount(results.getInt("amount"));		
+		return bean;
+	}
+
+	/**
+	 * Creates a prepared statement from a bean; used for updates
+	 */
+	@Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Pregnancy bean,
+			boolean newInstance) throws SQLException {
+		
+		String statement = "INSERT INTO pregnancies "
+				+ "(id, birth_date, conception_year, days_pregnant, "
+				+ "hours_labor, weight_gain, delivery_type, amount) "
+				+ "VALUES(?,?,?,?,?,?,?,?) "
+				+ "ON DUPLICATE KEY UPDATE "
+				+ "id=?, birth_date=?, conception_year=?, days_pregnant=?, "
+				+ "hours_labor=?, weight_gain=?, delivery_type=?, amount=?";
+		ps = conn.prepareStatement(statement);
+		
+		// set parameters
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
 		ps.setTimestamp(i++, bean.getDOBTimestamp());
@@ -37,25 +78,6 @@ public class PregnancySQLLoader {
 		ps.setInt(i++, bean.getAmount());
 
 		return ps;
-	}
-	
-	/**
-	 * For database queries.
-	 * Loads data from a ResultsSet to an Obstetrics Bean
-	 */
-	public Pregnancy loadResults(ResultSet results) throws SQLException {
-		Pregnancy bean = new Pregnancy();
-		
-		bean.setPatientId(results.getLong("id"));
-		bean.setDOBTimestamp(results.getTimestamp("birth_date"));
-		bean.setYearOfConception(results.getInt("conception_year"));
-		bean.setDaysPregnant(results.getInt("days_pregnant"));
-		bean.setHoursInLabor(results.getInt("hours_labor"));
-		bean.setWeightGain(results.getDouble("weight_gain"));
-		bean.setDeliveryType(results.getString("delivery_type"));
-		bean.setAmount(results.getInt("amount"));		
-		
-		return bean;
 	}
 	
 }

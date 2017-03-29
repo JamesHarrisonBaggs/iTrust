@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.Context;
@@ -21,6 +20,9 @@ public class UltrasoundMySQL {
 	private UltrasoundSQLLoader loader;
 	private UltrasoundValidator validator;
 
+	/**
+	 * Constructs an UltrasoundMySQL
+	 */
 	public UltrasoundMySQL() throws DBException {
 		try {
 			Context ctx = new InitialContext();
@@ -31,13 +33,19 @@ public class UltrasoundMySQL {
 		loader = new UltrasoundSQLLoader();
 		validator = new UltrasoundValidator();
 	}
-
+	
+	/**
+	 * Constructs an UltrasoundMySQL with a data source
+	 */
 	public UltrasoundMySQL(DataSource ds) throws DBException {
 		this.ds = ds;
 		loader = new UltrasoundSQLLoader();
 		validator = new UltrasoundValidator();
 	}
 
+	/**
+	 * Creates or updates an Ultrasound record
+	 */
 	public int update(Ultrasound bean) throws DBException, FormValidationException {
 		validator.validate(bean);
 		try (Connection conn = ds.getConnection();
@@ -49,77 +57,16 @@ public class UltrasoundMySQL {
 		}
 	}
 
-	public Ultrasound getByVisitFetus(long id, int fetus) throws DBException {
-		try (Connection conn = ds.getConnection();) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds WHERE visitID='");
-			stringBuilder.append(id);
-			stringBuilder.append("' AND fetus='");
-			stringBuilder.append(fetus);
-			stringBuilder.append("';");
-			String statement = stringBuilder.toString();
-			PreparedStatement stmt = conn.prepareStatement(statement);
-			ResultSet results = stmt.executeQuery();
-			if(results.next()) {
-				return loader.loadSingle(results);
-			} else {
-				return new Ultrasound();
-			}
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
-	}
-	public List<Ultrasound> getByPatientIdVisitId(long pid,long vid) throws DBException {
-		try (Connection conn = ds.getConnection();) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds Where id='");
-			stringBuilder.append(pid);
-			stringBuilder.append("' and visitID='");
-			stringBuilder.append(vid);
-			stringBuilder.append("';");
-			String statement = stringBuilder.toString();
-			PreparedStatement stmt = conn.prepareStatement(statement);
-			ResultSet results = stmt.executeQuery();
-			if(results.next()) {
-				return loader.loadList(results);
-			} else {
-				return new ArrayList<Ultrasound>();
-			}
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
-	}
-
-	public List<Ultrasound> getByPatientId(long id) throws DBException {
-		try (Connection conn = ds.getConnection();) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds WHERE id='");
-			stringBuilder.append(id);
-			stringBuilder.append("';");
-			String statement = stringBuilder.toString();
-			PreparedStatement stmt = conn.prepareStatement(statement);
-			ResultSet results = stmt.executeQuery();
-			if(results.next()) {
-				return loader.loadList(results);
-			} else {
-				return new ArrayList<Ultrasound>();
-			}
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
-	}
-
-	public Ultrasound getByVisit(long id) throws DBException {
-		try (Connection conn = ds.getConnection();) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.ultrasounds WHERE visitID='");
-			stringBuilder.append(id);
-			stringBuilder.append("';");
-			String statement = stringBuilder.toString();
-			PreparedStatement stmt = conn.prepareStatement(statement);
-			ResultSet results = stmt.executeQuery();
-			if(results.next()) {
-				return loader.loadSingle(results);
+	/**
+	 * Gets an Ultrasound by office visit ID and fetus number
+	 */
+	public Ultrasound getByVisitFetus(long visitID, int fetus) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ultrasounds WHERE visitID="+visitID+" AND fetus="+fetus);
+				ResultSet results = stmt.executeQuery()) {
+			List<Ultrasound> list = loader.loadList(results);
+			if (list.size() > 0) {
+				return list.get(0);
 			} else {
 				return new Ultrasound();
 			}
@@ -128,17 +75,39 @@ public class UltrasoundMySQL {
 		}
 	}
 
-	public void removeUltrasound(long visitId2, int fetusId2) throws DBException {
-		try (Connection conn = ds.getConnection();) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("DELETE FROM itrust.ultrasounds WHERE visitID='");
-			stringBuilder.append(visitId2);
-			stringBuilder.append("' and fetus='");
-			stringBuilder.append(fetusId2);
-			stringBuilder.append("';");
-			String statement = stringBuilder.toString();
-			PreparedStatement stmt = conn.prepareStatement(statement);
-			stmt.execute();
+	/**
+	 * Gets a list of Ultrasound records by patient ID
+	 */
+	public List<Ultrasound> getByPatientId(long patientID) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ultrasounds WHERE id="+patientID);
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
+	/**
+	 * Gets a list of Ultrasound records by patient ID and office visit ID
+	 */
+	public List<Ultrasound> getByPatientIdVisitId(long patientID, long visitID) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM ultrasounds WHERE id="+patientID+" AND visitID="+visitID);
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+
+	/**
+	 * Deletes an Ultrasound from the database given office visit ID and fetus number
+	 */
+	public boolean removeUltrasound(long visitID, int fetus) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("DELETE FROM ultrasounds WHERE visitID="+visitID+" AND fetus="+fetus)) {
+			return stmt.executeUpdate() > 0;
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}	

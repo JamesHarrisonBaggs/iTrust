@@ -19,7 +19,12 @@ public class ObstetricsVisitMySQL {
 	private ObstetricsVisitSQLLoader loader;
 	private ObstetricsVisitValidator validator;
 	private DataSource ds;
+	
+	// TODO lacks a lot of standard methods like getAll() and remove()
 
+	/**
+	 * Constructs ObstetricsVisitMySQL
+	 */
 	public ObstetricsVisitMySQL() throws DBException {
 		try {
 			Context ctx = new InitialContext();
@@ -27,47 +32,55 @@ public class ObstetricsVisitMySQL {
 		} catch (NamingException e) {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
-		loader = new ObstetricsVisitSQLLoader();
-		validator = new ObstetricsVisitValidator();
+		this.loader = new ObstetricsVisitSQLLoader();
+		this.validator = new ObstetricsVisitValidator();
 	}
 
+	/**
+	 * Constructs ObstetricsVisitMySQL with a data source
+	 */
 	public ObstetricsVisitMySQL(DataSource ds) throws DBException {
 		this.ds = ds;
-		loader = new ObstetricsVisitSQLLoader();
-		validator = new ObstetricsVisitValidator();
+		this.loader = new ObstetricsVisitSQLLoader();
+		this.validator = new ObstetricsVisitValidator();
 	}
 
+	/**
+	 * Creates or updates an obstetrics visit
+	 */
 	public int update(ObstetricsVisit bean) throws DBException, FormValidationException {
 		validator.validate(bean);
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
-			int results = stmt.executeUpdate();
-			return results;
+			return stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
 	}
+	
+	/**
+	 * Gets a list of obstetrics office visits by patient ID
+	 */
 	public List<ObstetricsVisit> getByID(long id) throws DBException {
-		// TODO implement
-		return null;
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_visits WHERE id="+id);
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
 	}
 
-	public ObstetricsVisit getByFetus(long id, int fetus) throws DBException {
-		// TODO implement
-		return null;		
-	}
-
+	/**
+	 * Gets an obstetric visit by office visit ID
+	 */
 	public ObstetricsVisit getByVisit(long visitId) throws DBException {
-		try (Connection conn = ds.getConnection();) {
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("SELECT * FROM itrust.obstetrics_visits Where visitID='");
-			stringBuilder.append(visitId);
-			stringBuilder.append("';");
-			String statement = stringBuilder.toString();
-			PreparedStatement stmt = conn.prepareStatement(statement);
-			ResultSet results = stmt.executeQuery();
-			if(results.next()) {
-				return loader.loadSingle(results);
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_visits WHERE visitID="+visitId);
+				ResultSet results = stmt.executeQuery()) {
+			List<ObstetricsVisit> list = loader.loadList(results);
+			if (list.size() > 0) {
+				return list.get(0);
 			} else {
 				return new ObstetricsVisit();
 			}
@@ -75,10 +88,18 @@ public class ObstetricsVisitMySQL {
 			throw new DBException(e);
 		}
 	}
-
-	public ObstetricsVisit getByVisitAndFetus(long visitId, int fetus) throws DBException {
-		// TODO implement
-		return null;		
+	
+	/**
+	 * Gets an obstetric visit by patient ID and office visit ID
+	 */
+	public List<ObstetricsVisit> getByPatientVisit(long patientId, long visitId) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_visits WHERE id="+patientId+" AND visitID="+visitId);
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
 	}
 
 }
