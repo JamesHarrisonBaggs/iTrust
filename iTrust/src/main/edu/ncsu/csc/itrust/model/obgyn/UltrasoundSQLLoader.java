@@ -15,7 +15,6 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 	@Override
 	public List<Ultrasound> loadList(ResultSet rs) throws SQLException {
 		List<Ultrasound> list = new ArrayList<Ultrasound>();
-		list.add(loadSingle(rs));
 		while(rs.next()) {
 			list.add(loadSingle(rs));
 		}
