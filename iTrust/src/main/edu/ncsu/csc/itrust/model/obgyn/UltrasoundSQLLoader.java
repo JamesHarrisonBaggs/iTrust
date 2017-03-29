@@ -39,8 +39,8 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		bean.setHumerusLength(rs.getInt("hl"));
 		bean.setEstimatedFetalWeight(rs.getDouble("efw"));
 		Blob hold = rs.getBlob("file");
-		if( hold != null ){
-			bean.setUploadFile(rs.getBlob("file").getBinaryStream());
+		if (hold != null){
+			bean.setUploadFile(hold.getBinaryStream());
 		}
 		return bean;
 	}
@@ -59,13 +59,7 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 				+ "ON DUPLICATE KEY UPDATE id=?, visitID=?, visitDate=?, fetus=?, "
 				+ "crl=?, bpd=?, hc=?, fl=?, ofd=?, ac=?, hl=?, efw=?";
 		ps = conn.prepareStatement(statement);
-		//TODO remove
-		try {
-			System.out.println(bean.getUploadFile().available());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		// set parameters
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
@@ -95,8 +89,6 @@ public class UltrasoundSQLLoader implements SQLLoader<Ultrasound> {
 		ps.setInt(i++, bean.getAbdominalCircumference());
 		ps.setInt(i++, bean.getHumerusLength());
 		ps.setDouble(i++, bean.getEstimatedFetalWeight());
-		
-		System.out.println(ps.toString());
 		
 		return ps;
 	}
