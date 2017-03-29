@@ -77,7 +77,7 @@ public class PregnancyMySQL {
 	 */
 	public List<Pregnancy> getByDate(long id, Timestamp date) throws DBException {
 		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ? AND birth_date < ?")) {
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ? AND birth_date <= ?")) {
 			stmt.setLong(1, id);
 			stmt.setTimestamp(2, date);
 			ResultSet results = stmt.executeQuery();
