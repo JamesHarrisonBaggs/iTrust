@@ -8,13 +8,13 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
-import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 /**
@@ -31,7 +31,6 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 @ManagedBean(name = "htcontrol")
 public class HealthTrackerController extends iTrustController {
 
-	private DAOFactory factory;
 	private HealthTrackerMySQL database;
 	
 	private List<HealthTrackerBean> dataList;
@@ -39,12 +38,19 @@ public class HealthTrackerController extends iTrustController {
 	
 	/**
 	 * Constructs a new Health Tracker Controller
-	 * @throws DBException
 	 */
 	public HealthTrackerController() throws DBException {
 		super();
-		this.factory = DAOFactory.getProductionInstance();
-		this.database = factory.getHealthTrackerDataSQL();
+		this.database = new HealthTrackerMySQL();
+		dataList = new ArrayList<HealthTrackerBean>();
+	}
+	
+	/**
+	 * Constructs a new Health Tracker Controller with a data source
+	 */
+	public HealthTrackerController(DataSource ds) throws DBException {
+		super();
+		this.database = new HealthTrackerMySQL(ds);
 		dataList = new ArrayList<HealthTrackerBean>();
 	}
 		
@@ -105,13 +111,13 @@ public class HealthTrackerController extends iTrustController {
 	}
 	
 	/** BASE METHODS CORRESPONDING TO SQL CLASS */
-	public ArrayList<HealthTrackerBean> getDataInDay(Timestamp day) throws DBException {
+	public List<HealthTrackerBean> getDataInDay(Timestamp day) throws DBException {
 		return database.getDataOnDay(getSessionUtils().getCurrentPatientMIDLong(), day);
 	}
-	public ArrayList<HealthTrackerBean> getDataInRange(Timestamp start, Timestamp end) throws DBException {
+	public List<HealthTrackerBean> getDataInRange(Timestamp start, Timestamp end) throws DBException {
 		return database.getDataInRange(getSessionUtils().getCurrentPatientMIDLong(), start, end);
 	}	
-	public ArrayList<HealthTrackerBean> getAllData() throws DBException {
+	public List<HealthTrackerBean> getAllData() throws DBException {
 		return database.getByID(getSessionUtils().getCurrentPatientMIDLong());
 	}
 

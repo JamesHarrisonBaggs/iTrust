@@ -2,10 +2,6 @@ package edu.ncsu.csc.itrust.model.old.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
-import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
-import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.*;
 
 /**
@@ -130,14 +126,6 @@ public class DAOFactory {
 	 */
 	public FamilyDAO getFamilyDAO() {
 		return new FamilyDAO(this);
-	}
-	
-	/**
-	 * 
-	 * @return this DAOFactory's HealthTrackerDAO
-	 */
-	public HealthTrackerMySQL getHealthTrackerDataSQL() {
-		return new HealthTrackerMySQL(this);
 	}
 	
 	/**
