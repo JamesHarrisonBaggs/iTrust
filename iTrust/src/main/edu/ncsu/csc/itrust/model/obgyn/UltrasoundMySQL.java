@@ -113,6 +113,9 @@ public class UltrasoundMySQL {
 		}	
 	} 
 	
+	/**
+	 * Removes an Ultrasound image from the database
+	 */
 	public boolean removeUltrasoundImage(long visitID, int fetus) throws DBException{
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("Update ultrasounds SET file=null WHERE visitID=" + visitID +" AND fetus=" + fetus)) {

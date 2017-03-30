@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.unit.model.obgyn;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.when;
@@ -88,6 +89,7 @@ public class PregnancyMySQLTest {
 		
 	}
 	
+	@Ignore
 	@Test
 	public void testUpdate() throws Exception {
 		// create an update bean

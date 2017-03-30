@@ -5,12 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyValidator;
-import edu.ncsu.csc.itrust.model.obgyn.Ultrasound;
 
 public class PregnancyValidatorTest {
 	

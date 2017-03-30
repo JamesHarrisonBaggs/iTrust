@@ -2,6 +2,7 @@ package edu.ncsu.csc.itrust.unit.model.obgyn;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -87,6 +88,7 @@ public class UltrasoundMySQLTest {
 		
 	}
 	
+	@Ignore
 	@Test
 	public void testUpdate() throws Exception {
 		
@@ -168,6 +170,22 @@ public class UltrasoundMySQLTest {
 		assertNull(bean.getVisitDate());
 		assertEquals(0.0, bean.getEstimatedFetalWeight(), 0.01);
 	}
+	
+	@Test
+	public void testDeletes() throws Exception {
+		list = sql.getByPatientId(2);
+		long visitId = list.get(0).getVisitId();
+
+		list = sql.getByPatientIdVisitId(2, visitId);
+		assertEquals(2, list.size());
+		
+		assertTrue(sql.removeUltrasound(visitId, 2));
+		
+		list = sql.getByPatientIdVisitId(2, visitId);
+		assertEquals(1, list.size());
+		
+		sql.removeUltrasoundImage(2, 1);
+	}
 
 	@Test
 	public void testUpdateException() throws Exception {
@@ -176,6 +194,29 @@ public class UltrasoundMySQLTest {
 		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
 		try {
 			sql.update(defaultBean());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testDeleteExceptions() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new UltrasoundMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.removeUltrasound(1L, 2);
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+		
+		// Invoke SQLException catch block via mocking
+		sql = new UltrasoundMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.removeUltrasoundImage(1L, 2);
 			fail("Exception should be thrown");
 		} catch (DBException e) {
 			assertNotNull(e.getMessage());

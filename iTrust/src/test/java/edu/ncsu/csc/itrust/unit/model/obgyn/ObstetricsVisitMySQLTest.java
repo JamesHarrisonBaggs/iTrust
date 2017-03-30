@@ -169,7 +169,7 @@ public class ObstetricsVisitMySQLTest {
 		when(mockDS.getConnection()).thenReturn(mockConn);
 		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
 		try {
-			sql.getByID(1);
+			sql.getByID(1L);
 			fail("Exception should be thrown");
 		} catch (DBException e) {
 			assertNotNull(e.getMessage());
