@@ -120,7 +120,8 @@ public class ObstetricsVisitController extends iTrustController {
 		try {
 			int result = sql.update(bean);
 			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formSuccess", new FacesMessage("Obstetrics Visit Updated Successfully"));
-			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_OFFICE_VISIT : TransactionType.EDIT_OBSTETRIC_OFFICE_VISIT, "");
+			
+			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_OFFICE_VISIT : TransactionType.EDIT_OBSTETRIC_OFFICE_VISIT, String.valueOf(visitId));
 		} catch (FormValidationException e) {
 			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formError", new FacesMessage(e.getMessage()));
 		}
@@ -133,7 +134,7 @@ public class ObstetricsVisitController extends iTrustController {
 	
 	public ObstetricsVisit getObstetricsVisit() throws DBException {
 		long id = sessionUtils.getCurrentOfficeVisitId();
-		logTransaction(TransactionType.VIEW_OBSTETRIC_OFFICE_VISIT, "");
+		logTransaction(TransactionType.VIEW_OBSTETRIC_OFFICE_VISIT, String.valueOf(visitId));
 		return sql.getByVisit(id);
 	}
 
@@ -207,8 +208,7 @@ public class ObstetricsVisitController extends iTrustController {
 		List<ApptBean> conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
 		List<ApptBean> conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
 		if (conflictsHCP.isEmpty() && conflictsPatient.isEmpty()) {
-			aDAO.scheduleAppt(appt);
-			return true;
+			aDAO.scheduleAppt(appt);	
 		} else {
 			while(!conflictsHCP.isEmpty() || !conflictsPatient.isEmpty()) {
 				long days = 2;
@@ -219,8 +219,11 @@ public class ObstetricsVisitController extends iTrustController {
 				conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
 			}
 			aDAO.scheduleAppt(appt);
-			return true;
+			
 		}
+		List<ApptBean> appzs = aDAO.getAllApptsFor(mid);
+		logTransaction(TransactionType.SCHEDULE_OFFICE_VISIT, String.valueOf(this.visitId)+ ", " + String.valueOf(appzs.get(appzs.size()-1).getApptID()));
+		return true;
 	}
 
 	public long getVisitId() {

@@ -8,10 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.*;
 
 import cucumber.api.java.*;
 import cucumber.api.java.en.*;
@@ -31,8 +32,8 @@ public class ObstetricsOfficeVisitStepDefs {
 		driver.get(ADDRESS);
 	}
 	
-	@Given("^I logged in as an OBGYN HCP with MID (.*) and password (.*)$")
-	public void OBGYN_log_in(String hcp, String pw) {
+	@Given("^I logged in as an OB/GYN HCP with MID (.*) and password (.*) for Obstetrics Office Visit$")
+	public void log_in_oov(String hcp, String pw) {
 		// log in using the given username and password
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		WebElement user = driver.findElement(By.name("j_username"));
@@ -46,12 +47,12 @@ public class ObstetricsOfficeVisitStepDefs {
 		}
 	}
 	
-	@And("^I select Obestetrics Info, then go to Document Office Visit$")
+	@And("^I select Obstetrics Info, then go to Document Office Visit$")
 	public void document_visit() {
 		driver.findElement(By.cssSelector("h2.panel-title")).click();
 		driver.findElement(By.linkText("Document Office Visit")).click();
 		try {
-			assertEquals("Document Office Visit", driver.getTitle());
+			assertEquals("iTrust - Please Select a Patient", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -64,7 +65,7 @@ public class ObstetricsOfficeVisitStepDefs {
 		driver.findElement(By.name("NAME_SUBMIT")).click();
 		try {
 			driver.findElement(By.name("user_" + patient)).click();
-			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
+			assertEquals("Document Office Visit", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -72,6 +73,10 @@ public class ObstetricsOfficeVisitStepDefs {
 	
 	@And("^I click Create a New Office Visit$")
 	public void create_visit() {
+		driver.findElement(By.id("newVisitButton")).click();
+		driver.findElement(By.id("newVisitButton")).click();
+		driver.findElement(By.id("newVisitButton")).click();
+		driver.findElement(By.id("newVisitButton")).click();
 		driver.findElement(By.id("newVisitButton")).click();
 		assertEquals("Office Visit", driver.getTitle());
 	}
@@ -86,9 +91,9 @@ public class ObstetricsOfficeVisitStepDefs {
 		driver.findElement(By.id("basic_ov_form:submitVisitButton")).click();
 	}
 	
-	@And("^I click on Obstetrics, and enter weight (.*), blood pressure (.*), FHR (.*), multiples (.*), LLP (.*), RHflag (.*)$")
+	@And("^I click on Obstetrics, and enter weight (.*), blood pressure (.*), FHR (.*), multiples (.*), LLP (.*), RHflag (.*), and click Save Obstetrics Visit$")
 	public void office_visit_info(String weight, String bp, String fhr, String num, String llp, String rh) {
-		driver.findElement(By.linkText("Obstetrics")).click();
+		//driver.findElement(By.linkText("Obstetrics")).click();
 		driver.findElement(By.id("manage_obstetrics_formError:weight")).clear();
 		driver.findElement(By.id("manage_obstetrics_formError:weight")).sendKeys(weight);
 		driver.findElement(By.id("manage_obstetrics_formError:bloodPressure")).clear();
@@ -103,10 +108,12 @@ public class ObstetricsOfficeVisitStepDefs {
 		Select s_rh = new Select(driver.findElement(By.id("manage_obstetrics_formError:rhFlag")));
 		s_rh.deselectAll();
 		s_rh.selectByVisibleText(llp);
+		driver.findElement(By.id("manage_obstetrics_formError:editObstetricVisit")).click();
 	}
 	
 	@And("^I click on Add Ultrasound, and enter id (.*), CRL (.*), BPD (.*), HC (.*), FL (.*), OFD (.*), AC (.*), HL (.*), EFW (.*), and click save Ultrasound$")
 	public void ultrasound_info(String id, String crl, String bpd, String hc, String fl, String ofd, String ac, String hl, String efw) {
+		//driver.findElement(By.linkText("Obstetrics")).click();
 		driver.findElement(By.id("j_idt155:addUltraSound")).click();
 		driver.findElement(By.id("ultrasound_formSuccess:fetusId")).clear();
 		driver.findElement(By.id("ultrasound_formSuccess:fetusId")).sendKeys(id);
@@ -138,11 +145,11 @@ public class ObstetricsOfficeVisitStepDefs {
 	@And("^I click Go Back To Office Vist, and click Save Obsteterics Visit$")
 	public void save_visit() {
 		driver.findElement(By.id("ultrasound_formSuccess:goBack")).click();
-		driver.findElement(By.linkText("Obstetrics")).click();
+		//driver.findElement(By.linkText("Obstetrics")).click();
 		driver.findElement(By.id("manage_obstetrics_formError:editObstetricVisit")).click();
 	}
 	
-	@Then("^a new Obstetrics Office Visit is created$")
+	@Then("^a new Obstetrics Office Visit is created for the patient$")
 	public void office_visit_created() {
 		try {
 			String message = driver.findElement(By.xpath("//*[@id=\"manage_obstetrics_formError\"]/div/span")).getText();
@@ -151,25 +158,18 @@ public class ObstetricsOfficeVisitStepDefs {
 			Assert.fail(e.getMessage());
 		}
 	}
-	
+	/*
 	@And("^the next office visit will be scheduled at a federal holiday, so it changes to (.*)$")
 	public void next_visit(String appt) {
 		//calendar needs update
-	}
+	}*/
 	
 	@And("^I click on an exisited OBGYN office visit (.*)$")
 	public void choose_visit(String date) {
-		int i = 1;
-		while (true) {
-			String time = driver.findElement(By.xpath("//*[@id=\"previousVisits\"]/tbody/tr[" + i + "]/td[3]")).getText();
-			if (time.equals(date)) {
-				break;
-			} else {
-				i++;
-			}
-		}
-		driver.findElement(By.xpath("//*[@id=\"previousVisits\"]/tbody/tr[" + i + "]/td[1]/a")).click();
-		driver.findElement(By.linkText("Obstetrics")).click();
+		String time = driver.findElement(By.xpath("//*[@id=\"previousVisits\"]/tbody/tr[5]/td[3]")).getText();
+		assertEquals(date, time);
+		driver.findElement(By.xpath("//*[@id=\"previousVisits\"]/tbody/tr[5]/td[1]/a")).click();
+		//driver.findElement(By.linkText("Obstetrics")).click();
 		
 	}
 	
@@ -183,37 +183,24 @@ public class ObstetricsOfficeVisitStepDefs {
 	@Then("^the Obstetrics Office Visit is changed$")
 	public void visit_changed() {
 		try {
-			String message = driver.findElement(By.xpath("//*[@id=\"manage_obstetrics_formError\"]/div/span")).getText();
-			assertEquals("Obstetrics Visit Updated Successfully", message);
+			driver.findElement(By.xpath("//*[@id=\"manage_obstetrics_formError\"]/div/span"));
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
+	}
+	
+	
+	@When("^I enter patient's MID (.*)$")
+	public void search_by_mid(String patient) {
+		driver.findElement(By.name("FIRST_NAME")).clear();
+		driver.findElement(By.name("FIRST_NAME")).sendKeys(patient);
+		driver.findElement(By.name("NAME_SUBMIT")).click();
 	}
 	
 	@Then("^the patient is not exist$")
 	public void invalid_patient() {
-		String search_result = driver.findElement(By.xpath("//*[@id=\"searchTarget\"]/span")).getText();
+		String search_result = driver.findElement(By.className("searchResults")).getText();
 		assertEquals("Found 0 Records", search_result);
-	}
-	
-	@And("^the patient is not the desired patient$")
-	public void not_desired() {
-		driver.findElement(By.linkText("Select a Different Patient")).click();
-		List<String> browserTabs = new ArrayList<String> (driver.getWindowHandles());            
-		driver.switchTo().window(browserTabs.get(1));
-	}
-	
-	@When("^I re-enter patient's name (.*) and select the patient MID (.*)$")
-	public void choose_patient_again(String rname, String rpatient) {
-		driver.findElement(By.name("FIRST_NAME")).clear();
-		driver.findElement(By.name("FIRST_NAME")).sendKeys(rname);
-		driver.findElement(By.name("NAME_SUBMIT")).click();
-		try {
-			driver.findElement(By.name("user_" + rpatient)).click();
-			assertEquals("Document Office Visit", driver.getTitle());
-		} catch (Error e) {
-			Assert.fail(e.getMessage());
-		}
 	}
 	
 	@Then("^the patient is not eligiable for Obsteterics care$")
@@ -222,8 +209,8 @@ public class ObstetricsOfficeVisitStepDefs {
 		assertEquals("Patient is not eligiable for Obsteterics care", err_message);
 	}
 	
-	@Given("^I logged in as a none OBGYN HCP with MID (.*) and password (>*)$")
-	public void none_OBGYN_log_in(String hcp, String pw) {
+	@Given("^I logged in as a none OB/GYN HCP with MID (.*) and password (.*) for Obstetrics Office Visit$")
+	public void n_hcp_oov(String hcp, String pw) {
 		// log in using the given username and password
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		WebElement user = driver.findElement(By.name("j_username"));
@@ -238,7 +225,7 @@ public class ObstetricsOfficeVisitStepDefs {
 	}
 	
 	@Then("^a message says I can't create an OBGYN appointment because I am not an OBGYN HCP$")
-	public void not_OBGYN_HCP() {
+	public void n_hcp_message() {
 		String err_message = driver.findElement(By.id("officevisitinfo-message")).getText();
 		assertEquals("Can't create OB/GYN appointment, because you are not an OB/GYN HCP", err_message);
 	}
