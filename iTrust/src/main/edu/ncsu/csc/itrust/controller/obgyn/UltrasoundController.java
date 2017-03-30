@@ -26,6 +26,7 @@ import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.obgyn.Ultrasound;
 import edu.ncsu.csc.itrust.model.obgyn.UltrasoundMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "ultrasound_controller")
@@ -132,6 +133,7 @@ public class UltrasoundController extends iTrustController {
 				us.setUploadFile(uploadedFile.getInputStream());
 			}
 		}
+		logTransaction(TransactionType.EDIT_ULTRASOUND, String.valueOf(visitId));
 	}
 
 	private void removeUltrasound(long visitId2, int fetusId2) throws DBException {
