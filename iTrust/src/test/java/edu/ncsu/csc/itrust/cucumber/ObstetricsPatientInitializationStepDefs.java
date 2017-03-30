@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -74,11 +74,16 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@And("^I realize it is a wrong patient, so I click on Select a Different Patient$")
 	public void wrong_patient() {
-		driver.findElement(By.xpath("//*[@id=\"j_idt48\"]/span/a")).click();
+		driver.findElement(By.xpath("//*[@id=\"j_idt9\"]/span/a")).click();
+		List<String> browserTabs = new ArrayList<String> (driver.getWindowHandles());            
+		driver.switchTo().window(browserTabs.get(1));
 	}
 	
-	@And("^the patient is not in the system$")
-	public void invalid_patient() {
+	@And("^I enter patient's name (.*) and the patient is not in the system$")
+	public void invalid_patient(String name) {	
+		driver.findElement(By.name("FIRST_NAME")).clear();
+		driver.findElement(By.name("FIRST_NAME")).sendKeys(name);
+		driver.findElement(By.name("NAME_SUBMIT")).click();
 		try {
 			assertEquals("iTrust - Please Select a Patient", driver.getTitle());
 		} catch (Error e) {
@@ -107,26 +112,26 @@ public class ObstetricsPatientInitializationStepDefs {
 		c.add(Calendar.DATE, 280);
 		edd = c.getTime();
 		String EDD = format.format(edd.getTime());
-		assertEquals(EDD, driver.findElement(By.xpath("//*[@id=\"obgyn_controller\"]/table/tbody/tr[2]/td")).getText());
+		assertEquals("Expected Delivery Date: " + EDD, driver.findElement(By.xpath("//*[@id=\"obgyn_controller\"]/table/tbody/tr[2]/td")).getText());
 	}
 	
 	@When("^I select the patient's initialization at (.*)$")
 	public void select_initialization(String time) {
-		driver.findElement(By.linkText(time)).click();
+		driver.findElement(By.xpath("//*[@id=\"PIRTable\"]/tbody/tr[1]/td/a")).click();
 	}
 	
 	@When("^I re-enter the patient's MID (.*) and name (.*) and select the patient$")
 	public void re_enter_patient(String rpatient, String rname) {
+		try {
+			assertEquals("iTrust - Please Select a Patient", driver.getTitle());
+		} catch (Error e) {
+			Assert.fail(e.getMessage());
+		}
 		driver.findElement(By.name("FIRST_NAME")).clear();
 		driver.findElement(By.name("FIRST_NAME")).sendKeys(rname);
 		driver.findElement(By.name("NAME_SUBMIT")).click();
 		// select patient button
 		driver.findElement(By.name("user_" + rpatient)).click();
-		try {
-			assertEquals("iTrust - Patient Obstetric Initialization", driver.getTitle());
-		} catch (Error e) {
-			Assert.fail(e.getMessage());
-		}
 	}
 	
 	@And("^I add a new prior pregnancy, Year of conception (.*), Number of week pregnant (.*), Number of hours in labor (.*), Weight gained during pregnancy (.*), Delivery type (.*), Number of multiple (.*)$")
@@ -154,10 +159,10 @@ public class ObstetricsPatientInitializationStepDefs {
 		}
 	}
 	
-	@Then("^a new initialization (.*) is created$")
+	@Then("^a new obstetric initialization is created (.*)$")
 	public void initialization_created(String time) {
 		try {
-			assertEquals("iTrust - Patient Obstetric Initialization", driver.getTitle());
+			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
 			driver.findElement(By.linkText(time)).click();
 			assertEquals("iTrust - View Single Initilization", driver.getTitle());
 		} catch (Error e) {
@@ -176,7 +181,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Then("^I can see the Patient's obstetric initialization page$")
 	public void obstetrics_page() {
 		try {
-			assertEquals("iTrust - Patient Obstetric Initialization", driver.getTitle());
+			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}

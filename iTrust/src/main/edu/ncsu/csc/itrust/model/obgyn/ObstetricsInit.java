@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.model.obGyn;
+package edu.ncsu.csc.itrust.model.obgyn;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import javax.faces.bean.ManagedBean;
  *
  */
 @ManagedBean(name = "obsInitBean")
-public class ObstetricsInitBean {
+public class ObstetricsInit {
 
 	/** MID of the patient */
 	private long patientId;
@@ -31,11 +31,11 @@ public class ObstetricsInitBean {
 	/**
 	 * Construct an ObstetricsBean
 	 */
-	public ObstetricsInitBean() {
+	public ObstetricsInit() {
 		
 	}
 	
-	public ObstetricsInitBean(boolean current) {
+	public ObstetricsInit(boolean current) {
 		if (current) {
 			this.setInitDate(LocalDate.now());
 			this.setLastMenstrualPeriod(LocalDate.now());

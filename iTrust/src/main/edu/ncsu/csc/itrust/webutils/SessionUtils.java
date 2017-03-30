@@ -46,6 +46,8 @@ public class SessionUtils {
 	 */
 	private static final String OFFICE_VISIT_ID = "officeVisitId";
 	
+	private static final String FETUS_ID = "fetusID";
+	
 	
 
 	/** The singleton instance of this class. */
@@ -187,6 +189,10 @@ public class SessionUtils {
 	 */
 	public Long getCurrentOfficeVisitId() {
 		return parseLong(getSessionVariable(OFFICE_VISIT_ID));
+	}
+	
+	public int getFetusId() {
+		return Integer.parseInt(getSessionVariable(FETUS_ID).toString());
 	}
 	
 	public List<PatientBean> getRepresenteeList() {

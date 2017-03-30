@@ -1,30 +1,11 @@
 package edu.ncsu.csc.itrust.model.healthtracker;
 
 import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.model.POJOValidator;
 import edu.ncsu.csc.itrust.exception.ErrorList;
 
-public class HealthTrackerValidator {
+public class HealthTrackerValidator extends POJOValidator<HealthTrackerBean> {
 	
-	private static HealthTrackerValidator instance = null;
-
-	/**
-	 * The constructor for HealthTrackerValidator
-	 */
-	public HealthTrackerValidator() {
-
-	}
-	
-	/**
-	 * Returns the singleton instance of HealthTrackerValidator
-	 * @return the singleton instance of HealthTrackerValidators
-	 */
-	public static HealthTrackerValidator getInstance() {
-		if (instance == null) {
-			instance = new HealthTrackerValidator();
-		}
-		return instance;
-	}
-
 	/**
 	 * Validates the contents of a Health Tracker Bean
 	 * 

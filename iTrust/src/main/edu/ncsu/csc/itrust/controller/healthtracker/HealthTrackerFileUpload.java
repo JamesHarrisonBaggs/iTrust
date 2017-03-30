@@ -14,6 +14,7 @@ import java.util.Scanner;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.servlet.http.Part;
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.controller.healthtracker.HealthTrackerController;
@@ -48,6 +49,13 @@ public class HealthTrackerFileUpload {
 	 */
 	public HealthTrackerFileUpload() throws DBException {
 		htcontrol = new HealthTrackerController();
+	}
+	
+	/**
+	 * Constructs a File Upload Bean with a data source
+	 */
+	public HealthTrackerFileUpload(DataSource ds) throws DBException {
+		htcontrol = new HealthTrackerController(ds);
 	}
 	
 	/**

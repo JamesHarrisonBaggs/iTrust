@@ -634,9 +634,17 @@ public class TestDataGenerator {
 	public void uc22() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/UC22.sql");
 	}
+
+	public void uc87() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc87.sql");
+	}
 	
 	public void uc93() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/uc93.sql");
+	}
+	
+	public void uc94() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc94.sql");
 	}
 
 	public void testExpertSearch() throws FileNotFoundException, SQLException, IOException {
@@ -970,7 +978,14 @@ public class TestDataGenerator {
 		uc63(); // NEW
 		uc55();
 		uc56();
+		
+		// added for health tracker module
+		uc87();
+		
+		// added for obstetrics module
 		uc93();
+		uc94();
+		
 		if (!checkIfZipsExists()) {
 			zipCodes();
 		}

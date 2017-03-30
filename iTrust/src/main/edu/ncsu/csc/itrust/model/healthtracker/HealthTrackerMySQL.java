@@ -7,84 +7,78 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
-/**
- * 
- * A class that performs SQL operations pertaining to Health Tracker Data
- * 
- * @author mcgibson
- *
- */
 public class HealthTrackerMySQL {
-	
-	// Should eventually implement HealthTrackerData Interface
-	
-	private DAOFactory factory;
+		
+	private DataSource ds;
 	private HealthTrackerSQLLoader loader;
 	private HealthTrackerValidator validator;
 
 	/**
-	 * Constructs a new SQL class
-	 * @param factory - DAO factory
+	 * Constructs a HealthTrackerMySQL
 	 */
-	public HealthTrackerMySQL(DAOFactory factory) {
-		this.factory = factory;
+	public HealthTrackerMySQL() throws DBException {
 		this.loader = new HealthTrackerSQLLoader();
-		this.validator = HealthTrackerValidator.getInstance();
+		this.validator = new HealthTrackerValidator();
+		try {
+			Context ctx = new InitialContext();
+			this.ds = ((DataSource) (((Context) ctx.lookup("java:comp/env"))).lookup("jdbc/itrust"));
+		} catch (NamingException e) {
+			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
+		}		
+	}
+	
+	/**
+	 * Constructs a HealthTrackerMySQL with a data source
+	 */
+	public HealthTrackerMySQL(DataSource ds) throws DBException {
+		this.ds = ds;
+		this.loader = new HealthTrackerSQLLoader();
+		this.validator = new HealthTrackerValidator();
 	}
 
 	/**
 	 * @return all health tracker data for a specified patient on a specified day
-	 * @param pid - the MID of the patient
+	 * @param id - the MID of the patient
 	 * @param day - the requested day for data
 	 * @throws DBException
 	 */
-	public ArrayList<HealthTrackerBean> getDataOnDay(long pid, Timestamp day) throws DBException {
-		ArrayList<HealthTrackerBean> beans = new ArrayList<HealthTrackerBean>();
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata WHERE id = ? AND data_date = ?")) {
-			stmt.setLong(1, pid);
-			stmt.setTimestamp(2, day);
-			final ResultSet results = stmt.executeQuery();
-			while (results.next()) {
-				beans.add(loader.loadResults(results));
-			}
-			results.close();
+	public List<HealthTrackerBean> getDataOnDay(long id, Timestamp day) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata WHERE id = "+id+" AND data_date = ?")) {
+			stmt.setTimestamp(1, day);
+			ResultSet results = stmt.executeQuery();
+			return loader.loadList(results);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
-		return beans;
 	}
 
 	/**
 	 * @return all health tracker data for a specified patient in a specified range
-	 * @param pid - the MID of the patient
+	 * @param id - the MID of the patient
 	 * @param start - the starting date of the data range
 	 * @param end - the ending date of the data range
 	 * @throws DBException
 	 */
-	public ArrayList<HealthTrackerBean> getDataInRange(long pid, Timestamp start, Timestamp end) throws DBException {
-		ArrayList<HealthTrackerBean> beans = new ArrayList<HealthTrackerBean>();
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata WHERE id = ? AND data_date >= ? AND data_date <= ?")) {
-			stmt.setLong(1, pid);
-			stmt.setTimestamp(2, start);
-			stmt.setTimestamp(3, end);
+	public List<HealthTrackerBean> getDataInRange(long id, Timestamp start, Timestamp end) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata WHERE id = "+id+" AND data_date >= ? AND data_date <= ?")) {
+			stmt.setTimestamp(1, start);
+			stmt.setTimestamp(2, end);
 			final ResultSet results = stmt.executeQuery();
-			while (results.next()) {
-				beans.add(loader.loadResults(results));
-			}
-			results.close();
+			return loader.loadList(results);
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
 			throw new DBException(e);
 		}
-		return beans;
 	}
 	
 	/**
@@ -93,18 +87,13 @@ public class HealthTrackerMySQL {
 	 * @throws DBException
 	 */
 	public List<HealthTrackerBean> getAll() throws DBException {
-		ArrayList<HealthTrackerBean> beans = new ArrayList<HealthTrackerBean>();
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata")) {
-			final ResultSet results = stmt.executeQuery();
-			while (results.next()) {
-				beans.add(loader.loadResults(results));
-			}
-			results.close();
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata");
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
-		return beans;
 	}
 
 	/**
@@ -113,20 +102,14 @@ public class HealthTrackerMySQL {
 	 * @param id - the MID of the patient
 	 * @throws DBException
 	 */
-	public ArrayList<HealthTrackerBean> getByID(long id) throws DBException {
-		ArrayList<HealthTrackerBean> beans = new ArrayList<HealthTrackerBean>();
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata WHERE id = ?")) {
-			stmt.setLong(1, id);
-			final ResultSet results = stmt.executeQuery();
-			while (results.next()) {
-				beans.add(loader.loadResults(results));
-			}
-			results.close();
+	public List<HealthTrackerBean> getByID(long id) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM healthtrackerdata WHERE id="+id);
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
-		return beans;
 	}
 
 	/**
@@ -137,18 +120,9 @@ public class HealthTrackerMySQL {
 	 */
 	public int updateData(HealthTrackerBean data) throws DBException, FormValidationException {
 		validator.validate(data);
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = loader.loadUpdate(conn.prepareStatement(""
-						+ "INSERT INTO healthtrackerdata "
-						+ "(id, data_date, calories, steps, distance, floors, mins_sed, mins_light, "
-						+ "mins_fair, mins_very, act_cals, act_hours, hr_low, hr_high, "
-						+ "hr_avg, uv_exp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
-						+ "ON DUPLICATE KEY UPDATE "
-						+ "calories=?, steps=?, distance=?, floors=?, "
-						+ "mins_sed=?, mins_light=?, mins_fair=?, mins_very=?, act_cals=?, act_hours=?, "
-						+ "hr_low=?, hr_high=?, hr_avg=?, uv_exp=?"), data)) {
-				int rows = stmt.executeUpdate();
-				return rows;
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = loader.loadParameters(conn, null, data, true)) {
+				return stmt.executeUpdate();
 			} catch (SQLException e) {
 				throw new DBException(e);
 			}

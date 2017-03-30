@@ -1,8 +1,13 @@
 package edu.ncsu.csc.itrust.model.healthtracker;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ncsu.csc.itrust.model.SQLLoader;
 
 /**
  * Interfaces between SQL objects and the Health Tracker Bean
@@ -10,13 +15,61 @@ import java.sql.SQLException;
  * @author ereinst
  *
  */
-public class HealthTrackerSQLLoader {
+public class HealthTrackerSQLLoader implements SQLLoader<HealthTrackerBean> {
 	
+	@Override
+	public List<HealthTrackerBean> loadList(ResultSet rs) throws SQLException {
+		List<HealthTrackerBean> list = new ArrayList<HealthTrackerBean>();
+		while (rs.next()) {
+			list.add(loadSingle(rs));
+		}
+		return list;
+	}
+	
+	/**
+	 * FOR DATABASE QUERIES
+	 * Loads data from a SQL ResultsSet into a Bean
+	 */
+	@Override
+	public HealthTrackerBean loadSingle(ResultSet rs) throws SQLException {
+		HealthTrackerBean bean = new HealthTrackerBean();
+		bean.setPatientId(rs.getLong("id"));
+		bean.setTimestamp(rs.getTimestamp("data_date"));
+		bean.setCalories(rs.getInt("calories"));
+		bean.setSteps(rs.getInt("steps"));
+		bean.setDistance(rs.getDouble("distance"));
+		bean.setFloors(rs.getInt("floors"));
+		bean.setMinutesSedentary(rs.getInt("mins_sed"));
+		bean.setMinutesLightlyActive(rs.getInt("mins_light"));
+		bean.setMinutesFairlyActive(rs.getInt("mins_fair"));
+		bean.setMinutesVeryActive(rs.getInt("mins_very"));
+		bean.setActivityCalories(rs.getInt("act_cals"));
+		bean.setActiveHours(rs.getInt("act_hours"));
+		bean.setHeartrateLow(rs.getInt("hr_low"));
+		bean.setHeartrateHigh(rs.getInt("hr_high"));
+		bean.setHeartrateAverage(rs.getInt("hr_avg"));
+		bean.setUvExposure(rs.getInt("uv_exp"));				
+		return bean;
+	}
+
 	/**
 	 * FOR DATABASE UPDATES
 	 * Loads data from a Bean to a SQL PreparedStatement
 	 */
-	public PreparedStatement loadUpdate(PreparedStatement ps, HealthTrackerBean ht) throws SQLException {
+	 @Override
+	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps,
+			HealthTrackerBean ht, boolean newInstance) throws SQLException {
+		
+		String statement = 	"INSERT INTO healthtrackerdata "
+						+ "(id, data_date, calories, steps, distance, floors, mins_sed, mins_light, "
+						+ "mins_fair, mins_very, act_cals, act_hours, hr_low, hr_high, "
+						+ "hr_avg, uv_exp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+						+ "ON DUPLICATE KEY UPDATE "
+						+ "calories=?, steps=?, distance=?, floors=?, "
+						+ "mins_sed=?, mins_light=?, mins_fair=?, mins_very=?, act_cals=?, act_hours=?, "
+						+ "hr_low=?, hr_high=?, hr_avg=?, uv_exp=?";
+		ps = conn.prepareStatement(statement);
+		
 		int i = 1;
 		ps.setLong(i++, ht.getPatientId());
 		ps.setTimestamp(i++, ht.getTimestamp());
@@ -54,105 +107,4 @@ public class HealthTrackerSQLLoader {
 		return ps;
 	}
 	
-	/**
-	 * FOR DATABASE QUERIES
-	 * Loads data from a SQL ResultsSet into a Bean
-	 */
-	public HealthTrackerBean loadResults(ResultSet results) throws SQLException {
-		HealthTrackerBean ht = new HealthTrackerBean();
-		ht.setPatientId(results.getLong("id"));
-		ht.setTimestamp(results.getTimestamp("data_date"));
-		ht.setCalories(results.getInt("calories"));
-		ht.setSteps(results.getInt("steps"));
-		ht.setDistance(results.getDouble("distance"));
-		ht.setFloors(results.getInt("floors"));
-		ht.setMinutesSedentary(results.getInt("mins_sed"));
-		ht.setMinutesLightlyActive(results.getInt("mins_light"));
-		ht.setMinutesFairlyActive(results.getInt("mins_fair"));
-		ht.setMinutesVeryActive(results.getInt("mins_very"));
-		ht.setActivityCalories(results.getInt("act_cals"));
-		ht.setActiveHours(results.getInt("act_hours"));
-		ht.setHeartrateLow(results.getInt("hr_low"));
-		ht.setHeartrateHigh(results.getInt("hr_high"));
-		ht.setHeartrateAverage(results.getInt("hr_avg"));
-		ht.setUvExposure(results.getInt("uv_exp"));				
-		return ht;
-	}
-	
-	/**
-	 * Get the integer value if initialized in DB, otherwise get null.
-	 * 
-	 * @param rs 
-	 * 		ResultSet object
-	 * @param field
-	 * 		name of DB attribute 
-	 * @return Integer value or null
-	 * @throws SQLException when field doesn't exist in the result set
-	 */
-	public Integer getIntOrNull(ResultSet rs, String field) throws SQLException {
-		Integer ret = rs.getInt(field);
-		if (rs.wasNull()) {
-			ret = null;
-		}
-		return ret;
-	}
-	
-	/**
-	 * Get the float value if initialized in DB, otherwise get null.
-	 * 
-	 * @param rs 
-	 * 		ResultSet object
-	 * @param field
-	 * 		name of DB attribute 
-	 * @return Float value or null
-	 * @throws SQLException when field doesn't exist in the result set
-	 */
-	public Float getFloatOrNull(ResultSet rs, String field) throws SQLException {
-		Float ret = rs.getFloat(field);
-		if (rs.wasNull()) {
-			ret = null;
-		}
-		return ret;
-	}
-	
-	/**
-	 * Set integer placeholder in statement to a value or null
-	 * 
-	 * @param ps
-	 * 		PreparedStatement object
-	 * @param index
-	 * 		Index of placeholder in the prepared statement
-	 * @param value
-	 * 		Value to set to placeholder, the value may be null 
-	 * @throws SQLException
-	 * 		When placeholder is invalid
-	 */
-	public void setIntOrNull(PreparedStatement ps, int index, Integer value) throws SQLException {
-		if (value == null) {
-			ps.setNull(index, java.sql.Types.INTEGER);
-		} else {
-			ps.setInt(index, value);
-		}
-	}
-	
-	/**
-	 * Set float placeholder in statement to a value or null
-	 * 
-	 * @param ps
-	 * 		PreparedStatement object
-	 * @param index
-	 * 		Index of placeholder in the prepared statement
-	 * @param value
-	 * 		Value to set to placeholder, the value may be null 
-	 * @throws SQLException
-	 * 		When placeholder is invalid
-	 */
-	public void setFloatOrNull(PreparedStatement ps, int index, Float value) throws SQLException {
-		if (value == null) {
-			ps.setNull(index, java.sql.Types.FLOAT);
-		} else {
-			ps.setFloat(index, value);
-		}
-	}
-
 }

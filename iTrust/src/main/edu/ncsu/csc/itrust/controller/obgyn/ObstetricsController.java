@@ -1,4 +1,4 @@
-package edu.ncsu.csc.itrust.controller.obGyn;
+package edu.ncsu.csc.itrust.controller.obgyn;
 
 import java.util.List;
 import java.sql.Timestamp;
@@ -9,10 +9,10 @@ import javax.faces.bean.ManagedBean;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitBean;
-import edu.ncsu.csc.itrust.model.obGyn.ObstetricsInitMySQL;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyBean;
-import edu.ncsu.csc.itrust.model.obGyn.PregnancyMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
+import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
+import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
+import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
 import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
@@ -27,8 +27,8 @@ public class ObstetricsController extends iTrustController {
 	private PregnancyMySQL pregDB;
 	private PatientDAO patientDB;
 
-	private List<ObstetricsInitBean> obstetricsList;
-	private List<PregnancyBean> pregnancyList;
+	private List<ObstetricsInit> obstetricsList;
+	private List<Pregnancy> pregnancyList;
 	
 	private boolean obGyn;
 	private boolean eligible;
@@ -39,29 +39,16 @@ public class ObstetricsController extends iTrustController {
 	private Long hcpid;
 	private String currentDate;
 	private String newInitDate;
-	/**
-	 * @return the newInitDate
-	 */
-	public String getNewInitDate() {
-		return newInitDate;
-	}
-
-	/**
-	 * @param newInitDate the newInitDate to set
-	 */
-	public void setNewInitDate(String newInitDate) {
-		this.newInitDate = newInitDate;
-	}
-
-	private ObstetricsInitBean obData;
+	
+	private ObstetricsInit obData;
 
 	public ObstetricsController() throws DBException {
 		super();
 
 		// get databases
 		this.factory = DAOFactory.getProductionInstance();
-		this.initDB = factory.getObstetricsInitDAO();
-		this.pregDB = factory.getPregnanciesDAO();
+		this.initDB = new ObstetricsInitMySQL();
+		this.pregDB = new PregnancyMySQL();
 		this.patientDB = factory.getPatientDAO();
 
 		obstetricsList = getObstetricsList();
@@ -79,7 +66,7 @@ public class ObstetricsController extends iTrustController {
 		
 		setCurrentDate(LocalDate.now().toString());
 		setNewInitDate(currentDate);
-		setObData(new ObstetricsInitBean(true));
+		setObData(new ObstetricsInit(true));
 		
 	}
 	
@@ -91,7 +78,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return all obstetrics records for the current patient
 	 * @throws DBException
 	 */
-	public List<ObstetricsInitBean> getObstetricsList() throws DBException {
+	public List<ObstetricsInit> getObstetricsList() throws DBException {
 		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
 		Long id = getSessionUtils().getCurrentPatientMIDLong();
 		return initDB.getByID(id);
@@ -101,7 +88,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return the obstetrics record for the current patient for the given date
 	 * @throws DBException
 	 */
-	public List<ObstetricsInitBean> getObstetricsRecordByDate(LocalDate date) throws DBException {
+	public List<ObstetricsInit> getObstetricsRecordByDate(LocalDate date) throws DBException {
 		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
 		long id = getSessionUtils().getCurrentPatientMIDLong();
 		return initDB.getByDate(id, Timestamp.valueOf(date.atStartOfDay()));
@@ -111,7 +98,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return all pregnancies for the current patient
 	 * @throws DBException
 	 */
-	public List<PregnancyBean> getPregnancyList() throws DBException {
+	public List<Pregnancy> getPregnancyList() throws DBException {
 		long id = getSessionUtils().getCurrentPatientMIDLong();
 		return pregDB.getByID(id);
 	}
@@ -120,7 +107,7 @@ public class ObstetricsController extends iTrustController {
 	 * @return the pregnancy for the current patient for the given date
 	 * @throws DBException
 	 */
-	public List<PregnancyBean> getPregnancyByDate(LocalDate date) throws DBException {
+	public List<Pregnancy> getPregnancyByDate(LocalDate date) throws DBException {
 		long id = getSessionUtils().getCurrentPatientMIDLong();
 		return pregDB.getByDate(id, Timestamp.valueOf(date.atStartOfDay()));
 	}
@@ -129,7 +116,7 @@ public class ObstetricsController extends iTrustController {
 	 * Add or update the obstetric record specified in the given bean
 	 * @throws DBException
 	 */
-	public void updateObstetricRecord(ObstetricsInitBean bean) throws DBException {
+	public void updateObstetricRecord(ObstetricsInit bean) throws DBException {
 		try {
 			int result = initDB.update(bean);
 			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_RECORD : TransactionType.UPDATE_OBSTETRIC_RECORD, "");
@@ -142,7 +129,7 @@ public class ObstetricsController extends iTrustController {
 	 * Add or update the pregnancy specified in the given bean
 	 * @throws DBException
 	 */
-	public void updatePregnancy(PregnancyBean bean) throws DBException {
+	public void updatePregnancy(Pregnancy bean) throws DBException {
 		bean.setPatientId(mid);
 		try {
 			pregDB.update(bean);
@@ -175,7 +162,7 @@ public class ObstetricsController extends iTrustController {
 	}
 	
 	public void submitNewObgynInit() {
-		setObData(new ObstetricsInitBean(true));
+		setObData(new ObstetricsInit(true));
 	}
 	
 	public String getWeeksPregnant(){
@@ -214,11 +201,11 @@ public class ObstetricsController extends iTrustController {
 	public boolean initDateExistsInDB(){
 		return updatedInit;
 	}
-	public List<ObstetricsInitBean> getObGynList() {
+	public List<ObstetricsInit> getObGynList() {
 		return obstetricsList;
 	}
 
-	public List<PregnancyBean> getPriorPregList() {
+	public List<Pregnancy> getPriorPregList() {
 		return pregnancyList;
 	}
 
@@ -237,6 +224,14 @@ public class ObstetricsController extends iTrustController {
 			return "-1";
 		}
 	}
+	
+	public String getNewInitDate() {
+		return newInitDate;
+	}
+	
+	public void setNewInitDate(String newInitDate) {
+		this.newInitDate = newInitDate;
+	}
 
 	public void setViewDate(String viewDate) {
 		this.viewDate = viewDate;
@@ -249,14 +244,14 @@ public class ObstetricsController extends iTrustController {
 		return (obGyn && eligible);
 	}
 
-	public ObstetricsInitBean getObData() {
+	public ObstetricsInit getObData() {
 		if(obData == null) {
-			return new ObstetricsInitBean(true);
+			return new ObstetricsInit(true);
 		}
 		return obData;
 	}
 
-	public void setObData(ObstetricsInitBean obData) {
+	public void setObData(ObstetricsInit obData) {
 		this.obData = obData;
 	}
 

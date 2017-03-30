@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,7 +28,7 @@ public class HealthTrackerChartData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String chartData;
-	private ArrayList<HealthTrackerBean> dataList;
+	private List<HealthTrackerBean> dataList;
 	private HealthTrackerController htcontrol;
 	
 	private LocalDate startDate;
@@ -94,7 +95,7 @@ public class HealthTrackerChartData implements Serializable {
 	/**
 	 * @return the dataList
 	 */
-	public ArrayList<HealthTrackerBean> getDataList() {
+	public List<HealthTrackerBean> getDataList() {
 		return dataList;
 	}
 

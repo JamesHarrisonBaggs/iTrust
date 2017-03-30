@@ -363,20 +363,6 @@ public class HealthTrackerBean {
 	}
 		
 	/**
-	 * toString() method for a HealthTrackerBean
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "HealthTrackerBean [patientId=" + patientId + ", date=" + date + ", calories=" + calories + ", steps="
-				+ steps + ", distance=" + distance + ", floors=" + floors + ", activityCalories=" + activityCalories
-				+ ", minutesSedentary=" + minutesSedentary + ", minutesLightlyActive=" + minutesLightlyActive
-				+ ", minutesFairlyActive=" + minutesFairlyActive + ", minutesVeryActive=" + minutesVeryActive
-				+ ", activeHours=" + activeHours + ", heartrateLow=" + heartrateLow + ", heartrateHigh=" + heartrateHigh
-				+ ", heartrateAverage=" + heartrateAverage + ", uvExposure=" + uvExposure + "]";
-	}
-
-	/**
 	 * equals() method for a HealthTrackerBean
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

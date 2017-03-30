@@ -1,27 +1,37 @@
 package edu.ncsu.csc.itrust.unit.controller.healthtracker;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.sql.DataSource;
+
 import edu.ncsu.csc.itrust.CSVParser;
 import edu.ncsu.csc.itrust.controller.healthtracker.HealthTrackerFileUpload;
 import edu.ncsu.csc.itrust.exception.CSVFormatException;
 import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 
 public class HealthTrackerFileUploadTest {
 
-	private HealthTrackerFileUpload uploader;
+	HealthTrackerFileUpload uploader;
+	DataSource ds;
+	
+	@Before
+	public void setUp() throws Exception {
+		ds = ConverterDAO.getDataSource();
+		uploader = new HealthTrackerFileUpload(ds);
+	}
 	
 	@Test
 	public void testFitBitUpload() {
 		try {
-			// create upload object
-			uploader = new HealthTrackerFileUpload();
-			
 			// get test file to parse
 			String path = "/testing-files/sample_healthtracker/fitbit-test-data.csv";
 			File file = new File(System.getProperty("user.dir") + path);
@@ -55,17 +65,14 @@ public class HealthTrackerFileUploadTest {
 			assertEquals(1.72, list.get(6).getDistance(), 0);
 			assertEquals(9, list.get(16).getMinutesFairlyActive());
 			
-		} catch (DBException | FileNotFoundException | CSVFormatException e) {
+		} catch (FileNotFoundException | CSVFormatException e) {
 			fail(e.getMessage());
 		}
 	}
 	
 	@Test
 	public void testMSBandUpload() {
-		try {
-			// create upload object
-			uploader = new HealthTrackerFileUpload();
-			
+		try {			
 			// get test file to parse
 			String path = "/testing-files/sample_healthtracker/msband-test-data.csv";
 			File file = new File(System.getProperty("user.dir") + path);
@@ -102,21 +109,15 @@ public class HealthTrackerFileUploadTest {
 			assertEquals(1048, list.get(6).getSteps());
 			assertEquals(0.515, list.get(6).getDistance(), 0.01);
 			
-		} catch (DBException | FileNotFoundException | CSVFormatException e) {
+		} catch (FileNotFoundException | CSVFormatException e) {
 			fail(e.getMessage());
 		}
 	}
 	
 	@Test
 	public void testText() {
-		try {
-			// create upload object
-			uploader = new HealthTrackerFileUpload();
-			uploader.setText("hello there");
-			assertEquals("hello there", uploader.getText());
-		} catch (DBException e) {
-			fail(e.getMessage());
-		}
+		uploader.setText("hello there");
+		assertEquals("hello there", uploader.getText());
 	}
 
 }
