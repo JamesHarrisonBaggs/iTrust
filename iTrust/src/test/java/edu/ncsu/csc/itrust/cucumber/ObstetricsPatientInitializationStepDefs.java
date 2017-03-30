@@ -36,16 +36,16 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Given("^I logged in as an OBGYN HCP with MID (.*) and password (.*)$")
 	public void OBGYN_log_in(String hcp, String pw) {
 		// log in using the given username and password
-				driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-				WebElement user = driver.findElement(By.name("j_username"));
-				WebElement pass = driver.findElement(By.name("j_password"));
-				user.sendKeys(hcp);
-				pass.sendKeys(pw);
-				pass.submit();
-				// ensure logged in
-				if (driver.getTitle().equals("iTrust - Login")) {
-					Assert.fail("Error logging in");
-				}
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		WebElement user = driver.findElement(By.name("j_username"));
+		WebElement pass = driver.findElement(By.name("j_password"));
+		user.sendKeys(hcp);
+		pass.sendKeys(pw);
+		pass.submit();
+		// ensure logged in
+		if (driver.getTitle().equals("iTrust - Login")) {
+			Assert.fail("Error logging in");
+		}
 	}
 	
 	@And("^I select Obstetrics Info, then go to Patient Obstetric Initialization$")
