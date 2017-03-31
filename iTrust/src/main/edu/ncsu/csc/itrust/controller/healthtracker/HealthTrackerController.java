@@ -22,8 +22,7 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
  * Extends iTrustController to use session and logging utilities.
  * Uses HealthTrackerSQL to interact with the MySQL database.
  * 
- * TODO Log these events
- * VIEW_HEALTHTRACKER_SUMMARY
+ * TODO Log VIEW_HEALTHTRACKER_SUMMARY
  *  
  * @author erein
  *
@@ -31,8 +30,7 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 @ManagedBean(name = "htcontrol")
 public class HealthTrackerController extends iTrustController {
 
-	private HealthTrackerMySQL database;
-	
+	private HealthTrackerMySQL sql;
 	private List<HealthTrackerBean> dataList;
 	private LocalDate searchDate;
 	
@@ -41,7 +39,7 @@ public class HealthTrackerController extends iTrustController {
 	 */
 	public HealthTrackerController() throws DBException {
 		super();
-		this.database = new HealthTrackerMySQL();
+		this.sql = new HealthTrackerMySQL();
 		dataList = new ArrayList<HealthTrackerBean>();
 	}
 	
@@ -50,7 +48,7 @@ public class HealthTrackerController extends iTrustController {
 	 */
 	public HealthTrackerController(DataSource ds) throws DBException {
 		super();
-		this.database = new HealthTrackerMySQL(ds);
+		this.sql = new HealthTrackerMySQL(ds);
 		dataList = new ArrayList<HealthTrackerBean>();
 	}
 		
@@ -64,17 +62,13 @@ public class HealthTrackerController extends iTrustController {
 	public void updateData(HealthTrackerBean bean) throws FormValidationException {
 		bean.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
 		try {
-			int rows = database.updateData(bean);
-			// log transaction
+			int rows = sql.updateData(bean);
 			if (rows == 2) {
 				logTransaction(TransactionType.EDIT_HEALTHTRACKER_DATA, "Rows modified: " + rows);
 			} else {
 				logTransaction(TransactionType.ENTER_HEALTHTRACKER_DATA, "Rows modified: " + rows);
 			}
-		} catch (DBException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} catch (FormValidationException e) {
+		} catch (DBException | FormValidationException e) {
 			FacesContext.getCurrentInstance().addMessage("htform", new FacesMessage(e.getMessage()));
 		}
 	}
@@ -105,46 +99,42 @@ public class HealthTrackerController extends iTrustController {
 		int rows = 0;
 		for (HealthTrackerBean b : beans) {
 			b.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
-			rows += database.updateData(b);
+			rows += sql.updateData(b);
 		}
 		logTransaction(TransactionType.UPLOAD_HEALTHTRACKER_DATA, "Rows modified: " + rows);
 	}
 	
 	/** BASE METHODS CORRESPONDING TO SQL CLASS */
 	public List<HealthTrackerBean> getDataInDay(Timestamp day) throws DBException {
-		return database.getDataOnDay(getSessionUtils().getCurrentPatientMIDLong(), day);
+		return sql.getDataOnDay(getSessionUtils().getCurrentPatientMIDLong(), day);
 	}
 	public List<HealthTrackerBean> getDataInRange(Timestamp start, Timestamp end) throws DBException {
-		return database.getDataInRange(getSessionUtils().getCurrentPatientMIDLong(), start, end);
+		return sql.getDataInRange(getSessionUtils().getCurrentPatientMIDLong(), start, end);
 	}	
 	public List<HealthTrackerBean> getAllData() throws DBException {
-		return database.getByID(getSessionUtils().getCurrentPatientMIDLong());
+		return sql.getByID(getSessionUtils().getCurrentPatientMIDLong());
 	}
 
-	/**
-	 * @return the dataList
-	 */
+	public HealthTrackerMySQL getSql() {
+		return sql;
+	}
+
 	public List<HealthTrackerBean> getDataList() {
 		return dataList;
 	}
 
-	/**
-	 * @return the searchDate
-	 */
 	public LocalDate getSearchDate() {
 		return searchDate;
 	}
 
-	/**
-	 * @param dataList the dataList to set
-	 */
+	public void setSql(HealthTrackerMySQL sql) {
+		this.sql = sql;
+	}
+
 	public void setDataList(List<HealthTrackerBean> dataList) {
 		this.dataList = dataList;
 	}
 
-	/**
-	 * @param searchDate the searchDate to set
-	 */
 	public void setSearchDate(LocalDate searchDate) {
 		this.searchDate = searchDate;
 	}

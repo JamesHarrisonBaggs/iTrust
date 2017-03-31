@@ -123,9 +123,9 @@ public class HealthTrackerMySQL {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = loader.loadParameters(conn, null, data, true)) {
 				return stmt.executeUpdate();
-			} catch (SQLException e) {
-				throw new DBException(e);
-			}
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
 	}
 	
 }

@@ -1,6 +1,9 @@
 package edu.ncsu.csc.itrust.cucumber;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import org.junit.Assert;
+import cucumber.api.java.Before;
+import cucumber.api.java.en.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,9 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.junit.Assert;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.*;
+
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 
 public class HealthTrackerStepDefs {
@@ -311,6 +312,7 @@ public class HealthTrackerStepDefs {
 	@Then("^I can see a summary of the data$")
 	public void view_summary() throws Throwable {
 		WebElement element = driver.findElement(By.id("chart_div"));
+		assertNotNull(element);
 		// TODO not sure how to test chart
 		// element = driver.findElement(By.xpath("//*[@id=\"chart_div\"]/div/div[1]/div/svg/g[1]/text"));
 		// assertEquals("Steps Over Time", element.getText());
