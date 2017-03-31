@@ -23,6 +23,14 @@ public class PregnancyValidatorTest {
 	@Test
 	public void testValidBeans() {
 		
+		// default bean
+		bean = defaultBean();
+		try {
+			validator.validate(bean);
+		} catch (FormValidationException e) {
+			fail(e.getMessage());
+		}
+		
 		// valid bean
 		bean = new Pregnancy();
 		bean.setPatientId(10);
@@ -33,21 +41,31 @@ public class PregnancyValidatorTest {
 		bean.setWeightGain(7.2);
 		bean.setDeliveryType("vaginal");
 		bean.setAmount(2);
-		
 		try {
 			validator.validate(bean);
 		} catch (FormValidationException e) {
 			fail(e.getMessage());
 		}
-		
-		// default bean
-		bean = defaultBean();
+				
+	}
+	
+	@Test
+	public void testValidDeliveryType() {
 		try {
+			bean = defaultBean();
+			bean.setDeliveryType("vaginal");
+			validator.validate(bean);
+			bean.setDeliveryType("forceps");
+			validator.validate(bean);
+			bean.setDeliveryType("vacuum");
+			validator.validate(bean);
+			bean.setDeliveryType("caesarean");
+			validator.validate(bean);
+			bean.setDeliveryType("miscarriage");
 			validator.validate(bean);
 		} catch (FormValidationException e) {
 			fail(e.getMessage());
 		}
-		
 	}
 	
 	@Test

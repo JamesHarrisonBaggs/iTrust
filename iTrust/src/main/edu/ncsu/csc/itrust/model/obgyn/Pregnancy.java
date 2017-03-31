@@ -1,10 +1,8 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
 import java.time.LocalDate;
-
 import javax.faces.bean.ManagedBean;
 
-import java.sql.Timestamp;
 @ManagedBean(name = "pregBean")
 public class Pregnancy {
 		
@@ -25,29 +23,6 @@ public class Pregnancy {
 	/** Whether the pregnant is a multiple */
 	private int amount;
 	
-	/**
-	 * Enumerated type representing a fixed number of delivery types
-	 */
-	public enum DeliveryType {
-		VAGINAL_DELIVERY, VACUUM_ASSIST, FORCEPS_ASSIST, C_SECTION, MISCARRIAGE;
-	}
-	
-	// TODO update so this enum is utilized
-	
-	/**
-	 * @return the dateOfBirth in java.sql.Timestamp form
-	 */
-	public Timestamp getDOBTimestamp() {
-		return Timestamp.valueOf(dateOfBirth.atStartOfDay());
-	}
-	
-	/**
-	 * @param dateOfBirth the dateOfBirth as java.sql.Timestamp
-	 */
-	public void setDOBTimestamp(Timestamp dateOfBirth) {
-		this.dateOfBirth = dateOfBirth.toLocalDateTime().toLocalDate();
-	}
-
 	/** GETTERS **/
 	
 	public long getPatientId() {

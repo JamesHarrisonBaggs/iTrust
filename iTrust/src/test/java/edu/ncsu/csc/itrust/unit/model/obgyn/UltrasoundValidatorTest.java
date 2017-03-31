@@ -159,6 +159,7 @@ public class UltrasoundValidatorTest {
 		bean.setAbdominalCircumference(110); 	// 110mm is typical for 17 weeks
 		bean.setHumerusLength(30); 				// ???
 		bean.setEstimatedFetalWeight(201.55); 	// 201.55 grams for BPD/AC
+		bean.setUploadFile(null);
 		return bean;
 	}
 

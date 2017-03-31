@@ -30,7 +30,7 @@ public class ObstetricsInitSQLLoader implements SQLLoader<ObstetricsInit> {
 	public ObstetricsInit loadSingle(ResultSet rs) throws SQLException {
 		ObstetricsInit bean = new ObstetricsInit();
 		bean.setPatientId(rs.getLong("id"));
-		bean.setInitTimestamp(rs.getTimestamp("init_date"));
+		bean.setInitDate(rs.getTimestamp("init_date").toLocalDateTime().toLocalDate());
 		bean.setLMPTimestamp(rs.getTimestamp("lmp_date"));
 		bean.setCurrent(rs.getBoolean("current"));
 		return bean;

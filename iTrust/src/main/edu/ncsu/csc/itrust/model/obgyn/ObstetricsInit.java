@@ -94,10 +94,6 @@ public class ObstetricsInit {
 		return Timestamp.valueOf(lastMenstrualPeriod.atStartOfDay());
 	}
 	
-	public Timestamp getEstimatedDueDateTimestamp(){
-		return Timestamp.valueOf(estimatedDueDate.atStartOfDay());
-	}
-
 	public LocalDate getEstimatedDueDate() {
 		return estimatedDueDate;
 	}
@@ -125,11 +121,10 @@ public class ObstetricsInit {
 		this.initDate = initDate;
 	}
 	
-	// set java.time.LocalDate from java.sql.Timestamp
 	public void setInitTimestamp(Timestamp initDate) {
-		this.initDate = initDate.toLocalDateTime().toLocalDate();
+		this.setInitDate(initDate.toLocalDateTime().toLocalDate());
 	}
-
+	
 	public void setLastMenstrualPeriod(LocalDate lastMenstrualPeriod) {
 		this.lastMenstrualPeriod = lastMenstrualPeriod;
 		if (this.lastMenstrualPeriod != null) {

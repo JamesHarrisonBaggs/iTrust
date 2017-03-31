@@ -93,7 +93,7 @@ public class ObstetricsInitMySQLTest {
 		// create bean
 		bean = new ObstetricsInit();
 		bean.setPatientId(3);
-		bean.setInitTimestamp(Timestamp.valueOf("2017-03-24 00:00:00"));
+		bean.setInitDate(LocalDate.of(2017, 3, 24));
 		bean.setLMPTimestamp(Timestamp.valueOf("2017-02-04 00:00:00"));
 		bean.setCurrent(false);
 		
