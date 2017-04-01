@@ -79,20 +79,38 @@ if(request.getParameter("loginError") != null) {
 
 <%@include file="/header.jsp" %>
 <script type="text/javascript">
-	$( document ).ready(function(){
-		$('#home-content').delay(1000).animate({opacity:1},3000);
-		var sayings = "The first rule of space travel is always check out distress beacons.;Whatever you are asking, the answer is I'm amazing.;Uncertainty is inherently unsustainable. Eventually, everything either is or isn't.;I'm not the nicest guy in the universe, because I'm the smartest.;DISQUALIFIED! (There's one every semester);Get schwifty!;Ohh yea, you gotta get schwifty.;I'm not looking for judgement, just a yes or no. Can you assimilate a giraffe?;I'll tell you how I feel about school, Jerry: it's a waste of time.;Sometimes science is a lot more art, than science. A lot of people don't get that.;It's a figure of speech, Morty! They're bureaucrats! I don't respect them. Just keep shooting, Morty!;They're robots Morty! It's okay to shoot them! They're just robots!;You have to turn them on, Morty! The shoes need to be turned on!;Wubbalubbadubdub!".split(';');
-		var index = Math.floor((Math.random()*sayings.length)+1);
-		// console.log(index);
-		// console.log(sayings[index]);
-		$('.jenkins-quote').html(sayings[index]);
-		//$('.jenkins-quote').delay(1000).animate({opacity:1},4000);
+	$(document).ready(function(){
+		// get post titles from reddit
+		var sayings = [];
+		$.ajax({
+			url: "http://www.reddit.com/r/WholesomeMemes/hot.json?sort=hot",
+			context: document.body,
+			success: function(response) {
+				var children = response.data.children;
+				for (var i = 0; i < children.length; i++) {
+					var title = children[i].data.title;
+					sayings.push(title);
+				}
+				$('#home-content').delay(1000).animate({opacity:1},3000);
+				var index = Math.floor((Math.random()*sayings.length)+1);
+				$('.jenkins-quote').html(sayings[index]);
+				$('.jenkins-quote').delay(1000).animate({opacity:1},4000);				
+			}
+		});
 	});
+// 	$( document ).ready(function(){
+// 		$('#home-content').delay(1000).animate({opacity:1},3000);
+// 		var sayings = "The first rule of space travel is always check out distress beacons.;Whatever you are asking, the answer is I'm amazing.;Uncertainty is inherently unsustainable. Eventually, everything either is or isn't.;I'm not the nicest guy in the universe, because I'm the smartest.;DISQUALIFIED! (There's one every semester);Get schwifty!;Ohh yea, you gotta get schwifty.;I'm not looking for judgement, just a yes or no. Can you assimilate a giraffe?;I'll tell you how I feel about school, Jerry: it's a waste of time.;Sometimes science is a lot more art, than science. A lot of people don't get that.;It's a figure of speech, Morty! They're bureaucrats! I don't respect them. Just keep shooting, Morty!;They're robots Morty! It's okay to shoot them! They're just robots!;You have to turn them on, Morty! The shoes need to be turned on!;Wubbalubbadubdub!".split(';');
+// 		var index = Math.floor((Math.random()*sayings.length)+1);
+// 		// console.log(index);
+// 		// console.log(sayings[index]);
+// 		$('.jenkins-quote').html(sayings[index]);
+// 		//$('.jenkins-quote').delay(1000).animate({opacity:1},4000);
+// 	});
 </script>
 <div id="home-content">
 	<blockquote><span class="jenkins-quote"></span></blockquote>
-	<h1> - Rick and Morty </h1>
-	<!-- <h1>- quotes by Dr. Jenkins </h1> -->
+	<h1>- quotes by Dr. Jenkins </h1>
 	<!-- patient-centered -->
 </div>
 <%
