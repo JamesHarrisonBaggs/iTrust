@@ -78,7 +78,6 @@
 			<!-- Form with initialization buttons -->
 			<h:form>
 				<h:panelGrid class="fTable" width="75%" columns="2">
-					
 					<!-- Not really sure what this does
 					<h:panelGroup rendered="false">
 						<h:selectOneMenu value="#{obgyn_controller.viewDate}" width="75%">
@@ -89,9 +88,8 @@
 						<h:commandButton id="viewPatientInitRecord"
 							style="font-size:11px; font-weight:bold"
 							value="View Patient Initialization Record"
-							action="#{obgyn_controller.submitViewDate}" />  -->
-							
-					</h:panelGroup>
+							action="#{obgyn_controller.submitViewDate}" />
+					</h:panelGroup>			  -->
 					<h:panelGroup rendered="#{!obgyn_controller.eligible}">
 						<h:commandButton id="setPatientEligible"
 							style="font-size:11px; font-weight:bold" align="left"

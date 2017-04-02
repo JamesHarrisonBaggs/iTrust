@@ -34,7 +34,6 @@ public class ObstetricsInitController extends iTrustController {
 
 	private Long mid;
 	private Long hcpid;
-	private String viewDate;
 	
 	private boolean obGyn;
 	private boolean eligible;
