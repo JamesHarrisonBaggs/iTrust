@@ -48,10 +48,10 @@ public class ObstetricsPatientInitializationStepDefs {
 		}
 	}
 	
-	@And("^I select Obstetrics Info, then go to Patient Obstetric Initialization$")
+	@And("^I select Obstetrics Info, then go to Obstetric Care$")
 	public void select_obstetric_initialization() {
 		driver.findElement(By.cssSelector("h2.panel-title")).click();
-		driver.findElement(By.linkText("Patient Obstetric Initialization")).click();
+		driver.findElement(By.linkText("Obstetric Care")).click();
 		try {
 			assertEquals("iTrust - Please Select a Patient", driver.getTitle());
 		} catch (Error e) {
