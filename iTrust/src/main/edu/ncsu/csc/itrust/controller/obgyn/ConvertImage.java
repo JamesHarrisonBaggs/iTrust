@@ -30,6 +30,8 @@ import edu.ncsu.csc.itrust.exception.DBException;
 @WebServlet("/ultrasoundImageServlet")
 public class ConvertImage extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		long patientId = Long.valueOf(request.getParameter("id"));

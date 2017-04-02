@@ -47,6 +47,7 @@ public class ObstetricsVisitController extends iTrustController {
 	private boolean lowLyingPlacenta;
 	private boolean rhFlag;
 	private ObstetricsInitController obc;
+	
 	private ApptDAO aDAO;
 	private ApptRequestDAO arDAO;
 	private ApptTypeDAO atDAO;

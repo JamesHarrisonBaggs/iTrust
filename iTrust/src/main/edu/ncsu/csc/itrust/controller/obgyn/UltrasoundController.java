@@ -53,7 +53,6 @@ public class UltrasoundController extends iTrustController {
 	private boolean obgyn;
 	private ObstetricsInitController obc;
 
-
 	private Part uploadedFile;
 	private boolean isFileUploaded;
 
@@ -121,7 +120,6 @@ public class UltrasoundController extends iTrustController {
 				for (int page = 0; page < document.getNumberOfPages(); ++page)
 				{ 
 				    BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-
 				    // suffix in filename will be used as the file format
 				    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				    ImageIO.write(bim, "png", baos);
@@ -294,27 +292,23 @@ public class UltrasoundController extends iTrustController {
 	public void setEfw(double efw) {
 		this.efw = efw;
 	}
+	
 	public boolean isObgyn() {
 		return obgyn;
 	}
-	/**
-	 * @return the uploadedFile
-	 */
+	
+	public void setObgyn() throws DBException {
+		this.obgyn = obc.getObGyn();
+	}
+
+	/** Image upload **/
+	
 	public Part getUploadedFile() {
 		return uploadedFile;
 	}
 
-	/**
-	 * @param uploadedFile the uploadedFile to set
-	 */
 	public void setUploadedFile(Part uploadedFile) {
 		this.uploadedFile = uploadedFile;
-	}
-
-
-
-	public void setObgyn() throws DBException {
-		this.obgyn = obc.getObGyn();
 	}
 
 	public boolean getIsFileUploaded() {
