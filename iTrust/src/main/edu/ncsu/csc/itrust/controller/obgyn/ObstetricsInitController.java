@@ -1,9 +1,7 @@
 package edu.ncsu.csc.itrust.controller.obgyn;
 
 import java.util.List;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -24,10 +22,7 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 public class ObstetricsInitController extends iTrustController {
 
 	private ObstetricsInitMySQL sql;
-	private List<ObstetricsInit> list;
-	
 	private ObstetricsInit newInit;
-	private boolean updatedInit;
 	
 	private DAOFactory factory;
 	private PatientDAO patientDB;
@@ -40,63 +35,65 @@ public class ObstetricsInitController extends iTrustController {
 		
 	// TODO should handle exceptions and not just throw them
 
+	/**
+	 * Constructs an ObstetricsInitController
+	 */
 	public ObstetricsInitController() throws DBException {
 		super();
-
-		// get databases
 		this.sql = new ObstetricsInitMySQL();
-		this.factory = DAOFactory.getProductionInstance();
-		this.patientDB = factory.getPatientDAO();
-		
-		// get list of patient obstetrics records
-		list = getObstetricsRecords();
-		// value="Date Range: #{obgyn_controller.list.get(0).getLastMenstrualPeriod().getMonthValue()}/#{obgyn_controller.list.get(0).getLastMenstrualPeriod().getDayOfMonth()}/#{obgyn_controller.obstetricsList.get(0).getLastMenstrualPeriod().getYear()} - #{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
-		
-		// determine if current HCP is an OB/GYN
-		hcpid = getSessionUtils().getSessionLoggedInMIDLong();
-		setObGyn(hcpid);
-		
-		// determine if patient is OB/GYN eligible
-		mid = getSessionUtils().getCurrentPatientMIDLong();
-		if (mid != null)
-			setEligible(patientDB.getPatient(mid).isObgynEligible());
-				
-		// set up submission bean
-		newInit = new ObstetricsInit();
-		updatedInit = false;
-
+		this.setUpObstetricsInit();
 	}
-	
-	// broken for now
-	public ObstetricsInitController(DataSource ds) {
+	/**
+	 * Constructs an ObstetricsInitController with a data source
+	 */
+	public ObstetricsInitController(DataSource ds) throws DBException {
 		super();
 		this.sql = new ObstetricsInitMySQL(ds);
 		this.patientDB = DAOFactory.getProductionInstance().getPatientDAO();
+		this.setUpObstetricsInit();
+	}
+	
+	/**
+	 * Called from both constructors to set up class
+	 */
+	private void setUpObstetricsInit() throws DBException {
+		// set up patient database
+		this.factory = DAOFactory.getProductionInstance();
+		this.patientDB = factory.getPatientDAO();
+		
+		// determine if current HCP is an OB/GYN
+		hcpid = getSessionUtils().getSessionLoggedInMIDLong();
+		setObGyn();
+		
+		// determine if patient is OB/GYN eligible
+		mid = getSessionUtils().getCurrentPatientMIDLong();
+		if (mid != null) {
+			setEligible(patientDB.getPatient(mid.longValue()).isObgynEligible());
+		}
+		
+		// set up submission bean
+		newInit = new ObstetricsInit();
 	}
 		
 	/**
 	 * Return all obstetrics initialization records for the current patient
 	 */
 	public List<ObstetricsInit> getObstetricsRecords() throws DBException {
-		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
-		Long id = getSessionUtils().getCurrentPatientMIDLong();
-		return sql.getByID(id);
+		return sql.getByID(mid.longValue());
 	}
 
 	/**
 	 * Return the obstetrics record for the current patient for the given date
 	 */
 	public List<ObstetricsInit> getObstetricsRecordByDate(LocalDate date) throws DBException {
-		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return sql.getByDate(id, Timestamp.valueOf(date.atStartOfDay()));
+		return sql.getByDate(mid.longValue(), date);
 	}
 
 	/**
 	 * Create or update the obstetric record specified in the given bean
 	 */
 	public void update(ObstetricsInit bean) throws DBException {
-		bean.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
+		bean.setPatientId(mid.longValue());
 		try {
 			int result = sql.update(bean);
 			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_RECORD : TransactionType.UPDATE_OBSTETRIC_RECORD, "");
@@ -107,8 +104,18 @@ public class ObstetricsInitController extends iTrustController {
 		}
 	}
 	
-	public List<ObstetricsInit> getList() {
-		return list;
+	/** Other Methods */
+	
+	public long getMid() {
+		return mid.longValue();
+	}
+	
+	public void setMid(long mid) {
+		this.mid = new Long(mid);
+	}
+	
+	public void logView() {
+		logTransaction(TransactionType.VIEW_OBSTETRIC_RECORD, "");
 	}
 	
 	/** New Initialization */
@@ -128,31 +135,20 @@ public class ObstetricsInitController extends iTrustController {
 	public void setNewInit(ObstetricsInit newInit) {
 		this.newInit = newInit;
 	}
-
-	public boolean getUpdatedInit(){
-		return updatedInit;
-	}
-	
-	public void setUpdatedInit(boolean updatedInit) {
-		this.updatedInit = updatedInit;
-	}
-	
-	/** Other Methods */
-	
 	
 	/** Eligibility */
 	
 	public void submitEligible() throws DBException {
 		PatientBean p = patientDB.getPatient(mid);
 		p.setObgynEligible(true);
-		patientDB.editPatient(p, hcpid);
+		patientDB.editPatient(p, hcpid.longValue());
 		setEligible(p.isObgynEligible());
 	}
-
+	
 	public void submitNotEligible() throws DBException {
-		PatientBean p = patientDB.getPatient(mid);
+		PatientBean p = patientDB.getPatient(mid.longValue());
 		p.setObgynEligible(false);
-		patientDB.editPatient(p, hcpid);
+		patientDB.editPatient(p, hcpid.longValue());
 		setEligible(p.isObgynEligible());
 	}
 	
@@ -168,9 +164,9 @@ public class ObstetricsInitController extends iTrustController {
 		return obGyn;
 	}
 	
-	public void setObGyn(Long mid) throws DBException {
-		if (mid != null) {
-			PersonnelBean p = factory.getPersonnelDAO().getPersonnel(mid);
+	public void setObGyn() throws DBException {
+		if (hcpid != null) {
+			PersonnelBean p = factory.getPersonnelDAO().getPersonnel(hcpid);
 			String specialty = p.getSpecialty(); // may be null
 			obGyn = "obgyn".equalsIgnoreCase(specialty) || "ob/gyn".equalsIgnoreCase(specialty);
 		}

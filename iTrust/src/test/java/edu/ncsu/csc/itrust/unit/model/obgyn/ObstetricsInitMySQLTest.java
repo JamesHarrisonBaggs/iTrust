@@ -12,10 +12,8 @@ import org.mockito.Mockito;
 import com.mysql.jdbc.Connection;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -79,7 +77,7 @@ public class ObstetricsInitMySQLTest {
 
 	@Test
 	public void testGetByDate() throws Exception {
-		list = sql.getByDate(2, Timestamp.valueOf("1992-05-02 00:00:00"));
+		list = sql.getByDate(2, LocalDate.of(1992, 5, 2));
 		assertEquals(1, list.size());
 		assertEquals(LocalDate.of(1992, 5, 2), list.get(0).getInitDate());
 		assertEquals(LocalDate.of(1992, 1, 1), list.get(0).getLastMenstrualPeriod());
@@ -107,7 +105,7 @@ public class ObstetricsInitMySQLTest {
 		
 		// get bean by date
 		try {
-			list = sql.getByDate(3, Timestamp.valueOf("2017-03-24 00:00:00"));
+			list = sql.getByDate(3, LocalDate.of(2014, 3, 24));
 		} catch (DBException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
@@ -155,7 +153,7 @@ public class ObstetricsInitMySQLTest {
 		when(mockDS.getConnection()).thenReturn(mockConn);
 		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
 		try {
-			sql.getByDate(1L, Timestamp.valueOf(LocalDateTime.now()));
+			sql.getByDate(1L, LocalDate.now());
 			fail("Exception should be thrown");
 		} catch (DBException e) {
 			assertNotNull(e.getMessage());

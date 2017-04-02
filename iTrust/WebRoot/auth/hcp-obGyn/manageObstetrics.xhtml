@@ -27,9 +27,12 @@
 						<h:outputText id="weeksPregnant" name="weeksPregnant"
 							value="#{obs_visit_controller.weeksPregnant}" />
 						<br />
+						<c:set var="lmp" value="#{obgyn_controller.getObstetricsRecords().get(0).getLastMenstrualPeriod()}"/>
+						<c:set var="vd" value="#{obs_visit_controller.visitDate}"/>
 						<h:outputText id="timeline" name="timeline"
 							style="font-weight:bold; font-size:12px"
-							value="Date Range: #{obgyn_controller.list.get(0).getLastMenstrualPeriod().getMonthValue()}/#{obgyn_controller.list.get(0).getLastMenstrualPeriod().getDayOfMonth()}/#{obgyn_controller.list.get(0).getLastMenstrualPeriod().getYear()} - #{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
+							value="Date Range: #{lmp.getMonthValue()}/#{lmp.getDayOfMonth()}/#{lmp.getYear()} - 
+							#{vd.getMonthValue()}/#{vd.getDayOfMonth()}/#{vd.getYear()}" />
 					</h:panelGroup>
 					
 					<h:panelGroup

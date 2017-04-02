@@ -5,6 +5,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core">
+<f:metadata>
+    <f:event type="preRenderView" listener="#{obgyn_controller.logView()}"/>
+</f:metadata>
 <f:view
 	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
 <head>
@@ -78,18 +81,6 @@
 			<!-- Form with initialization buttons -->
 			<h:form>
 				<h:panelGrid class="fTable" width="75%" columns="2">
-					<!-- Not really sure what this does
-					<h:panelGroup rendered="false">
-						<h:selectOneMenu value="#{obgyn_controller.viewDate}" width="75%">
-							<f:selectItems value="#{obgyn_controller.getObstetricsRecords()}"
-								var="init" itemValue="#{init.initDate}" itemLabel="#{init.initDate}" />
-						</h:selectOneMenu>
-						<br />
-						<h:commandButton id="viewPatientInitRecord"
-							style="font-size:11px; font-weight:bold"
-							value="View Patient Initialization Record"
-							action="#{obgyn_controller.submitViewDate}" />
-					</h:panelGroup>			  -->
 					<h:panelGroup rendered="#{!obgyn_controller.eligible}">
 						<h:commandButton id="setPatientEligible"
 							style="font-size:11px; font-weight:bold" align="left"
