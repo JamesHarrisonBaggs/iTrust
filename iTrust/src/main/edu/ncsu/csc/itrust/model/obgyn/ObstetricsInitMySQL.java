@@ -38,7 +38,7 @@ public class ObstetricsInitMySQL {
 	/**
 	 * Constructs ObstetricsInitMySQL with a data source
 	 */
-	public ObstetricsInitMySQL(DataSource ds) throws DBException {
+	public ObstetricsInitMySQL(DataSource ds) {
 		this.ds = ds;
 		this.loader = new ObstetricsInitSQLLoader();
 		this.validator = new ObstetricsInitValidator();

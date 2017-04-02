@@ -516,6 +516,13 @@ public enum TransactionType {
 	/** Update Obstetrics Record **/
 	UPDATE_OBSTETRIC_RECORD(9302, "Update Obstetric Record", "updated obstetric record", true),
 	
+	/** Add Prior Pregnancy **/
+	CREATE_PREGNANCY(9310, "Add Pregnancy", "created pregnancy", true),
+	/** View Prior Pregnancies **/
+	VIEW_PREGNANCY(9311, "View Pregnancy", "viewed pregnancy", true),
+	/** Update Prior Pregnancies **/
+	UPDATE_PREGNANCY(9312, "Update Pregnancy", "updated pregnancy", true),
+	
 	/** Create Obstetric Office Visit **/
 	CREATE_OBSTETRIC_OFFICE_VISIT(9400, "Create Obstetric Office Visit", " created obstetric office visit", true),
 	/** View Obstetric Office Visit **/

@@ -37,7 +37,7 @@ public class UltrasoundMySQL {
 	/**
 	 * Constructs an UltrasoundMySQL with a data source
 	 */
-	public UltrasoundMySQL(DataSource ds) throws DBException {
+	public UltrasoundMySQL(DataSource ds) {
 		this.ds = ds;
 		loader = new UltrasoundSQLLoader();
 		validator = new UltrasoundValidator();

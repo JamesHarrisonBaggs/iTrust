@@ -39,7 +39,7 @@ public class HealthTrackerMySQL {
 	/**
 	 * Constructs a HealthTrackerMySQL with a data source
 	 */
-	public HealthTrackerMySQL(DataSource ds) throws DBException {
+	public HealthTrackerMySQL(DataSource ds) {
 		this.ds = ds;
 		this.loader = new HealthTrackerSQLLoader();
 		this.validator = new HealthTrackerValidator();
