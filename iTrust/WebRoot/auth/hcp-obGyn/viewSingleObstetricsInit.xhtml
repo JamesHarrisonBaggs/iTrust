@@ -5,13 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core">
-
-<f:metadata>
-	<f:event type="preRenderView"
-		listener="#{obgyn_controller.logViewPIR()}" />
-</f:metadata>
 <head>
-
 </head>
 <body>
 	<ui:composition template="/iTrust_template.xhtml">
@@ -26,7 +20,7 @@
 			</div>
 
 			<h:dataTable id="DataTable" class="fTable"
-				value="#{obgyn_controller.obstetricsList}" var="data" border="1">
+				value="#{obgyn_controller.getObstetricsRecords()}" var="data" border="1">
 				<h:column>
 					<f:facet name="header">Date</f:facet>
 						#{data.initDate}
