@@ -289,6 +289,32 @@ public class OfficeVisitFormTest extends TestCase {
 		Assert.assertTrue(ovf.getTriglyceride().equals(TRI));
 		Assert.assertTrue(ovf.getLDL().equals(LDL));
 	}
+	
+	@Test
+	public void testSubmitHealthMetrics() {
+		Mockito.when(mockovc.getSelectedVisit()).thenReturn(ovAdult);
+		ovf = new OfficeVisitForm(mockovc);
+
+		ovf.setHeight(FLOAT_VALUE);
+		ovf.setLength(FLOAT_VALUE);
+		ovf.setWeight(FLOAT_VALUE);
+		ovf.setHeadCircumference(FLOAT_VALUE);
+		ovf.setBloodPressure(BP_VALUE);
+		ovf.setHDL(HDL);
+		ovf.setTriglyceride(TRI);
+		ovf.setLDL(LDL);
+		ovf.setHouseholdSmokingStatus(INTEGER_VALUE);
+		ovf.setPatientSmokingStatus(INTEGER_VALUE);
+		ovf.submitHealthMetrics();
+		
+		OfficeVisit ov = mockovc.getSelectedVisit();
+		assertEquals(1L, ov.getPatientMID().longValue());
+		assertEquals(1L, ov.getVisitID().longValue());
+		assertEquals(FLOAT_VALUE, ov.getHeight());
+		assertEquals(FLOAT_VALUE, ov.getLength());
+		assertEquals(FLOAT_VALUE, ov.getWeight());
+		
+	}
 
 	@Test
 	public void testIsPatientABaby() {
