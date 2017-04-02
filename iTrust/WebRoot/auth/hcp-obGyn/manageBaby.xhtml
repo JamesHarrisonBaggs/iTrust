@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<h:body>
+	<h:panelGrid columns="2" class="fTable"
+		rendered="#{obs_visit_controller.eligible}">
+		<h:panelGroup id="manage_obstetrics_formSuccess">
+			<h4>Baby Data</h4>
+			<h:form id="manage_obstetrics_formError">
+				<div style="width: 300px">
+					<h:message for="manage_obstetrics_formError" class="iTrustError" />
+					<h:message for="manage_obstetrics_formSuccess" style="color:green" />
+				</div>
+				<h:panelGrid>
+					<h:panelGroup>
+						<h:outputLabel for="date" style="padding-right:23px">Date:</h:outputLabel>
+						<h:inputText id="date" name="date"
+							value="#{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
+					</h:panelGroup>
+					
+						<h:panelGroup>
+							<h:outputLabel for="time" style="padding-right:20px">Time:</h:outputLabel>
+							<h:inputText id="time" name="time"
+								value="" />		
+							<h:selectOneMenu id="amPm" name="amPm"
+							value="#{obs_visit_controller.rhFlag}">
+							<f:selectItem
+								itemValue=""
+								itemLabel="AM" />
+							<f:selectItem
+								itemValue=""
+								itemLabel="PM" />
+							
+							</h:selectOneMenu>				
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<h:outputLabel for="sex" style="padding-right:30px">Sex:</h:outputLabel>
+							<h:selectOneMenu id="sex" name="sex"
+							value="#{obs_visit_controller.rhFlag}">
+							<f:selectItem
+								itemValue=""
+								itemLabel="Male" />
+							<f:selectItem
+								itemValue=""
+								itemLabel="Female" />
+							<f:selectItem
+								itemValue=""
+								itemLabel="Other" />
+							
+							</h:selectOneMenu>							
+						</h:panelGroup>
+						
+						<h:panelGroup>
+							<h:outputLabel for="name" style="padding-right:15px">Name:</h:outputLabel>
+							<h:inputText id="name" name="name"
+								value="" />						
+						</h:panelGroup>
+						
+				</h:panelGrid>
+				<h:commandButton id="saveBabyButton" value="Save Baby Info"
+				 />
+			</h:form>
+		</h:panelGroup>
+		<h:panelGroup>
+			<h:panelGroup>
+				<h:panelGrid>
+						
+						<h:selectOneMenu id="preEstimateFlag" name="preEstimateFlag"
+							value="#{obs_visit_controller.rhFlag}">
+							<f:selectItem
+								itemValue=""
+								itemLabel="Yes" />
+							<f:selectItem
+								itemValue=""
+								itemLabel="No" />
+							
+						Pre-Estimate Flag:  </h:selectOneMenu>	
+				</h:panelGrid>
+				<h:commandButton id="returnButton" value="Return to Office Visit"
+			/>
+				
+			</h:panelGroup>	
+			
+			
+		
+		</h:panelGroup>
+		
+		
+		
+		
+	</h:panelGrid>
+</h:body>
+</html>
