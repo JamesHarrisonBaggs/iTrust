@@ -21,8 +21,6 @@ public class ObstetricsInitValidator extends POJOValidator<ObstetricsInit> {
 			errorList.addIfNotNull("Last menstrual period cannot be null");
 		if (obj.getEstimatedDueDate() == null)
 			errorList.addIfNotNull("Expected due date cannot be null");
-		if (obj.getDaysPregnant() < 0)
-			errorList.addIfNotNull("Days pregnant cannot be negative");
 		if (errorList.hasErrors())
 			throw new FormValidationException(errorList);
 	}

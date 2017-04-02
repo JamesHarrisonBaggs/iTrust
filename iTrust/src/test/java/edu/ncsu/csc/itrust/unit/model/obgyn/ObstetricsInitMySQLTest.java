@@ -94,8 +94,7 @@ public class ObstetricsInitMySQLTest {
 		bean = new ObstetricsInit();
 		bean.setPatientId(3);
 		bean.setInitDate(LocalDate.of(2017, 3, 24));
-		bean.setLMPTimestamp(Timestamp.valueOf("2017-02-04 00:00:00"));
-		bean.setCurrent(false);
+		bean.setLastMenstrualPeriod(LocalDate.of(2017, 2, 4));
 		
 		// add bean
 		try {
@@ -120,7 +119,6 @@ public class ObstetricsInitMySQLTest {
 		assertEquals(3, b.getPatientId());
 		assertEquals(LocalDate.of(2017, 03, 24), b.getInitDate());
 		assertEquals(LocalDate.of(2017, 02, 04), b.getLastMenstrualPeriod());
-		assertEquals(false, b.isCurrent());
 
 	}
 	

@@ -13,9 +13,7 @@ import org.mockito.Mockito;
 import com.mysql.jdbc.Connection;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.sql.DataSource;
 
@@ -108,7 +106,7 @@ public class PregnancyMySQLTest {
 		assertEquals(2, results);
 		
 		// validate that it was
-		list = sql.getByDate(2, Timestamp.valueOf(LocalDate.of(1991, 1, 1).atTime(0, 0)));
+		list = sql.getByDate(2, LocalDate.of(1991, 1, 1));
 		assertEquals(5, list.size());
 		bean = list.get(4);
 		assertEquals(2, bean.getPatientId());
@@ -129,7 +127,7 @@ public class PregnancyMySQLTest {
 
 	@Test
 	public void testGetByDate() throws Exception {
-		list = sql.getByDate(2, Timestamp.valueOf(LocalDate.of(1973, 1, 1).atTime(0, 0)));		
+		list = sql.getByDate(2, LocalDate.of(1973, 1, 1));		
 		assertEquals(3, list.size());
 		bean = list.get(2);
 		assertEquals(2, bean.getPatientId());
@@ -173,7 +171,7 @@ public class PregnancyMySQLTest {
 		when(mockDS.getConnection()).thenReturn(mockConn);
 		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
 		try {
-			sql.getByDate(1L, Timestamp.valueOf(LocalDateTime.now()));
+			sql.getByDate(1L, LocalDate.now());
 			fail("Exception should be thrown");
 		} catch (DBException e) {
 			assertNotNull(e.getMessage());

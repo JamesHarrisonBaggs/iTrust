@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.Context;
@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
 public class PregnancyMySQL {
 
@@ -40,7 +39,7 @@ public class PregnancyMySQL {
 	/**
 	 * Constructs a new PregnancyMySQL with a data source
 	 */
-	public PregnancyMySQL(DataSource ds) throws DBException {
+	public PregnancyMySQL(DataSource ds) {
 		this.ds = ds;
 		this.loader = new PregnancySQLLoader();
 		this.validator = new PregnancyValidator();
@@ -75,11 +74,11 @@ public class PregnancyMySQL {
 	/**
 	 * Returns all pregnancies for a patient before a specific date
 	 */
-	public List<Pregnancy> getByDate(long id, Timestamp date) throws DBException {
+	public List<Pregnancy> getByDate(long id, LocalDate date) throws DBException {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM pregnancies WHERE id = ? AND birth_date <= ?")) {
 			stmt.setLong(1, id);
-			stmt.setTimestamp(2, date);
+			stmt.setTimestamp(2, Timestamp.valueOf(date.atStartOfDay()));
 			ResultSet results = stmt.executeQuery();
 			return loader.loadList(results);
 		} catch (SQLException e) {

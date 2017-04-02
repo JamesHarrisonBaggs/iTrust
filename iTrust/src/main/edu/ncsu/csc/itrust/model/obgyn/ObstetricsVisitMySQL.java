@@ -39,7 +39,7 @@ public class ObstetricsVisitMySQL {
 	/**
 	 * Constructs ObstetricsVisitMySQL with a data source
 	 */
-	public ObstetricsVisitMySQL(DataSource ds) throws DBException {
+	public ObstetricsVisitMySQL(DataSource ds) {
 		this.ds = ds;
 		this.loader = new ObstetricsVisitSQLLoader();
 		this.validator = new ObstetricsVisitValidator();

@@ -51,7 +51,7 @@ public class UltrasoundController extends iTrustController {
 	private SessionUtils sessionUtils;
 	private boolean eligible;
 	private boolean obgyn;
-	private ObstetricsController obc;
+	private ObstetricsInitController obc;
 
 
 	private Part uploadedFile;
@@ -61,7 +61,7 @@ public class UltrasoundController extends iTrustController {
 		super();
 		sessionUtils = getSessionUtils();
 		sql = new UltrasoundMySQL();
-		obc = new ObstetricsController();
+		obc = new ObstetricsInitController();
 		setIsFileUploaded(false);
 		String fetusId1 = sessionUtils.getRequestParameter("fetusID");
 		if (fetusId1 != null) {
