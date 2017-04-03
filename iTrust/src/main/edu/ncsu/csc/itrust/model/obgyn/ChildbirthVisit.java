@@ -93,24 +93,24 @@ public class ChildbirthVisit {
 		this.deliveryType = deliveryType;
 	}
 
-	public void setPitocin(int pitocin) {
-		this.pitocin = pitocin;
+	public void setPitocin(int dosage) {
+		this.pitocin = dosage;
 	}
 
-	public void setNitrousOxide(int nitrousOxide) {
-		this.nitrousOxide = nitrousOxide;
+	public void setNitrousOxide(int dosage) {
+		this.nitrousOxide = dosage;
 	}
 
-	public void setPethidine(int pethidine) {
-		this.pethidine = pethidine;
+	public void setPethidine(int dosage) {
+		this.pethidine = dosage;
 	}
 
-	public void setEpiduralAnaesthesia(int epiduralAnaesthesia) {
-		this.epiduralAnaesthesia = epiduralAnaesthesia;
+	public void setEpiduralAnaesthesia(int dosage) {
+		this.epiduralAnaesthesia = dosage;
 	}
 
-	public void setMagnesiumSO4(int magnesiumSO4) {
-		this.magnesiumSO4 = magnesiumSO4;
+	public void setMagnesiumSO4(int dosage) {
+		this.magnesiumSO4 = dosage;
 	}
 	
 }

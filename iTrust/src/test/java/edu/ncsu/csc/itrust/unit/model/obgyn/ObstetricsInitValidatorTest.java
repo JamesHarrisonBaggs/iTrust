@@ -18,12 +18,6 @@ public class ObstetricsInitValidatorTest {
 	public void setUp() {
 		validator = new ObstetricsInitValidator();
 	}
-	
-	@Test
-	public void testGetInstance() {
-		ObstetricsInitValidator val = new ObstetricsInitValidator();
-		assertNotNull(val);
-	}
 
 	@Test
 	public void testValidBeans() {

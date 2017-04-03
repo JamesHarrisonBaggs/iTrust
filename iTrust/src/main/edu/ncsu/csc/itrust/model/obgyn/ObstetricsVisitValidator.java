@@ -18,9 +18,9 @@ public class ObstetricsVisitValidator extends POJOValidator<ObstetricsVisit> {
 	public void validate(ObstetricsVisit bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
 		if (bean.getPatientId() < 0)
-			errorList.addIfNotNull("Patient id cannot be negative");
+			errorList.addIfNotNull("Patient ID cannot be negative");
 		if (bean.getVisitId() < 0)
-			errorList.addIfNotNull("Office visit id cannot be negative");
+			errorList.addIfNotNull("Office visit ID cannot be negative");
 		if (bean.getVisitDate() == null)
 			errorList.addIfNotNull("Office visit date cannot be null");
 		if (bean.getWeeksPregnant() < 0)
