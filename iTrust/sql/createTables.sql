@@ -532,7 +532,7 @@ CREATE TABLE childbirth_visits(
 	pitocin			INTEGER(15)		UNSIGNED DEFAULT 0,
 	nitrousOxide	INTEGER(15)		UNSIGNED DEFAULT 0, 
 	pethidine		INTEGER(15)		UNSIGNED DEFAULT 0,
-	epiduralAnaes	INTEGER(15)		UNSIGNED DEFAULT 0,
+	epiduralAnaesthesia	INTEGER(15)		UNSIGNED DEFAULT 0,
 	magnesiumSO4	INTEGER(15)		UNSIGNED DEFAULT 0,
 	PRIMARY KEY(patientID, visitID),
 	FOREIGN KEY(visitID) 			REFERENCES officeVisit(visitID)
