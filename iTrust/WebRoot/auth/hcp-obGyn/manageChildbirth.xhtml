@@ -82,7 +82,7 @@
 			</h:form>
 		</h:panelGroup>
 		<h:panelGroup>
-			<h4>Past Initializations</h4>
+			<h4>Past Ultrasounds</h4>
 			<h:dataTable id="initializations" styleClass="fTable"
 				value="#{ultrasound_controller.getUltrasoundsForCurrentPatientVisitID()}"
 				var="us" border="1">
@@ -101,7 +101,7 @@
 						<h:outputText value="Date" />
 					</f:facet>
 					<h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml"
-						value="Date">
+						value="#{us.visitDate.toLocalDate() }">
 						<f:param name="visitID" value="#{us.visitId}" />
 						<f:param name="fetusID" value="#{us.fetusId}" />
 						<f:param name="action" value="view" />
