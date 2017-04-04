@@ -36,8 +36,8 @@ public class ChildbirthSQLLoader implements SQLLoader<Childbirth> {
 	@Override
 	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Childbirth bean,
 			boolean newInstance) throws SQLException {
-		String statement = "INSERT INTO childbirths(parentID, visitID, birthDate, gender, estimated)"
-				+ "VALUES(?, ?, ?, ?, ?)"
+		String statement = "INSERT INTO childbirths(parentID, visitID, birthDate, gender, estimated) "
+				+ "VALUES(?, ?, ?, ?, ?) "
 				+ "ON DUPLICATE KEY UPDATE parentID=?, visitID=?, birthDate=?, gender=?, estimated=?";
 		ps = conn.prepareStatement(statement);
 
