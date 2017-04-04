@@ -20,6 +20,9 @@ public class PregnancyValidatorTest {
 		validator = new PregnancyValidator();
 	}
 
+	/**
+	 * Test valid beans
+	 */
 	@Test
 	public void testValidBeans() {
 		
@@ -49,6 +52,9 @@ public class PregnancyValidatorTest {
 				
 	}
 	
+	/**
+	 * Test valid delivery types
+	 */
 	@Test
 	public void testValidDeliveryType() {
 		try {
@@ -68,6 +74,9 @@ public class PregnancyValidatorTest {
 		}
 	}
 	
+	/**
+	 * Test invalid beans
+	 */
 	@Test
 	public void testInvalidBeans() {
 		
@@ -105,12 +114,7 @@ public class PregnancyValidatorTest {
 		
 		bean = defaultBean();
 		bean.setDeliveryType("meh");
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Delivery type is invalid"));
-		}
+		invalidate(bean, "Delivery Type: must be one of {vaginal, vacuum, forceps, caesarean, miscarriage}");
 		
 		// test amount < 1
 		bean = defaultBean();
@@ -125,7 +129,7 @@ public class PregnancyValidatorTest {
 	}
 	
 	/**
-	 * Return a default Ultrasound bean
+	 * Return a default Pregnancy bean
 	 */
 	private Pregnancy defaultBean() {
 		Pregnancy bean = new Pregnancy();
