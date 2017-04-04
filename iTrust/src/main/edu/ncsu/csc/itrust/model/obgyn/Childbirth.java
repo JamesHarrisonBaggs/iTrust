@@ -71,6 +71,10 @@ public class Childbirth {
 	}
 
 	public void setGender(String gender) {
+		if (gender.equalsIgnoreCase("m")) gender = "Male";
+		if (gender.equalsIgnoreCase("male")) gender = "Male";
+		if (gender.equalsIgnoreCase("f")) gender = "Female";
+		if (gender.equalsIgnoreCase("female")) gender = "Female";
 		this.gender = gender;
 	}
 	

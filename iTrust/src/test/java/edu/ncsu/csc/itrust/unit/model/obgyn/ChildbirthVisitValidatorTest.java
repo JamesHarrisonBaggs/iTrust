@@ -22,13 +22,43 @@ public class ChildbirthVisitValidatorTest {
 	}
 
 	@Test
-	public void testValidBeans() {
-		// default bean
+	public void testDefault() {
+		// default bean		
 		bean = defaultBean();
 		try {
 			validator.validate(bean);
 		} catch (FormValidationException e) {
 			fail("Validation failed unexpectedly");
+		}
+	}
+	
+	@Test
+	public void testEstimated() {
+		bean = defaultBean();
+		bean.setPreSchedule(true);
+		assertTrue(bean.isPreSchedule());
+		
+		bean = defaultBean();
+		bean.setPreSchedule(false);
+		assertFalse(bean.isPreSchedule());
+	}
+	
+	@Test
+	public void testValidDeliveryType() {
+		try {
+			bean = defaultBean();
+			bean.setDeliveryType("vaginal");
+			validator.validate(bean);
+			bean.setDeliveryType("forceps");
+			validator.validate(bean);
+			bean.setDeliveryType("vacuum");
+			validator.validate(bean);
+			bean.setDeliveryType("caesarean");
+			validator.validate(bean);
+			bean.setDeliveryType("miscarriage");
+			validator.validate(bean);
+		} catch (FormValidationException e) {
+			fail(e.getMessage());
 		}
 	}
 	
@@ -56,28 +86,28 @@ public class ChildbirthVisitValidatorTest {
 		// test invalid delivery type
 		bean = defaultBean();
 		bean.setDeliveryType("asd");
-		invalidate(bean, "Delivery type is invalid");
+		invalidate(bean, "Delivery Type: must be one of {vaginal, vacuum, forceps, caesarean, miscarriage}");
 		
 		// test negative dosage
 		bean = defaultBean();
 		bean.setPitocin(-1);
-		invalidate(bean, "Dosage of pitocin is invalid");
+		invalidate(bean, "Dosage of pitocin cannot be negative");
 		
 		bean = defaultBean();
 		bean.setNitrousOxide(-1);
-		invalidate(bean, "Dosage of nitrous oxide is invalid");
+		invalidate(bean, "Dosage of nitrous oxide cannot be negative");
 		
 		bean = defaultBean();
 		bean.setPethidine(-1);
-		invalidate(bean, "Dosage of pethidine is invalid");
+		invalidate(bean, "Dosage of pethidine cannot be negative");
 		
 		bean = defaultBean();
 		bean.setEpiduralAnaesthesia(-1);
-		invalidate(bean, "Dosage of epidural anaesthesia is invalid");
+		invalidate(bean, "Dosage of epidural anaesthesia cannot be negative");
 		
 		bean = defaultBean();		
 		bean.setMagnesiumSO4(-1);		
-		invalidate(bean, "Dosage of magnesium sulfate is invalid");
+		invalidate(bean, "Dosage of magnesium sulfate cannot be negative");
 		
 	}
 	

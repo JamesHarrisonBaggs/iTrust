@@ -22,7 +22,7 @@ public class ChildbirthValidatorTest {
 	}
 
 	@Test
-	public void testValidBeans() {
+	public void testDefault() {
 		// default bean
 		bean = defaultBean();
 		try {
@@ -37,57 +37,82 @@ public class ChildbirthValidatorTest {
 		// test valid genders
 		bean = defaultBean();
 		bean.setGender("Male");
-		try {
-			validator.validate(bean);
-		} catch (FormValidationException e) {
-			fail("Validation failed unexpectedly");
-		}
+		validate(bean);
 
 		bean = defaultBean();
 		bean.setGender("Female");
-		try {
-			validator.validate(bean);
-		} catch (FormValidationException e) {
-			fail("Validation failed unexpectedly");
-		}
+		validate(bean);
 
 		bean = defaultBean();
 		bean.setGender("Not Specified");
-		try {
-			validator.validate(bean);
-		} catch (FormValidationException e) {
-			fail("Validation failed unexpectedly");
-		}
+		validate(bean);
 		
+		// test converted genders
+		bean = defaultBean();
+		bean.setGender("M");
+		validate(bean);
+		
+		bean = defaultBean();
+		bean.setGender("male");
+		validate(bean);
+		
+		bean = defaultBean();
+		bean.setGender("F");
+		validate(bean);
+		
+		bean = defaultBean();
+		bean.setGender("female");
+		validate(bean);
+		
+		// test invalid genders
+		bean = defaultBean();
+		bean.setGender("Attack Helicopter");
+		invalidate(bean, "Gender: Only Male, Female, or All Patients");
+
+		bean = defaultBean();
+		bean.setGender("Other");
+		invalidate(bean, "Gender: Only Male, Female, or All Patients");
+
 	}
 	
 	@Test
-	public void testInvalidBeans() {
+	public void testEstimated() {
+		bean = defaultBean();
+		bean.setEstimated(true);
+		assertTrue(bean.isEstimated());
+		
+		bean = defaultBean();
+		bean.setEstimated(false);
+		assertFalse(bean.isEstimated());
+	}
+	
+	@Test
+	public void testInvalid() {
+		
 		// new bean
 		bean = new Childbirth();
-		invalidate(bean, "Patient ID cannot be negative");
+		invalidate(bean, "Parent ID cannot be negative");
 		
 		// test parent ID < 0
 		bean = defaultBean();
 		bean.setParentID(-1);
-		invalidate(bean, "Patient ID cannot be negative");
+		invalidate(bean, "Parent ID cannot be negative");
 		
 		// test visit ID < 0
 		bean = defaultBean();
 		bean.setVisitID(-1);
+		invalidate(bean, "Visit ID cannot be negative");
 		
 		// test birth ID < 0
 		bean = defaultBean();
 		bean.setBirthID(-1);
+		invalidate(bean, "Birth ID cannot be negative");
 		
 		// test null birth date
 		bean = defaultBean();
 		bean.setBirthdate(null);
-		
-		// test invalid gender
-		bean = defaultBean();
-		bean.setGender("Attack Helicopter");
-		
+		invalidate(bean, "Birth date cannot be null");
+				
 	}
 	
 	/**
@@ -104,11 +129,20 @@ public class ChildbirthValidatorTest {
 		return b;
 	}
 	
+	private void validate(Childbirth bean) {
+		try {
+			validator.validate(bean);
+		} catch (FormValidationException e) {
+			fail("Validation failed unexpectedly");
+		}
+	}
+	
 	private void invalidate(Childbirth bean, String errorMsg) {
 		try {
 			validator.validate(bean);
 			fail("Validation passed unexpectedly");
 		} catch (FormValidationException e) {
+			System.out.println(e.getMessage());
 			assertTrue(e.getMessage().contains(errorMsg));
 		}	
 	}
