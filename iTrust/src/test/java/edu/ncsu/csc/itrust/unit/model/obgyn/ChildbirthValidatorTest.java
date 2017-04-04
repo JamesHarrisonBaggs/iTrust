@@ -142,7 +142,6 @@ public class ChildbirthValidatorTest {
 			validator.validate(bean);
 			fail("Validation passed unexpectedly");
 		} catch (FormValidationException e) {
-			System.out.println(e.getMessage());
 			assertTrue(e.getMessage().contains(errorMsg));
 		}	
 	}
