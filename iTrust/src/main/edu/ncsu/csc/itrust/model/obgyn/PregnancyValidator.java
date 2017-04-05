@@ -14,6 +14,10 @@ public class PregnancyValidator extends POJOValidator<Pregnancy> {
 	 */
 	public void validate(Pregnancy bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
+		if (bean == null) {
+			errorList.addIfNotNull("Bean cannot be null");
+			throw new FormValidationException(errorList);
+		}
 		if (bean.getPatientId() < 0)
 			errorList.addIfNotNull("Patient id cannot be negative");		
 		if (bean.getDateOfBirth() == null)

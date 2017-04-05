@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import edu.ncsu.csc.itrust.exception.DBException;
-
 /*
  * Adapted from http://stackoverflow.com/questions/15074465/how-to-populate-hgraphicimage-value-with-image-content-from-database
  */

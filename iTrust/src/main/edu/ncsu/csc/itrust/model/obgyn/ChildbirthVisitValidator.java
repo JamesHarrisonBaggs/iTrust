@@ -10,6 +10,10 @@ public class ChildbirthVisitValidator extends POJOValidator<ChildbirthVisit> {
 	@Override
 	public void validate(ChildbirthVisit bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
+		if (bean == null) {
+			errorList.addIfNotNull("Bean cannot be null");
+			throw new FormValidationException(errorList);
+		}
 		if (bean.getPatientID() < 0)
 			errorList.addIfNotNull("Patient ID cannot be negative");
 		if (bean.getVisitID() < 0)

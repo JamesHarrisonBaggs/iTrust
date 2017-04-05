@@ -8,8 +8,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import com.mysql.jdbc.Connection;
-
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;

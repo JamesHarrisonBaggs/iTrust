@@ -26,7 +26,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		ChildbirthVisit bean = new ChildbirthVisit();
 		bean.setPatientID(rs.getLong("patientID"));
 		bean.setVisitID(rs.getLong("visitID"));
-		bean.setVisitDate(rs.getTimestamp("visitDate").toLocalDateTime().toLocalDate());
+		bean.setVisitDate(rs.getTimestamp("visitDate").toLocalDateTime());
 		bean.setPreSchedule(rs.getBoolean("preScheduled"));
 		bean.setDeliveryType(rs.getString("deliveryType"));
 		bean.setPitocin(rs.getInt("pitocin"));
@@ -51,7 +51,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		int i = 1;
 		ps.setLong(i++, bean.getPatientID());
 		ps.setLong(i++, bean.getVisitID());
-		ps.setTimestamp(i++, Timestamp.valueOf(bean.getVisitDate().atStartOfDay()));
+		ps.setTimestamp(i++, Timestamp.valueOf(bean.getVisitDate()));
 		ps.setBoolean(i++, bean.isPreSchedule());
 		ps.setString(i++, bean.getDeliveryType());
 		ps.setInt(i++, bean.getPitocin());
@@ -63,7 +63,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 		// set again for duplicate
 		ps.setLong(i++, bean.getPatientID());
 		ps.setLong(i++, bean.getVisitID());
-		ps.setTimestamp(i++, Timestamp.valueOf(bean.getVisitDate().atStartOfDay()));
+		ps.setTimestamp(i++, Timestamp.valueOf(bean.getVisitDate()));
 		ps.setBoolean(i++, bean.isPreSchedule());
 		ps.setString(i++, bean.getDeliveryType());
 		ps.setInt(i++, bean.getPitocin());

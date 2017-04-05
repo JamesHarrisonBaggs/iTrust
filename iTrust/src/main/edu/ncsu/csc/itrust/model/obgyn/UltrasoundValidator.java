@@ -12,6 +12,10 @@ public class UltrasoundValidator extends POJOValidator<Ultrasound> {
 	@Override
 	public void validate(Ultrasound bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
+		if (bean == null) {
+			errorList.addIfNotNull("Bean cannot be null");
+			throw new FormValidationException(errorList);
+		}
 		if (bean.getPatientId() < 0)
 			errorList.addIfNotNull("Patient id cannot be negative");
 		if (bean.getVisitId() < 0)

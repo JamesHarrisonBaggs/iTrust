@@ -119,7 +119,7 @@ public class ChildbirthController extends iTrustController {
 		cbv.setPethidine(pethidine);
 		cbv.setPitocin(pitocin);
 		cbv.setVisitID(visitId);
-		cbv.setVisitDate(visitDate.toLocalDate());
+		cbv.setVisitDate(visitDate);
 		cbv.setPreSchedule(preScheduled);
 		try {
 			cbvs.update(cbv);
