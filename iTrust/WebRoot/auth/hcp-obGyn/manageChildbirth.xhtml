@@ -7,7 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
 <h:body>
 	<h:panelGrid columns="2" class="fTable"
-		rendered="#{obs_visit_controller.eligible}">
+		rendered="#{obs_visit_controller.eligible and obs_visit_controller.getOfficeVisit().apptTypeID==8}">
 		<h:panelGroup id="manage_obstetrics_formChildSuccess">
 			<h4>Edit Childbirth Visit</h4>
 			<h:form id="manage_obstetrics_formChildError">
@@ -35,6 +35,14 @@
 								itemLabel="Vaginal Delivery Forceps Assist" />
 							<f:selectItem itemValue="caesarean" itemLabel="Caesarean Section" />
 							<f:selectItem itemValue="miscarriage" itemLabel="Miscarriage" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputLabel for="preScheduled" style="padding-right:20px">Pre-Scheduled:</h:outputLabel>
+						<h:selectOneMenu id="preScheduled" name="preScheduled"
+							value="#{child_controller.preScheduled}">
+							<f:selectItem itemValue="#{true}" itemLabel="True" />
+							<f:selectItem itemValue="#{false}" itemLabel="False" />
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h4>Drugs Used (milligrams)</h4>
@@ -145,19 +153,17 @@
 				<h:column>
 
 					<f:facet name="header">
-						<h:outputText value="Add Patient #{!cb.added}" />
+						<h:outputText value="Add Patient" />
 					</f:facet>
-					<c:if test="#{!cb.added}">
-						<h:form>
+						<h:outputText rendered="#{cb.added}" value="Patient Already Added"/>
+						<h:form rendered="#{!cb.added}">
 							<h:commandButton id="newBaby" value="Add Patient"
 								action="#{child_controller.submitAdd}">
 								<f:param name="birthID" value="#{cb.birthID}" />
 								<f:param name="visitID" value="#{cb.visitID}" />
 							</h:commandButton>
 						</h:form>
-					</c:if>
-
-				</h:column>
+					</h:column>
 			</h:dataTable>
 			<h:form>
 				<h:commandButton id="newBaby" value="New Baby"
@@ -178,7 +184,7 @@
 							<h:message class="iTrustError" for="babyDate"></h:message>
 						</h:panelGroup>
 						<h:panelGroup>
-							<h:outputLabel for="preEstimateFlag" style="padding-right:20px">Pre-Estimate Flag:</h:outputLabel>
+							<h:outputLabel for="preEstimateFlag" style="padding-right:20px">Estimated Time:</h:outputLabel>
 							<h:selectOneMenu id="preEstimateFlag" name="preEstimateFlag"
 								value="#{child_controller.preEstimateFlag}">
 								<f:selectItem itemValue="true" itemLabel="Yes" />
@@ -216,6 +222,14 @@
 					</h:panelGrid>
 				</h:panelGroup>
 			</h:form>
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid columns="2" class="fTable" rendered="#{!(obs_visit_controller.eligible and obs_visit_controller.getOfficeVisit().apptTypeID==8)}">
+		<h:panelGroup>
+			<div style="width: 400px">
+				<h4>This visit for #{user.getUserNameForID(session.getAttribute("pid"))} is not
+					a childbirth visit please change the visit to type "Childbirth" in the "General Info" tab if you would like to proceed.</h4>
+			</div>
 		</h:panelGroup>
 	</h:panelGrid>
 </h:body>

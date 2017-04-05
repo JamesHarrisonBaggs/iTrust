@@ -97,7 +97,7 @@ public class ChildbirthController extends iTrustController {
 		epiduralAnaesthesia = cbv.getEpiduralAnaesthesia();
 		magnesiumSO4 = cbv.getMagnesiumSO4(); 
 		visitDate = ovc.getVisitByID(visitId).getDate();
-	
+		preScheduled = cbv.isPreSchedule();
 		newBaby = Boolean.parseBoolean(sessionUtils.getRequestParameter("newBaby"));
 	
 	}
@@ -120,6 +120,7 @@ public class ChildbirthController extends iTrustController {
 		cbv.setPitocin(pitocin);
 		cbv.setVisitID(visitId);
 		cbv.setVisitDate(visitDate.toLocalDate());
+		cbv.setPreSchedule(preScheduled);
 		try {
 			cbvs.update(cbv);
 			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formChildSuccess", new FacesMessage("Childbirth Visit Updated Successfully"));

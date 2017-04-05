@@ -21,7 +21,7 @@ public class Childbirth {
 	private String gender;
 	/** If baby has been added as new patient */
 	private boolean added;
-	
+
 	public Childbirth() {
 		this.parentID = -1;
 		this.visitID = -1;
