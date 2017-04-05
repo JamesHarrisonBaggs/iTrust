@@ -89,24 +89,49 @@
 				</h:commandButton>
 			</h:form>
 		</h:panelGroup>
+		
+		
+		
+		
+		
 		<h:panelGroup>
-			<h4>Past Ultrasounds</h4>
-			<h:dataTable id="initializations" styleClass="fTable"
-				value="#{ultrasound_controller.getUltrasoundsForCurrentPatientVisitID()}"
-				var="us" border="1">
-				<br />
+			<h:outputText id="pastInitializations"
+				value="Past Obstetrics Initializations" style="font-size:20px; font-weight:bold" align="left"/>
+			<h:dataTable id="PIRTablePast" class="fTable" width="75%"
+				value="#{obgyn_controller.getObstetricsRecords()}" var="init"
+				border="1">
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="Select Date" />
+						<h:outputText value="Initialization Date"/>
 					</f:facet>
-					<h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml"
-						value="#{us.visitDate.toLocalDate() }">
-						<f:param name="visitID" value="#{us.visitId}" />
-						<f:param name="fetusID" value="#{us.fetusId}" />
-						<f:param name="action" value="view" />
-					</h:link>
+					<h:outputText value="#{init.initDate}">
+						<f:converter converterId="localDateConverter"/>
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Last Menstrual Period"/>
+					</f:facet>
+					<h:outputText value="#{init.lastMenstrualPeriod}">
+						<f:converter converterId="localDateConverter"/>
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Estimated Due Date"/>
+					</f:facet>
+					<h:outputText value="#{init.estimatedDueDate}">
+						<f:converter converterId="localDateConverter"/>
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Pregnant for"/>
+					</f:facet>
+					<h:outputText value="#{init.timePregnant}"/>
 				</h:column>
 			</h:dataTable>
+			
 			<h4>Babies</h4>
 			<div style="width: 300px">
 				<h:message for="manage_obstetrics_formBabyError" class="iTrustError" />
