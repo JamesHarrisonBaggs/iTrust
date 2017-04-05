@@ -145,46 +145,46 @@
 					action="#{child_controller.submitNew}">
 					<f:param name="visitID" value="#{child_controller.visitId}" />
 				</h:commandButton>
+			</h:form>
+			<h:form>
 				<h:panelGroup rendered="#{child_controller.newBaby}">
 					<h:panelGrid columns="1" class="fTable">
-						<form>
-							<h:panelGroup>
-								<h:outputLabel for="babyDate" style="padding-right:20px">Date of Birth:</h:outputLabel>
-								<h:inputText id="babyDate" name="babyDate"
-									value="#{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputLabel for="babyTime" style="padding-right:20px">Time of Birth:</h:outputLabel>
-								<h:inputText id="babyTime" name="babyTime"
-									value="#{child_controller.timeOfBirth}" />
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputLabel for="preEstimateFlag" style="padding-right:20px">Pre-Estimate Flag:</h:outputLabel>
-								<h:selectOneMenu id="preEstimateFlag" name="preEstimateFlag"
-									value="#{child_controller.preEstimateFlag}">
-									<f:selectItem itemValue="true" itemLabel="Yes" />
-									<f:selectItem itemValue="false" itemLabel="No" />
-								</h:selectOneMenu>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:outputLabel for="gender" style="padding-right:20px">Gender:</h:outputLabel>
-								<h:selectOneMenu id="gender" name="gender"
-									value="#{child_controller.gender}">
-									<f:selectItem itemValue="male" itemLabel="Male" />
-									<f:selectItem itemValue="female" itemLabel="Female" />
-								</h:selectOneMenu>
-							</h:panelGroup>
-							<h:panelGroup>
-								<h:commandButton id="saveNewBaby" value="Save New Baby"
-									action="#{child_controller.submitSave}">
-									<f:param name="visitID" value="#{child_controller.visitId}" />
-								</h:commandButton>
-								<h:commandButton id="canceleNewBaby" value="Cancel"
-									outcome="/auth/hcp-uap/officeVisitInfo.xhtml">
-									<f:param name="visitID" value="#{child_controller.visitId}" />
-								</h:commandButton>
-							</h:panelGroup>
-						</form>
+						<h:panelGroup>
+							<h:outputLabel for="babyDate" style="padding-right:20px">Date of Birth:</h:outputLabel>
+							<h:inputText id="babyDate" name="babyDate"
+								value="#{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel for="babyTime" style="padding-right:20px">Time of Birth:</h:outputLabel>
+							<h:inputText id="babyTime" name="babyTime"
+								value="#{child_controller.timeOfBirth}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel for="preEstimateFlag" style="padding-right:20px">Pre-Estimate Flag:</h:outputLabel>
+							<h:selectOneMenu id="preEstimateFlag" name="preEstimateFlag"
+								value="#{child_controller.preEstimateFlag}">
+								<f:selectItem itemValue="true" itemLabel="Yes" />
+								<f:selectItem itemValue="false" itemLabel="No" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputLabel for="gender" style="padding-right:20px">Gender:</h:outputLabel>
+							<h:selectOneMenu id="gender" name="gender"
+								value="#{child_controller.gender}">
+								<f:selectItem itemValue="male" itemLabel="Male" />
+								<f:selectItem itemValue="female" itemLabel="Female" />
+							</h:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:commandButton id="saveNewBaby" value="Save New Baby"
+								action="#{child_controller.submitSave}">
+								<f:param name="visitID" value="#{child_controller.visitId}" />
+							</h:commandButton>
+							<h:commandButton id="canceleNewBaby" value="Cancel"
+								outcome="/auth/hcp-uap/officeVisitInfo.xhtml">
+								<f:param name="visitID" value="#{child_controller.visitId}" />
+							</h:commandButton>
+						</h:panelGroup>
 					</h:panelGrid>
 				</h:panelGroup>
 			</h:form>
