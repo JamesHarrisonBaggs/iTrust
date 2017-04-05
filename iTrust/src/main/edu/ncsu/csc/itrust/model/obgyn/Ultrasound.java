@@ -122,5 +122,13 @@ public class Ultrasound {
 	public void setUploadFile(InputStream uploadFile) {
 		this.uploadFile = uploadFile;
 	}
+
+	@Override
+	public String toString() {
+		return "Ultrasound [patientId=" + patientId + ", visitId=" + visitId + ", fetusId=" + fetusId
+				+ ", visitDate=" + visitDate + ", crl=" + crownRumpLength + ", bpd=" + biparietalDiameter
+				+ ", hc=" + headCircumference + ", fl=" + femurLength + ", ofd=" + occipitofrontalDiameter + ", ac="
+				+ abdominalCircumference + ", hl=" + humerusLength + ", efw=" + estimatedFetalWeight + "]";
+	}
 	
 }

@@ -88,26 +88,29 @@ public class UltrasoundMySQLTest {
 		
 	}
 	
-	@Ignore
 	@Test
 	public void testUpdate() throws Exception {
 		
 		// quick and ugly way to grab existing visit id
 		long visitId = -1;
+		int fetusId = -1;
 		list = sql.getByPatientId(2);
+		System.out.println("Get");
 		for (Ultrasound b : list) {
+			System.out.println(b);
 			if (b.getBiparietalDiameter() == 40 && b.getVisitDate().toLocalDate().equals(LocalDate.of(2016, 07, 28))) {
 				visitId = b.getVisitId();
+				fetusId = b.getFetusId();
 			}
 		}
 		
-		// create an update bean with the same patient and visit ID
+		// create an update bean with the same patient/visit/fetus ID
 		bean = new Ultrasound();
 		bean.setPatientId(2);
 		bean.setVisitId(visitId);
 		LocalDateTime now = LocalDateTime.now();
 		bean.setVisitDate(now);
-		bean.setFetusId(1);
+		bean.setFetusId(fetusId);
 		bean.setCrownRumpLength(80);
 		bean.setBiparietalDiameter(40);
 		bean.setHeadCircumference(130);
@@ -119,6 +122,13 @@ public class UltrasoundMySQLTest {
 
 		// check that an update was performed
 		int results = sql.update(bean);
+		
+		System.out.println("Update:");
+		list = sql.getByPatientId(2);
+		for (Ultrasound b : list) {
+			System.out.println(b);
+		}
+		
 		assertEquals(2, results);
 		
 		// check assertions
