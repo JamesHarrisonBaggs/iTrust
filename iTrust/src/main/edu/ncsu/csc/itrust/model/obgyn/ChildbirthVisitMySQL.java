@@ -57,5 +57,16 @@ public class ChildbirthVisitMySQL {
 		}
 	}
 	
+	public ChildbirthVisit getByVisitId(long visitID) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM itrust.childbirth_visits WHERE visitID="+visitID);
+				ResultSet results = stmt.executeQuery())  {
+			results.next();
+			return loader.loadSingle(results);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
+	}
+	
 
 }

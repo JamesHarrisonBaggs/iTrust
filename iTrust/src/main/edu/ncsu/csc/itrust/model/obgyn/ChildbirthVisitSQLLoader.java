@@ -40,7 +40,7 @@ public class ChildbirthVisitSQLLoader implements SQLLoader<ChildbirthVisit> {
 	@Override
 	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, ChildbirthVisit bean,
 			boolean newInstance) throws SQLException {
-		String statement = "INSERT INTO childbirths(patientID, visitID, visitDate, preScheduled, "
+		String statement = "INSERT INTO childbirth_visits(patientID, visitID, visitDate, preScheduled, "
 				+ "deliveryType, pitocin, nitrousOxide, pethidine, epiduralAnaesthesia, magnesiumSO4) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
 				+ "ON DUPLICATE KEY UPDATE patientID=?, visitID=?, visitDate=?, preScheduled=?," 
