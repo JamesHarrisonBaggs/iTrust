@@ -83,7 +83,7 @@ if(request.getParameter("loginError") != null) {
 		// get post titles from reddit
 		var sayings = [];
 		$.ajax({
-			url: "http://www.reddit.com/r/WholesomeMemes/hot.json?sort=hot",
+			url: "http://www.reddit.com/r/enlightenedbirdmen/hot.json?sort=hot",
 			context: document.body,
 			success: function(response) {
 				var children = response.data.children;

@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
@@ -61,6 +62,18 @@ public class ChildbirthController extends iTrustController {
 		pid = Integer.parseInt(sessionUtils.getCurrentPatientMID());
 		setValues();
 	}
+	
+	public ChildbirthController(DataSource ds, SessionUtils utils) throws DBException {
+		super();
+		sessionUtils = utils;
+		cbs = new ChildbirthMySQL(ds);
+		cbvs = new ChildbirthVisitMySQL(ds);
+		ovc = new OfficeVisitController(ds);
+		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
+		pid = Integer.parseInt(sessionUtils.getCurrentPatientMID());
+		setValues();
+	}
+	
 	private void setValues() {
 		ChildbirthVisit cbv;
 		try {

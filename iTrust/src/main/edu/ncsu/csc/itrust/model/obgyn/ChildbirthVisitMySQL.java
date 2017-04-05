@@ -47,20 +47,12 @@ public class ChildbirthVisitMySQL {
 		}
 	}
 	
-	public List<ChildbirthVisit> getByVisit(long visitID) throws DBException {
+	public ChildbirthVisit getByVisitId(long visitID) throws DBException {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM childbirth_visits WHERE visitID="+visitID);
 				ResultSet results = stmt.executeQuery()) {
-			return loader.loadList(results);
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
-	}
-	
-	public ChildbirthVisit getByVisitId(long visitID) throws DBException {
-		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM itrust.childbirth_visits WHERE visitID="+visitID);
-				ResultSet results = stmt.executeQuery())  {
+//			List<ChildbirthVisit> list = loader.loadList(results);
+//			return list.get(0);
 			results.next();
 			return loader.loadSingle(results);
 		} catch (SQLException e) {
