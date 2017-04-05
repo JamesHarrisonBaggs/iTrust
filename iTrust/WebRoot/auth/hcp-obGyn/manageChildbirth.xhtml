@@ -76,6 +76,9 @@
 					value="Save Childbirth Visit" action="#{child_controller.submit}">
 					<f:param name="visitID" value="#{child_controller.visitId}" />
 				</h:commandButton>
+				<h:commandButton id="cancelChildBirthVisit" value="Cancel"
+					action="#{navigation_controller.baseOfficeVisit}">
+				</h:commandButton>
 			</h:form>
 		</h:panelGroup>
 		<h:panelGroup>
@@ -86,16 +89,7 @@
 				<br />
 				<h:column>
 					<f:facet name="header">
-						<h:outputText value="Link" />
-					</f:facet>
-					<h:link outcome="manageUltrasound" value="Select">
-						<f:param name="fetusID" value="#{us.fetusId}" />
-						<f:param name="visitID" value="#{us.visitId}" />
-					</h:link>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Date" />
+						<h:outputText value="Select Date" />
 					</f:facet>
 					<h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml"
 						value="#{us.visitDate.toLocalDate() }">
@@ -106,14 +100,20 @@
 				</h:column>
 			</h:dataTable>
 			<h4>Babies</h4>
-			<h:dataTable id="babies" styleClass="fTable"
-				value="#{child_controller.childBirthVisitID}" var="cb" border="1">
+			<div style="width: 300px">
+				<h:message for="manage_obstetrics_formBabyError" class="iTrustError" />
+				<h:message for="manage_obstetrics_formBabySuccess"
+					style="color:green" />
+			</div>
+			<h:dataTable id="manage_obstetrics_formBabySuccess"
+				styleClass="fTable" value="#{child_controller.childBirthVisitID}"
+				var="cb" border="1">
 				<br />
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="Baby" />
 					</f:facet>
-					<h:link outcome="manageUltrasound" value="#{us.fetusId}">
+					<h:link outcome="manageUltrasound" value="#{cb.birthID}">
 						<f:param name="birthID" value="#{cb.birthID}" />
 						<f:param name="visitID" value="#{cb.visitID}" />
 					</h:link>
@@ -122,22 +122,41 @@
 					<f:facet name="header">
 						<h:outputText value="Link" />
 					</f:facet>
-					<h:link outcome="/auth/hcp-obGyn/manageBaby.xhtml" value="Edit">
-						<f:param name="visitID" value="#{cb.visitID}" />
-						<f:param name="birthID" value="#{cb.birthID}" />
-						<f:param name="action" value="view" />
-					</h:link>
+					<h:form>
+						<h:commandButton id="newBaby" value="Edit"
+							action="#{child_controller.submitEdit}">
+							<f:param name="birthID" value="#{cb.birthID}" />
+							<f:param name="visitID" value="#{cb.visitID}" />
+						</h:commandButton>
+					</h:form>
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="Link" />
 					</f:facet>
-					<h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml"
-						value="Delete">
-						<f:param name="visitID" value="#{cb.visitID}" />
-						<f:param name="fetusID" value="#{cb.birthID}" />
-						<f:param name="action" value="view" />
-					</h:link>
+					<h:form>
+						<h:commandButton id="newBaby" value="Delete"
+							action="#{child_controller.submitDelete}">
+							<f:param name="birthID" value="#{cb.birthID}" />
+							<f:param name="visitID" value="#{cb.visitID}" />
+						</h:commandButton>
+					</h:form>
+				</h:column>
+				<h:column>
+
+					<f:facet name="header">
+						<h:outputText value="Add Patient #{!cb.added}" />
+					</f:facet>
+					<c:if test="#{!cb.added}">
+						<h:form>
+							<h:commandButton id="newBaby" value="Add Patient"
+								action="#{child_controller.submitAdd}">
+								<f:param name="birthID" value="#{cb.birthID}" />
+								<f:param name="visitID" value="#{cb.visitID}" />
+							</h:commandButton>
+						</h:form>
+					</c:if>
+
 				</h:column>
 			</h:dataTable>
 			<h:form>
@@ -147,17 +166,16 @@
 				</h:commandButton>
 			</h:form>
 			<h:form>
-				<h:panelGroup rendered="#{child_controller.newBaby}">
+				<h:panelGroup
+					rendered="#{child_controller.newBaby or child_controller.editBaby}">
 					<h:panelGrid columns="1" class="fTable">
 						<h:panelGroup>
-							<h:outputLabel for="babyDate" style="padding-right:20px">Date of Birth:</h:outputLabel>
+							<h:outputLabel for="babyDate" style="padding-right:20px">Date and Time of Birth:</h:outputLabel>
 							<h:inputText id="babyDate" name="babyDate"
-								value="#{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
-						</h:panelGroup>
-						<h:panelGroup>
-							<h:outputLabel for="babyTime" style="padding-right:20px">Time of Birth:</h:outputLabel>
-							<h:inputText id="babyTime" name="babyTime"
-								value="#{child_controller.timeOfBirth}" />
+								value="#{child_controller.dateOfBirth}">
+								<f:converter converterId="localDateTimeConverter" />
+							</h:inputText>
+							<h:message class="iTrustError" for="babyDate"></h:message>
 						</h:panelGroup>
 						<h:panelGroup>
 							<h:outputLabel for="preEstimateFlag" style="padding-right:20px">Pre-Estimate Flag:</h:outputLabel>
@@ -171,16 +189,26 @@
 							<h:outputLabel for="gender" style="padding-right:20px">Gender:</h:outputLabel>
 							<h:selectOneMenu id="gender" name="gender"
 								value="#{child_controller.gender}">
-								<f:selectItem itemValue="male" itemLabel="Male" />
-								<f:selectItem itemValue="female" itemLabel="Female" />
+								<f:selectItem itemValue="Male" itemLabel="Male" />
+								<f:selectItem itemValue="Female" itemLabel="Female" />
 							</h:selectOneMenu>
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup rendered="#{child_controller.newBaby}">
 							<h:commandButton id="saveNewBaby" value="Save New Baby"
 								action="#{child_controller.submitSave}">
 								<f:param name="visitID" value="#{child_controller.visitId}" />
 							</h:commandButton>
 							<h:commandButton id="canceleNewBaby" value="Cancel"
+								outcome="/auth/hcp-uap/officeVisitInfo.xhtml">
+								<f:param name="visitID" value="#{child_controller.visitId}" />
+							</h:commandButton>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{child_controller.editBaby}">
+							<h:commandButton id="editBaby" value="Edit Baby"
+								action="#{child_controller.submitSave}">
+								<f:param name="visitID" value="#{child_controller.visitId}" />
+							</h:commandButton>
+							<h:commandButton id="canceleEditBaby" value="Cancel"
 								outcome="/auth/hcp-uap/officeVisitInfo.xhtml">
 								<f:param name="visitID" value="#{child_controller.visitId}" />
 							</h:commandButton>

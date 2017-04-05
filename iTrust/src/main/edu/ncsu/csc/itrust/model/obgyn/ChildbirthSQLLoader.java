@@ -30,15 +30,16 @@ public class ChildbirthSQLLoader implements SQLLoader<Childbirth> {
 		bean.setBirthdate(rs.getTimestamp("birthDate").toLocalDateTime());
 		bean.setGender(rs.getString("gender"));
 		bean.setEstimated(rs.getBoolean("estimated"));
+		bean.setAdded(rs.getBoolean("added"));
 		return bean;
 	}
 
 	@Override
 	public PreparedStatement loadParameters(Connection conn, PreparedStatement ps, Childbirth bean,
 			boolean newInstance) throws SQLException {
-		String statement = "INSERT INTO childbirths(parentID, visitID, birthDate, gender, estimated) "
-				+ "VALUES(?, ?, ?, ?, ?) "
-				+ "ON DUPLICATE KEY UPDATE parentID=?, visitID=?, birthDate=?, gender=?, estimated=?";
+		String statement = "INSERT INTO childbirths(parentID, visitID, birthDate, gender, estimated, added) "
+				+ "VALUES(?, ?, ?, ?, ?, ?) "
+				+ "ON DUPLICATE KEY UPDATE parentID=?, visitID=?, birthDate=?, gender=?, estimated=?, added=?";
 		ps = conn.prepareStatement(statement);
 
 		// set parameters
@@ -48,6 +49,7 @@ public class ChildbirthSQLLoader implements SQLLoader<Childbirth> {
 		ps.setTimestamp(i++, Timestamp.valueOf(bean.getBirthdate()));
 		ps.setString(i++, bean.getGender());
 		ps.setBoolean(i++, bean.isEstimated());
+		ps.setBoolean(i++, bean.isAdded());
 		
 		// set again for duplicate
 		ps.setLong(i++, bean.getParentID());
@@ -55,6 +57,8 @@ public class ChildbirthSQLLoader implements SQLLoader<Childbirth> {
 		ps.setTimestamp(i++, Timestamp.valueOf(bean.getBirthdate()));
 		ps.setString(i++, bean.getGender());
 		ps.setBoolean(i++, bean.isEstimated());
+		ps.setBoolean(i++, bean.isAdded());
+
 	
 		return ps;
 	}

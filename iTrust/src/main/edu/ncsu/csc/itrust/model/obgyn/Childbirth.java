@@ -19,6 +19,8 @@ public class Childbirth {
 	private boolean estimated;
 	/** Gender of the child */
 	private String gender;
+	/** If baby has been added as new patient */
+	private boolean added;
 	
 	public Childbirth() {
 		this.parentID = -1;
@@ -76,6 +78,14 @@ public class Childbirth {
 		if (gender.equalsIgnoreCase("f")) gender = "Female";
 		if (gender.equalsIgnoreCase("female")) gender = "Female";
 		this.gender = gender;
+	}
+
+	public boolean isAdded() {
+		return added;
+	}
+
+	public void setAdded(boolean added) {
+		this.added = added;
 	}
 	
 }

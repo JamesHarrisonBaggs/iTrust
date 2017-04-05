@@ -519,6 +519,7 @@ CREATE TABLE childbirths(
 	birthDate		DATETIME		NOT NULL,
 	gender			VARCHAR(13) 	DEFAULT 'Not Specified',
 	estimated		BOOLEAN			NOT NULL DEFAULT FALSE,
+	added			BOOLEAN			NOT NULL DEFAULT FALSE,
 	PRIMARY KEY(parentID, visitID, birthID),
 	FOREIGN KEY(visitID) 			REFERENCES officeVisit(visitID)
 ) ENGINE=MyISAM;

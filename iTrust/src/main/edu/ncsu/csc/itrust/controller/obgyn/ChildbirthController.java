@@ -3,13 +3,18 @@
  */
 package edu.ncsu.csc.itrust.controller.obgyn;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 
+import edu.ncsu.csc.itrust.controller.NavigationController;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.controller.officeVisit.OfficeVisitController;
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -26,6 +31,7 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
  *
  */
 @ManagedBean(name = "child_controller")
+@SessionScoped()
 public class ChildbirthController extends iTrustController {
 
 	private SessionUtils sessionUtils;
@@ -51,6 +57,8 @@ public class ChildbirthController extends iTrustController {
 	private LocalTime timeOfBirth;
 	private boolean preEstimateFlag;
 	private String name;
+	private boolean editBaby;
+	private boolean added;
 	
 	public ChildbirthController() throws DBException {
 		super();
@@ -93,6 +101,14 @@ public class ChildbirthController extends iTrustController {
 		newBaby = Boolean.parseBoolean(sessionUtils.getRequestParameter("newBaby"));
 	
 	}
+	public LocalDateTime getVisitDate() {
+		return visitDate;
+	}
+
+	public void setVisitDate(LocalDateTime visitDate) {
+		this.visitDate = visitDate;
+	}
+
 	public void submit() {
 		ChildbirthVisit cbv = new ChildbirthVisit();
 		cbv.setDeliveryType(deliveryType);
@@ -106,36 +122,84 @@ public class ChildbirthController extends iTrustController {
 		cbv.setVisitDate(visitDate.toLocalDate());
 		try {
 			cbvs.update(cbv);
-			// TODO Success faces message here
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formChildSuccess", new FacesMessage("Childbirth Visit Updated Successfully"));
 		} catch (DBException e) {
 			e.printStackTrace();
 		} catch (FormValidationException e) {
-			// TODO Error faces message here
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formChildError", new FacesMessage(e.getMessage()));
 		}
 	}
 	public void submitNew() {
+		dateOfBirth = LocalDateTime.now();
+		birthID = -1;
+		gender ="Male";
+		setAdded(false);
+		setEstimated(false);
 		setNewBaby(true);
 	}
 	public void submitSave() {
 		Childbirth cb = new Childbirth();
-		dateOfBirth = dateOfBirth.withHour(timeOfBirth.getHour());
-		dateOfBirth = dateOfBirth.withMinute(timeOfBirth.getMinute());
-		dateOfBirth = dateOfBirth.withSecond(timeOfBirth.getSecond());
+		if (birthID != -1) {
+			cb.setBirthID(birthID);
+		}
 		cb.setBirthdate(dateOfBirth);
 		cb.setEstimated(preEstimateFlag);
 		cb.setGender(gender);
+		cb.setAdded(isAdded());
+		cb.setParentID(pid);
+		cb.setVisitID(visitId);
 		try {
 			cbs.update(cb);
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formBabySuccess", new FacesMessage("Baby Updated Successfully"));
 		} catch (DBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FormValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formBabyError", new FacesMessage(e.getMessage()));
 		}
 		setNewBaby(false);
+		setEditBaby(false);
 	}
+	public void submitAdd() throws IOException, DBException, FormValidationException {
+		Childbirth cb;
+		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
+		birthID = Integer.parseInt(sessionUtils.getRequestParameter("birthID"));
+		try {
+			cb = cbs.getByBirthID(visitId, birthID);
+		} catch (DBException e) {
+			cb = new Childbirth();
+		}
+		cb.setAdded(true);
+		cbs.update(cb);
+		NavigationController.addPatient();
+		
+	}
+	public void submitEdit() {
+		setEditBaby(true);
+		Childbirth cb;
+		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
+		birthID = Integer.parseInt(sessionUtils.getRequestParameter("birthID"));
+		try {
+			cb = cbs.getByBirthID(visitId, birthID);
+		} catch (DBException e) {
+			cb = new Childbirth();
+		}
+		dateOfBirth = cb.getBirthdate();
+		preEstimateFlag = cb.isEstimated();
+		gender = cb.getGender();
+		added = cb.isAdded();
+	}
+	public void submitDelete() {
+		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
+		birthID = Integer.parseInt(sessionUtils.getRequestParameter("birthID"));
+		try {
+			cbs.remove(visitId, birthID);
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formBabySuccess", new FacesMessage("Baby Deleted Successfully"));
 
+		} catch (DBException e) {
+			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formBabyError", new FacesMessage(e.getMessage()));
+		}
+	}
 	public ChildbirthController(SessionUtils sessionUtils, TransactionLogger logger) {
 		super(sessionUtils, logger);
 	}
@@ -286,6 +350,22 @@ public class ChildbirthController extends iTrustController {
 	}
 	public void setDateOfBirth(LocalDateTime dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public boolean isEditBaby() {
+		return editBaby;
+	}
+
+	public void setEditBaby(boolean editBaby) {
+		this.editBaby = editBaby;
+	}
+
+	public boolean isAdded() {
+		return added;
+	}
+
+	public void setAdded(boolean added) {
+		this.added = added;
 	}
 	
 }

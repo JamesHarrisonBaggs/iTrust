@@ -19,7 +19,7 @@ public class ChildbirthMySQL {
 	private ChildbirthSQLLoader loader;
 	private ChildbirthValidator validator;
 	private DataSource ds;
-	
+
 	public ChildbirthMySQL() throws DBException {
 		this.loader = new ChildbirthSQLLoader();
 		this.validator = new ChildbirthValidator();
@@ -30,23 +30,32 @@ public class ChildbirthMySQL {
 			throw new DBException(new SQLException("Context Lookup Naming Exception: " + e.getMessage()));
 		}
 	}
-	
+
 	public ChildbirthMySQL(DataSource ds) {
 		this.loader = new ChildbirthSQLLoader();
 		this.validator = new ChildbirthValidator();
 		this.ds = ds;
 	}
-	
+
 	public int update(Childbirth bean) throws DBException, FormValidationException {
 		validator.validate(bean);
-		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
-			return stmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new DBException(e);
+		if(bean.getBirthID() == -1) {
+			try (Connection conn = ds.getConnection();
+					PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
+				return stmt.executeUpdate();
+			} catch (SQLException e) {
+				throw new DBException(e);
+			}
+		} else {
+			try (Connection conn = ds.getConnection();
+					PreparedStatement stmt = conn.prepareStatement("UPDATE itrust.childbirths SET added="+bean.isAdded()+", birthDate='"+bean.getBirthdate()+"', gender='"+bean.getGender()+"', estimated="+bean.isEstimated()+" WHERE birthID="+bean.getBirthID()+" AND visitID="+bean.getVisitID())) {
+				return stmt.executeUpdate();
+			} catch (SQLException e) {
+				throw new DBException(e);
+			}
 		}
 	}
-	
+
 	public List<Childbirth> getByVisitID(long visitID) throws DBException {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM childbirths WHERE visitID="+visitID);
@@ -56,7 +65,7 @@ public class ChildbirthMySQL {
 			throw new DBException(e);
 		}
 	}
-	
+
 	public Childbirth getByBirthID(long visitID, int birthID) throws DBException {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM childbirths WHERE visitID="+visitID+" AND birthID="+birthID);
@@ -71,5 +80,15 @@ public class ChildbirthMySQL {
 			throw new DBException(e);			
 		}
 	}
-	
+
+	public void remove(long visitId, int birthID) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("DELETE FROM childbirths WHERE visitID="+visitId+" AND birthID="+birthID))
+				{
+					stmt.execute();
+				} catch (SQLException e) {
+					throw new DBException(e);			
+				}
+	}
+
 }

@@ -14,8 +14,6 @@ public class ChildbirthValidator extends POJOValidator<Childbirth> {
 			errorList.addIfNotNull("Parent ID cannot be negative");
 		if (bean.getVisitID() < 0)
 			errorList.addIfNotNull("Visit ID cannot be negative");
-		if (bean.getBirthID() < 0)
-			errorList.addIfNotNull("Birth ID cannot be negative");
 		if (bean.getBirthdate() == null)
 			errorList.addIfNotNull("Birth date cannot be null");
 		errorList.addIfNotNull(
