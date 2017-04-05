@@ -114,8 +114,8 @@
 						<h:outputText value="Baby" />
 					</f:facet>
 					<h:link outcome="manageUltrasound" value="#{us.fetusId}">
-						<f:param name="fetusID" value="#{cb.fetusId}" />
-						<f:param name="visitID" value="#{cb.visitId}" />
+						<f:param name="birthID" value="#{cb.birthID}" />
+						<f:param name="visitID" value="#{cb.visitID}" />
 					</h:link>
 				</h:column>
 				<h:column>
@@ -123,8 +123,8 @@
 						<h:outputText value="Link" />
 					</f:facet>
 					<h:link outcome="/auth/hcp-obGyn/manageBaby.xhtml" value="Edit">
-						<f:param name="visitID" value="#{cb.visitId}" />
-						<f:param name="fetusID" value="#{cb.fetusId}" />
+						<f:param name="visitID" value="#{cb.visitID}" />
+						<f:param name="birthID" value="#{cb.birthID}" />
 						<f:param name="action" value="view" />
 					</h:link>
 				</h:column>
@@ -134,8 +134,8 @@
 					</f:facet>
 					<h:link outcome="/auth/hcp-obGyn/manageUltrasound.xhtml"
 						value="Delete">
-						<f:param name="visitID" value="#{cb.visitId}" />
-						<f:param name="fetusID" value="#{cb.fetusId}" />
+						<f:param name="visitID" value="#{cb.visitID}" />
+						<f:param name="fetusID" value="#{cb.birthID}" />
 						<f:param name="action" value="view" />
 					</h:link>
 				</h:column>
