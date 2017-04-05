@@ -119,7 +119,7 @@ public class ChildbirthController extends iTrustController {
 		cbv.setPethidine(pethidine);
 		cbv.setPitocin(pitocin);
 		cbv.setVisitID(visitId);
-		cbv.setVisitDate(visitDate.toLocalDate());
+		cbv.setVisitDate(visitDate);
 		try {
 			cbvs.update(cbv);
 			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formChildSuccess", new FacesMessage("Childbirth Visit Updated Successfully"));

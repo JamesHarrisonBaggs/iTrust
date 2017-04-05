@@ -1,6 +1,6 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.faces.bean.ManagedBean;
 
@@ -12,7 +12,7 @@ public class ChildbirthVisit {
 	/** ID of the associated office visit */
 	private long visitID;
 	/** The date of the office visit */
-	private LocalDate visitDate;
+	private LocalDateTime visitDate;
 	/** True if the visit was pre-scheduled */
 	private boolean preSchedule;
 	/** The type of delivery */
@@ -41,7 +41,7 @@ public class ChildbirthVisit {
 		return visitID;
 	}
 
-	public LocalDate getVisitDate() {
+	public LocalDateTime getVisitDate() {
 		return visitDate;
 	}
 
@@ -72,6 +72,11 @@ public class ChildbirthVisit {
 	public int getMagnesiumSO4() {
 		return magnesiumSO4;
 	}
+	
+	public int[] getDosages() {
+		int dosages[] = { pitocin, nitrousOxide, pethidine, epiduralAnaesthesia, magnesiumSO4 };
+		return dosages;
+	}
 
 	public void setPatientID(long patientID) {
 		this.patientID = patientID;
@@ -81,7 +86,7 @@ public class ChildbirthVisit {
 		this.visitID = visitID;
 	}
 
-	public void setVisitDate(LocalDate visitDate) {
+	public void setVisitDate(LocalDateTime visitDate) {
 		this.visitDate = visitDate;
 	}
 

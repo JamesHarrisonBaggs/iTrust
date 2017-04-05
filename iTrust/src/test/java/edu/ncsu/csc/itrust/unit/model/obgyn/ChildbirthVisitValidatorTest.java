@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.unit.model.obgyn;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,20 @@ public class ChildbirthVisitValidatorTest {
 			validator.validate(bean);
 		} catch (FormValidationException e) {
 			fail("Validation failed unexpectedly");
-		}
+		}		
+	}
+	
+	@Test
+	public void testGetDosages() {
+		bean = defaultBean();
+		bean.setMagnesiumSO4(5);
+		bean.setPitocin(1);
+		bean.setNitrousOxide(2);
+		bean.setEpiduralAnaesthesia(4);
+		bean.setPethidine(3);
+		int exp[] = { 1, 2, 3, 4, 5 };
+		int act[] = bean.getDosages();
+		assertArrayEquals(exp, act);
 	}
 	
 	@Test
@@ -115,7 +129,7 @@ public class ChildbirthVisitValidatorTest {
 		ChildbirthVisit b = new ChildbirthVisit();
 		b.setPatientID(2);
 		b.setVisitID(51);
-		b.setVisitDate(LocalDate.now());
+		b.setVisitDate(LocalDateTime.now());
 		b.setPreSchedule(false);
 		b.setDeliveryType("vaginal");
 		b.setPitocin(0);

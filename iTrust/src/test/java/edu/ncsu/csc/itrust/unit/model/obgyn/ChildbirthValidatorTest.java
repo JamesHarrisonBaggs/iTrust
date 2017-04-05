@@ -104,9 +104,8 @@ public class ChildbirthValidatorTest {
 		invalidate(bean, "Visit ID cannot be negative");
 		
 		// test birth ID < 0
-		bean = defaultBean();
-		bean.setBirthID(-1);
-		invalidate(bean, "Birth ID cannot be negative");
+		// actually this is fine because it doesn't matter
+		// SQL ignores the birthID here and generates its own
 		
 		// test null birth date
 		bean = defaultBean();
