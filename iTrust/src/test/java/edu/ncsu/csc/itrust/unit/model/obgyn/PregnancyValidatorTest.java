@@ -83,6 +83,9 @@ public class PregnancyValidatorTest {
 		// new bean
 		bean = new Pregnancy();
 		invalidate(bean, "");
+		
+		// null bean
+		invalidate(null, "Bean cannot be null");
 				
 		// test id < 0
 		bean = defaultBean();

@@ -44,6 +44,9 @@ public class ObstetricsInitValidatorTest {
 		bean = new ObstetricsInit();
 		invalidate(bean, "Initialization date cannot be null");
 		
+		// null bean
+		invalidate(null, "Bean cannot be null");
+		
 		// test id < 0
 		bean = new ObstetricsInit();
 		bean.setPatientId(-7);

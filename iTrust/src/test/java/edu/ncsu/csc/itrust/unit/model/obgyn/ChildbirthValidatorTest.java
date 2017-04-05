@@ -81,9 +81,20 @@ public class ChildbirthValidatorTest {
 		bean.setEstimated(true);
 		assertTrue(bean.isEstimated());
 		
-		bean = defaultBean();
+		bean = defaultBean();		
 		bean.setEstimated(false);
 		assertFalse(bean.isEstimated());
+	}
+	
+	@Test
+	public void testAdded() {
+		bean = defaultBean();
+		bean.setAdded(false);
+		assertFalse(bean.isAdded());
+		
+		bean = defaultBean();
+		bean.setAdded(true);
+		assertTrue(bean.isAdded());
 	}
 	
 	@Test
@@ -92,6 +103,9 @@ public class ChildbirthValidatorTest {
 		// new bean
 		bean = new Childbirth();
 		invalidate(bean, "Parent ID cannot be negative");
+		
+		// null bean
+		invalidate(null, "Bean cannot be null");
 		
 		// test parent ID < 0
 		bean = defaultBean();
@@ -124,6 +138,7 @@ public class ChildbirthValidatorTest {
 		b.setBirthID(1);
 		b.setBirthdate(LocalDateTime.now());
 		b.setEstimated(false);
+		b.setAdded(false);
 		b.setGender("Male");
 		return b;
 	}

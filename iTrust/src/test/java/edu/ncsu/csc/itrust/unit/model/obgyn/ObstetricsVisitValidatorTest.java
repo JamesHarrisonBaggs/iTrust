@@ -42,6 +42,9 @@ public class ObstetricsVisitValidatorTest {
 	@Test
 	public void testInvalid() throws Exception {
 		
+		// null bean
+		invalidate(null, "Bean cannot be null");
+		
 		// patient id < 0
 		bean = defaultBean();
 		bean.setPatientId(-1);

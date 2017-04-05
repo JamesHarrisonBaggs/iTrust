@@ -61,7 +61,36 @@ public class ChildbirthVisitMySQLTest {
 	
 	@Test
 	public void testCreate() throws Exception {
-		fail("Not yet implemented");
+		// starting assumption
+		list = sql.getByPatientID(7L);
+		assertEquals(1, list.size());
+		LocalDateTime date = LocalDateTime.of(2017, 4, 5, 11, 30);
+		
+		// new bean
+		bean = new ChildbirthVisit();
+		bean.setPatientID(7L);
+		bean.setVisitID(1090L);
+		bean.setVisitDate(date);
+		bean.setPreSchedule(true);
+		bean.setDeliveryType("vacuum");
+		bean.setPitocin(5);
+		bean.setNitrousOxide(6);
+		bean.setPethidine(7);
+		bean.setEpiduralAnaesthesia(8);
+		bean.setMagnesiumSO4(9);
+		
+		// add and check
+		sql.update(bean);
+		list = sql.getByPatientID(7L);
+		assertEquals(2, list.size());
+		
+		bean = list.get(1);
+		assertEquals(7L, bean.getPatientID());
+		assertEquals(1090L, bean.getVisitID());
+		assertTrue(date.equals(bean.getVisitDate()));
+		assertTrue(bean.isPreSchedule());
+		int drugs[] = {5,6,7,8,9};
+		assertArrayEquals(drugs, bean.getDosages());
 	}
 
 	@Test
@@ -81,7 +110,7 @@ public class ChildbirthVisitMySQLTest {
 		bean = list.get(0);
 		assertEquals(2, bean.getPatientID());
 		assertEquals(visitID, bean.getVisitID());
-		assertEquals(date, bean.getVisitDate());
+		assertTrue(date.equals(bean.getVisitDate()));
 		assertFalse(bean.isPreSchedule());
 		assertEquals("miscarriage", bean.getDeliveryType());
 		assertArrayEquals(drugs, bean.getDosages());
@@ -112,7 +141,7 @@ public class ChildbirthVisitMySQLTest {
 		// get and check
 		bean = sql.getByVisitId(visitID);
 		assertEquals(2, bean.getPatientID());
-		assertEquals(date, bean.getVisitDate());
+		assertTrue(date.equals(bean.getVisitDate()));
 		assertTrue(bean.isPreSchedule());
 		assertEquals("vaginal", bean.getDeliveryType());
 		assertArrayEquals(drugs, bean.getDosages());

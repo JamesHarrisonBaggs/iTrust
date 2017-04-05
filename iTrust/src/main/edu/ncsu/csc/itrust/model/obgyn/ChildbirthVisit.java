@@ -118,4 +118,14 @@ public class ChildbirthVisit {
 		this.magnesiumSO4 = dosage;
 	}
 	
+	public void setDosages(int[] dosages) {
+		if (dosages.length == 5) {
+			this.pitocin = dosages[0];
+			this.nitrousOxide = dosages[1];
+			this.pethidine = dosages[2];
+			this.epiduralAnaesthesia = dosages[3];
+			this.magnesiumSO4 = dosages[4];
+		}
+	}
+	
 }

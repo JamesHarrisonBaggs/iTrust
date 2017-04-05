@@ -43,7 +43,27 @@ public class ChildbirthVisitValidatorTest {
 		bean.setPethidine(3);
 		int exp[] = { 1, 2, 3, 4, 5 };
 		int act[] = bean.getDosages();
-		assertArrayEquals(exp, act);
+		assertArrayEquals(exp, act);	
+	}
+	
+	@Test
+	public void testSetDosages() {
+		// set dosages
+		bean = defaultBean();
+		int dosages1[] = {5, 6, 7, 8, 9};
+		bean.setDosages(dosages1);
+		assertEquals(5, bean.getPitocin());
+		assertEquals(6, bean.getNitrousOxide());
+		assertEquals(7, bean.getPethidine());
+		assertEquals(8, bean.getEpiduralAnaesthesia());
+		assertEquals(9, bean.getMagnesiumSO4());
+		
+		// set invalid dosages
+		bean = defaultBean();
+		int dosages2[] = {1, 2, 3};
+		bean.setDosages(dosages2);
+		int exp[] = {0, 0, 0, 0, 0};
+		assertArrayEquals(exp, bean.getDosages());
 	}
 	
 	@Test
@@ -81,6 +101,9 @@ public class ChildbirthVisitValidatorTest {
 		// new bean
 		bean = new ChildbirthVisit();
 		invalidate(bean, "Patient ID cannot be negative");
+		
+		// null bean
+		invalidate(null, "Bean cannot be null");
 		
 		// test patient ID < 0
 		bean = defaultBean();

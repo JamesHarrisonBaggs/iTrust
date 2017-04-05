@@ -37,6 +37,9 @@ public class UltrasoundValidatorTest {
 		bean = new Ultrasound();
 		invalidate(bean, "This form has not been validated correctly");
 		
+		// null bean
+		invalidate(null, "Bean cannot be null");
+		
 		// patient id < 0
 		bean = defaultBean();
 		bean.setPatientId(-1);
