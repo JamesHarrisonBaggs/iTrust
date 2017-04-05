@@ -100,4 +100,10 @@ public class NavigationController {
 			ctx.redirect("/iTrust/auth/patient/viewOfficeVisit.xhtml");
 		}
 	}
+	public static void addPatient() throws IOException {
+		ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+		if (ctx != null) {
+			ctx.redirect("/iTrust/auth/hcp-uap/addPatient.jsp");
+		}
+	}
 }
