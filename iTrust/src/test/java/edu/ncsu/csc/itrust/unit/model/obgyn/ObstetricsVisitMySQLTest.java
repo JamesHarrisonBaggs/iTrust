@@ -126,6 +126,7 @@ public class ObstetricsVisitMySQLTest {
 	
 		// perform update
 		sql.update(bean);
+		// doesn't check the "proper" value was returned
 		
 		// check result
 		list = sql.getByID(2);

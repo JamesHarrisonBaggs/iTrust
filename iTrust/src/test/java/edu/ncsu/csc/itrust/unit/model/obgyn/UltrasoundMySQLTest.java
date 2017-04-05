@@ -95,9 +95,7 @@ public class UltrasoundMySQLTest {
 		long visitId = -1;
 		int fetusId = -1;
 		list = sql.getByPatientId(2);
-		System.out.println("Get");
 		for (Ultrasound b : list) {
-			System.out.println(b);
 			if (b.getBiparietalDiameter() == 40 && b.getVisitDate().toLocalDate().equals(LocalDate.of(2016, 07, 28))) {
 				visitId = b.getVisitId();
 				fetusId = b.getFetusId();
@@ -105,6 +103,7 @@ public class UltrasoundMySQLTest {
 		}
 		
 		// create an update bean with the same patient/visit/fetus ID
+		// updates local date, ofd, and hl
 		bean = new Ultrasound();
 		bean.setPatientId(2);
 		bean.setVisitId(visitId);
@@ -115,21 +114,15 @@ public class UltrasoundMySQLTest {
 		bean.setBiparietalDiameter(40);
 		bean.setHeadCircumference(130);
 		bean.setFemurLength(25); 
-		bean.setOccipitofrontalDiameter(40);
+		bean.setOccipitofrontalDiameter(45);
 		bean.setAbdominalCircumference(110);
-		bean.setHumerusLength(30);
+		bean.setHumerusLength(35);
 		bean.setEstimatedFetalWeight(201.55);
 
 		// check that an update was performed
-		int results = sql.update(bean);
-		
-		System.out.println("Update:");
+		sql.update(bean);
 		list = sql.getByPatientId(2);
-		for (Ultrasound b : list) {
-			System.out.println(b);
-		}
-		
-		assertEquals(2, results);
+		// doesn't check that the "proper" number was returned
 		
 		// check assertions
 		list = sql.getByPatientIdVisitId(2, visitId);
@@ -140,8 +133,15 @@ public class UltrasoundMySQLTest {
 		assertEquals(visitId, bean.getVisitId());
 		assertEquals(now.toLocalDate(), bean.getVisitDate().toLocalDate());
 		assertEquals(1, bean.getFetusId());
+		assertEquals(80, bean.getCrownRumpLength());
+		assertEquals(40, bean.getBiparietalDiameter());
+		assertEquals(130, bean.getHeadCircumference());
+		assertEquals(25, bean.getFemurLength());
+		assertEquals(45, bean.getOccipitofrontalDiameter());		
 		assertEquals(110, bean.getAbdominalCircumference());
-
+		assertEquals(35, bean.getHumerusLength());
+		assertEquals(201.55, bean.getEstimatedFetalWeight(), 0);
+		
 	}
 
 	@Test

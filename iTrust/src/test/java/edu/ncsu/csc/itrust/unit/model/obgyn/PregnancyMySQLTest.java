@@ -73,8 +73,8 @@ public class PregnancyMySQLTest {
 		bean.setAmount(3);
 		
 		// see if it was created
-		int results = sql.update(bean);
-		assertEquals(1, results);
+		sql.update(bean);
+		// doesn't check the "proper" value was returned
 		
 		// validate it is there
 		list = sql.getByID(7);
@@ -87,7 +87,6 @@ public class PregnancyMySQLTest {
 		
 	}
 	
-	@Ignore
 	@Test
 	public void testUpdate() throws Exception {
 		// create an update bean
