@@ -646,6 +646,10 @@ public class TestDataGenerator {
 	public void uc94() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/uc94.sql");
 	}
+	
+	public void uc96() throws SQLException, FileNotFoundException, IOException {
+		new DBBuilder(factory).executeSQLFile(DIR + "/uc96.sql");
+	}
 
 	public void testExpertSearch() throws FileNotFoundException, SQLException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/testExpertSearch.sql");
@@ -985,6 +989,7 @@ public class TestDataGenerator {
 		// added for obstetrics module
 		uc93();
 		uc94();
+		uc96();
 		
 		if (!checkIfZipsExists()) {
 			zipCodes();
