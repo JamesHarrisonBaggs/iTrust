@@ -66,8 +66,12 @@ public class ChildbirthController extends iTrustController {
 		cbs = new ChildbirthMySQL();
 		cbvs = new ChildbirthVisitMySQL();
 		ovc = new OfficeVisitController();
-		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
-		pid = Integer.parseInt(sessionUtils.getCurrentPatientMID());
+		try {
+			visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
+			pid = Integer.parseInt(sessionUtils.getCurrentPatientMID());			
+		} catch (NumberFormatException e) {
+			// TODO handle
+		}
 		setValues();
 	}
 	
@@ -204,7 +208,7 @@ public class ChildbirthController extends iTrustController {
 	public ChildbirthController(SessionUtils sessionUtils, TransactionLogger logger) {
 		super(sessionUtils, logger);
 	}
-	public List<Childbirth> getChildBirthVisitID() throws DBException {
+	public List<Childbirth> getChildbirthVisitID() throws DBException {
 		return cbs.getByVisitID(visitId);
 	}
 	public ChildbirthVisit getChildbirthVisitVisitID() throws DBException {

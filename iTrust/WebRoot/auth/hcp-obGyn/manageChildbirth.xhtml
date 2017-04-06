@@ -6,18 +6,18 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
 <h:body>
-	<h:panelGrid columns="2" class="fTable"
+	<h3>Edit Childbirth Visit</h3>
+	<div style="width: 50%">
+		<h:message for="manage_obstetrics_formChildError"
+			class="iTrustError" />
+		<h:message for="manage_obstetrics_formChildSuccess"
+			style="color:green" />
+	</div>
+	<h:panelGrid columns="2" class="fTable" width="75%" vertical-align="top"
 		rendered="#{obs_visit_controller.eligible and obs_visit_controller.getOfficeVisit().apptTypeID==8}">
 		<h:panelGroup id="manage_obstetrics_formChildSuccess">
-			<h4>Edit Childbirth Visit</h4>
 			<h:form id="manage_obstetrics_formChildError">
-				<div style="width: 300px">
-					<h:message for="manage_obstetrics_formChildError"
-						class="iTrustError" />
-					<h:message for="manage_obstetrics_formChildSuccess"
-						style="color:green" />
-				</div>
-				<h:panelGrid>
+				<h:panelGrid style="text-align:left" width="50%" columns="1" border="0">
 					<h:panelGroup>
 						<h:outputLabel for="date" style="padding-right:20px">Date:</h:outputLabel>
 						<h:outputText id="date" name="date"
@@ -46,38 +46,26 @@
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h4>Drugs Used (milligrams)</h4>
-					<h:panelGrid>
+					<h:panelGrid style="text-align:left" width="50%" columns="2" border="0">
 						<h:panelGroup>
 							<h:outputLabel for="pitocin" style="padding-right:110px">Pitocin:</h:outputLabel>
+							<h:outputLabel for="nitrousOxide" style="padding-right:65px">Nitrous Oxide:</h:outputLabel>
+							<h:outputLabel for="pethidine" style="padding-right:95px">Pethidine:</h:outputLabel>
+							<h:outputLabel for="epiduralAnaesthesia" style="padding-right:20px">Epidural Anaesthesia:</h:outputLabel>
+							<h:outputLabel for="magnesiumSulfate" style="padding-right:30px">Magnesium Sulfate:</h:outputLabel>
+						</h:panelGroup>
+						<h:panelGroup>
 							<h:inputText id="pitocin" name="pitocin"
 								value="#{child_controller.pitocin}" />
-						</h:panelGroup>
-
-						<h:panelGroup>
-							<h:outputLabel for="nitrousOxide" style="padding-right:65px">Nitrous Oxide:</h:outputLabel>
 							<h:inputText id="nitrousOxide" name="nitrousOxide"
 								value="#{child_controller.nitrousOxide}" />
-						</h:panelGroup>
-
-						<h:panelGroup>
-							<h:outputLabel for="pethidine" style="padding-right:95px">Pethidine:</h:outputLabel>
 							<h:inputText id="pethidine" name="pethidine"
 								value="#{child_controller.pethidine}" />
-						</h:panelGroup>
-
-						<h:panelGroup>
-							<h:outputLabel for="epiduralAnaesthesia"
-								style="padding-right:20px">Epidural Anaesthesia:</h:outputLabel>
 							<h:inputText id="epiduralAnaesthesia" name="epiduralAnaesthesia"
 								value="#{child_controller.epiduralAnaesthesia}" />
-						</h:panelGroup>
-
-						<h:panelGroup>
-							<h:outputLabel for="magnesiumSulfate" style="padding-right:30px">Magnesium Sulfate:</h:outputLabel>
 							<h:inputText id="magnesiumSulfate" name="magnesiumSulfate"
 								value="#{child_controller.magnesiumSO4}" />
 						</h:panelGroup>
-
 					</h:panelGrid>
 				</h:panelGrid>
 				<h:commandButton id="submitVisitButton"
@@ -90,13 +78,8 @@
 			</h:form>
 		</h:panelGroup>
 		
-		
-		
-		
-		
 		<h:panelGroup>
-			<h:outputText id="pastInitializations"
-				value="Past Obstetrics Initializations" style="font-size:20px; font-weight:bold" align="left"/>
+			<h4>Past Initializations</h4>
 			<h:dataTable id="PIRTablePast" class="fTable" width="75%"
 				value="#{obgyn_controller.getObstetricsRecords()}" var="init"
 				border="1">
@@ -132,6 +115,7 @@
 				</h:column>
 			</h:dataTable>
 			
+			<br />
 			<h4>Babies</h4>
 			<div style="width: 300px">
 				<h:message for="manage_obstetrics_formBabyError" class="iTrustError" />
@@ -139,7 +123,7 @@
 					style="color:green" />
 			</div>
 			<h:dataTable id="manage_obstetrics_formBabySuccess"
-				styleClass="fTable" value="#{child_controller.childBirthVisitID}"
+				styleClass="fTable" value="#{child_controller.getChildbirthVisitID()}"
 				var="cb" border="1">
 				<br />
 				<h:column>
@@ -149,7 +133,7 @@
 					<h:link outcome="manageUltrasound" value="#{cb.birthID}">
 						<f:param name="birthID" value="#{cb.birthID}" />
 						<f:param name="visitID" value="#{cb.visitID}" />
-					</h:link>
+					</h:link>					
 				</h:column>
 				<h:column>
 					<f:facet name="header">
@@ -176,7 +160,6 @@
 					</h:form>
 				</h:column>
 				<h:column>
-
 					<f:facet name="header">
 						<h:outputText value="Add Patient" />
 					</f:facet>
@@ -188,7 +171,7 @@
 								<f:param name="visitID" value="#{cb.visitID}" />
 							</h:commandButton>
 						</h:form>
-					</h:column>
+				</h:column>
 			</h:dataTable>
 			<h:form>
 				<h:commandButton id="newBaby" value="New Baby"
@@ -222,6 +205,7 @@
 								value="#{child_controller.gender}">
 								<f:selectItem itemValue="Male" itemLabel="Male" />
 								<f:selectItem itemValue="Female" itemLabel="Female" />
+								<f:selectItem itemValue="Not Specified" itemLabel="Other/Not Specified" />
 							</h:selectOneMenu>
 						</h:panelGroup>
 						<h:panelGroup rendered="#{child_controller.newBaby}">
@@ -249,11 +233,24 @@
 			</h:form>
 		</h:panelGroup>
 	</h:panelGrid>
-	<h:panelGrid columns="2" class="fTable" rendered="#{!(obs_visit_controller.eligible and obs_visit_controller.getOfficeVisit().apptTypeID==8)}">
+	<h:panelGrid columns="2" class="fTable" rendered="#{!(obs_visit_controller.getOfficeVisit().apptTypeID==8)}">
+		<h:panelGroup>
+			<div style="width: 400px">
+				<h4>This visit for #{user.getUserNameForID(session.getAttribute("pid"))} is not of type "Childbirth".
+					To proceed, please change the visit to type "Childbirth" in the "General Info" tab.</h4>
+			</div>
+		</h:panelGroup>
+	</h:panelGrid>
+	<h:panelGrid columns="2" class="fTable" rendered="#{!obs_visit_controller.eligible}">
 		<h:panelGroup>
 			<div style="width: 400px">
 				<h4>This visit for #{user.getUserNameForID(session.getAttribute("pid"))} is not
-					a childbirth visit please change the visit to type "Childbirth" in the "General Info" tab if you would like to proceed.</h4>
+					within 49 weeks of the current obstetrics patient initialization.</h4>
+				<h:button
+					style="font-size:11px; font-weight:bold" align="left"
+					value="Add New Initialization?"
+					outcome="/auth/hcp-obGyn/viewObstetricsInit.xhtml">
+				</h:button>
 			</div>
 		</h:panelGroup>
 	</h:panelGrid>
