@@ -17,7 +17,7 @@ VALUES
 (7, @visit_id_2, '2017-04-03 9:30:00', false, 'caesarean', 0, 2, 0, 10, 6);
 
 INSERT INTO childbirths
-(parentID, visitID, birthDate, gender, estimated)
+(parentID, visitID, birthDate, gender, estimated, added)
 VALUES
-(2, @visit_id_1, '2017-04-05 11:35:00', 'Female', false),
-(7, @visit_id_2, '2017-04-03 8:30:00', 'Male', true);
+(2, @visit_id_1, '2017-04-05 11:35:00', 'Female', false, false),
+(7, @visit_id_2, '2017-04-03 8:30:00', 'Male', true, false);
