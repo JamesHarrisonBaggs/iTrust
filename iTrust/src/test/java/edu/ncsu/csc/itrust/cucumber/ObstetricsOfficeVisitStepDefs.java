@@ -85,9 +85,8 @@ public class ObstetricsOfficeVisitStepDefs {
 	public void select_type(String date) {
 		driver.findElement(By.id("basic_ov_form:ovdate")).clear();
 		driver.findElement(By.id("basic_ov_form:ovdate")).sendKeys(date);
-		Select type = new Select(driver.findElement(By.xpath("//*[@id=\"basic_ov_form\"]/div[3]/div/button")));
-		type.deselectAll();
-		type.selectByVisibleText("OB/GYN");		
+		driver.findElement(By.id("basic_ov_form:ovApptType")).click();
+		//driver.findElement(By.xpath("//*[@id=\"basic_ov_form\"]/div[3]")).click();
 		driver.findElement(By.id("basic_ov_form:submitVisitButton")).click();
 	}
 	
