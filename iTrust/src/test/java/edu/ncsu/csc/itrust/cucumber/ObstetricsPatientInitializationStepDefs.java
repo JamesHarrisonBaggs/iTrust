@@ -36,22 +36,22 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Given("^I logged in as an OBGYN HCP with MID (.*) and password (.*)$")
 	public void OBGYN_log_in(String hcp, String pw) {
 		// log in using the given username and password
-				driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-				WebElement user = driver.findElement(By.name("j_username"));
-				WebElement pass = driver.findElement(By.name("j_password"));
-				user.sendKeys(hcp);
-				pass.sendKeys(pw);
-				pass.submit();
-				// ensure logged in
-				if (driver.getTitle().equals("iTrust - Login")) {
-					Assert.fail("Error logging in");
-				}
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		WebElement user = driver.findElement(By.name("j_username"));
+		WebElement pass = driver.findElement(By.name("j_password"));
+		user.sendKeys(hcp);
+		pass.sendKeys(pw);
+		pass.submit();
+		// ensure logged in
+		if (driver.getTitle().equals("iTrust - Login")) {
+			Assert.fail("Error logging in");
+		}
 	}
 	
-	@And("^I select Obstetrics Info, then go to Patient Obstetric Initialization$")
+	@And("^I select Obstetrics Info, then go to Obstetric Care$")
 	public void select_obstetric_initialization() {
 		driver.findElement(By.cssSelector("h2.panel-title")).click();
-		driver.findElement(By.linkText("Patient Obstetric Initialization")).click();
+		driver.findElement(By.linkText("Obstetric Care")).click();
 		try {
 			assertEquals("iTrust - Please Select a Patient", driver.getTitle());
 		} catch (Error e) {
@@ -59,14 +59,14 @@ public class ObstetricsPatientInitializationStepDefs {
 		}
 	}
 	
-	@And("^I enter patient's MID (.*) and name (.*) and select the patient$")
+	@And("^I type in patient's MID (.*) and name (.*) and select the patient$")
 	public void select_patient(String patient, String name) {
 		driver.findElement(By.name("FIRST_NAME")).clear();
 		driver.findElement(By.name("FIRST_NAME")).sendKeys(name);
 		driver.findElement(By.name("NAME_SUBMIT")).click();
 		try {
 			driver.findElement(By.name("user_" + patient)).click();
-			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
+			assertEquals("iTrust - Obstetrics Care", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -93,9 +93,9 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@And("^I click on create new initialization$")
 	public void new_initialization() {
-		driver.findElement(By.name("j_idt27:createPatientInitRecord")).click();
+		driver.findElement(By.name("j_idt39:createPatientInitRecord")).click();
 		try {
-			WebElement element = driver.findElement(By.name("obgyn_controller"));
+			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}
@@ -103,16 +103,17 @@ public class ObstetricsPatientInitializationStepDefs {
 	
 	@When("^I enter the patient's LMP (.*)$")
 	public void edit_LMP(String date) throws ParseException {
-		driver.findElement(By.name("obgyn_controller:datepicker")).clear();
-		driver.findElement(By.name("obgyn_controller:datepicker")).sendKeys(date);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		driver.findElement(By.name("newInitializationForm:newInitializationForm:dateInit")).clear();
+		driver.findElement(By.name("newInitializationForm:newInitializationForm:dateInit")).sendKeys(date);
+		driver.findElement(By.name("newInitializationForm:newInitializationForm:submitDateButton")).click();
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		Date edd = format.parse(date);
 		Calendar c = Calendar.getInstance();
 		c.setTime(edd);
 		c.add(Calendar.DATE, 280);
 		edd = c.getTime();
 		String EDD = format.format(edd.getTime());
-		assertEquals("Expected Delivery Date: " + EDD, driver.findElement(By.xpath("//*[@id=\"obgyn_controller\"]/table/tbody/tr[2]/td")).getText());
+		assertEquals("Expected Delivery Date: " + EDD, driver.findElement(By.id("newInitializationForm:newInitializationForm:edd")).getText());
 	}
 	
 	@When("^I select the patient's initialization at (.*)$")
@@ -162,7 +163,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Then("^a new obstetric initialization is created (.*)$")
 	public void initialization_created(String time) {
 		try {
-			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
+			assertEquals("iTrust - Obstetrics Care", driver.getTitle());
 			driver.findElement(By.linkText(time)).click();
 			assertEquals("iTrust - View Single Initilization", driver.getTitle());
 		} catch (Error e) {
@@ -181,7 +182,7 @@ public class ObstetricsPatientInitializationStepDefs {
 	@Then("^I can see the Patient's obstetric initialization page$")
 	public void obstetrics_page() {
 		try {
-			assertEquals("iTrust - View Obstetrics Initilizations", driver.getTitle());
+			assertEquals("iTrust - Obstetrics Care", driver.getTitle());
 		} catch (Error e) {
 			Assert.fail(e.getMessage());
 		}

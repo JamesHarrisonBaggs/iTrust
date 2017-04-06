@@ -42,7 +42,10 @@
 					<label for="tab-diagnoses">Diagnoses</label>
 
 					<input id="tab-obstetrics" type="radio" name="ovtabs" />
-					<label for="tab-obstetrics">Obstetrics</label>					
+					<label for="tab-obstetrics">Obstetrics</label>
+					
+					<input id="tab-child" type="radio" name="ovtabs" />
+					<label for="tab-child">Childbirth</label>					
 					
 					<input id="tab-lab-procedure" type="radio" name="ovtabs" />
 					<label for="tab-lab-procedure">Lab Procedures</label>
@@ -64,6 +67,9 @@
 						</div>
 						<div class="tab-panel" id="content-obstetrics">
 							<ui:include src="/auth/hcp-obGyn/manageObstetrics.xhtml"></ui:include>
+						</div>
+						<div class="tab-panel" id="content-child">
+							<ui:include src="/auth/hcp-obGyn/manageChildbirth.xhtml"></ui:include>
 						</div>
 						<div class="tab-panel" id="content-prescriptions">
 							<ui:include src="/auth/hcp-uap/managePrescriptions.xhtml"></ui:include>

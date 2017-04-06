@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.Context;
@@ -38,7 +39,7 @@ public class ObstetricsInitMySQL {
 	/**
 	 * Constructs ObstetricsInitMySQL with a data source
 	 */
-	public ObstetricsInitMySQL(DataSource ds) throws DBException {
+	public ObstetricsInitMySQL(DataSource ds) {
 		this.ds = ds;
 		this.loader = new ObstetricsInitSQLLoader();
 		this.validator = new ObstetricsInitValidator();
@@ -71,12 +72,12 @@ public class ObstetricsInitMySQL {
 	}
 	
 	/**
-	 * Returns a single obstetric record for a patient on a date
+	 * Returns an obstetric record for a patient on a date
 	 */
-	public List<ObstetricsInit> getByDate(long id, Timestamp date) throws DBException {
+	public List<ObstetricsInit> getByDate(long id, LocalDate date) throws DBException {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id="+id+" AND init_date=?")) {
-			stmt.setTimestamp(1, date);
+			stmt.setTimestamp(1, Timestamp.valueOf(date.atStartOfDay()));
 			ResultSet results = stmt.executeQuery();
 			return loader.loadList(results);
 		} catch (SQLException e) {

@@ -73,11 +73,11 @@ public class ObstetricsOfficeVisitStepDefs {
 	
 	@And("^I click Create a New Office Visit$")
 	public void create_visit() {
-		driver.findElement(By.id("newVisitButton")).click();
-		driver.findElement(By.id("newVisitButton")).click();
-		driver.findElement(By.id("newVisitButton")).click();
-		driver.findElement(By.id("newVisitButton")).click();
-		driver.findElement(By.id("newVisitButton")).click();
+		WebElement element = driver.findElement(By.id("newVisitButton"));
+		// dumb workaround of issues with JS button
+		String link = element.getAttribute("onclick").split("'")[1];
+		String[] base = driver.getCurrentUrl().split("/iTrust");
+		driver.navigate().to(base[0] + link);
 		assertEquals("Office Visit", driver.getTitle());
 	}
 	
@@ -85,9 +85,8 @@ public class ObstetricsOfficeVisitStepDefs {
 	public void select_type(String date) {
 		driver.findElement(By.id("basic_ov_form:ovdate")).clear();
 		driver.findElement(By.id("basic_ov_form:ovdate")).sendKeys(date);
-		Select type = new Select(driver.findElement(By.xpath("//*[@id=\"basic_ov_form\"]/div[3]/div/button")));
-		type.deselectAll();
-		type.selectByVisibleText("OB/GYN");
+		driver.findElement(By.id("basic_ov_form:ovApptType")).click();
+		//driver.findElement(By.xpath("//*[@id=\"basic_ov_form\"]/div[3]")).click();
 		driver.findElement(By.id("basic_ov_form:submitVisitButton")).click();
 	}
 	

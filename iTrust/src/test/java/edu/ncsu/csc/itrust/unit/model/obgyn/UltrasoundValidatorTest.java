@@ -37,6 +37,9 @@ public class UltrasoundValidatorTest {
 		bean = new Ultrasound();
 		invalidate(bean, "This form has not been validated correctly");
 		
+		// null bean
+		invalidate(null, "Bean cannot be null");
+		
 		// patient id < 0
 		bean = defaultBean();
 		bean.setPatientId(-1);
@@ -159,6 +162,7 @@ public class UltrasoundValidatorTest {
 		bean.setAbdominalCircumference(110); 	// 110mm is typical for 17 weeks
 		bean.setHumerusLength(30); 				// ???
 		bean.setEstimatedFetalWeight(201.55); 	// 201.55 grams for BPD/AC
+		bean.setUploadFile(null);
 		return bean;
 	}
 

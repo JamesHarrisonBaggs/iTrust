@@ -12,10 +12,8 @@ import org.mockito.Mockito;
 import com.mysql.jdbc.Connection;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -79,7 +77,7 @@ public class ObstetricsInitMySQLTest {
 
 	@Test
 	public void testGetByDate() throws Exception {
-		list = sql.getByDate(2, Timestamp.valueOf("1992-05-02 00:00:00"));
+		list = sql.getByDate(2, LocalDate.of(1992, 5, 2));
 		assertEquals(1, list.size());
 		assertEquals(LocalDate.of(1992, 5, 2), list.get(0).getInitDate());
 		assertEquals(LocalDate.of(1992, 1, 1), list.get(0).getLastMenstrualPeriod());
@@ -92,49 +90,21 @@ public class ObstetricsInitMySQLTest {
 		
 		// create bean
 		bean = new ObstetricsInit();
-		bean.setPatientId(3);
-		bean.setInitTimestamp(Timestamp.valueOf("2017-03-24 00:00:00"));
-		bean.setLMPTimestamp(Timestamp.valueOf("2017-02-04 00:00:00"));
-		bean.setCurrent(false);
+		bean.setPatientId(4);
+		bean.setInitDate(LocalDate.of(2014, 5, 1));
+		bean.setLastMenstrualPeriod(LocalDate.of(2014, 2, 7));
 		
 		// add bean
-		try {
-			int res = sql.update(bean);
-			assertEquals(1, res);
-		} catch (DBException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
+		sql.update(bean);
+		// doesn't check the "proper" value was returned
 		
 		// get bean by date
-		try {
-			list = sql.getByDate(3, Timestamp.valueOf("2017-03-24 00:00:00"));
-		} catch (DBException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
-				
-		// check assertions
+		list = sql.getByDate(4, LocalDate.of(2014, 5, 1));
 		assertEquals(1, list.size());
-		ObstetricsInit b = list.get(0);
-		assertEquals(3, b.getPatientId());
-		assertEquals(LocalDate.of(2017, 03, 24), b.getInitDate());
-		assertEquals(LocalDate.of(2017, 02, 04), b.getLastMenstrualPeriod());
-		assertEquals(false, b.isCurrent());
-
-	}
-	
-	@Test
-	public void testUpdateException() throws Exception {
-		// Invoke SQLException catch block via mocking
-		sql = new ObstetricsInitMySQL(mockDS);
-		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
-		try {
-			sql.update(defaultBean());
-			fail("Exception should be thrown");
-		} catch (DBException e) {
-			assertNotNull(e.getMessage());
-		}
+		bean = list.get(0);
+		assertEquals(4, bean.getPatientId());
+		assertEquals(LocalDate.of(2014, 5, 1), bean.getInitDate());
+		assertEquals(LocalDate.of(2014, 2, 7), bean.getLastMenstrualPeriod());
 	}
 	
 	@Test
@@ -157,7 +127,20 @@ public class ObstetricsInitMySQLTest {
 		when(mockDS.getConnection()).thenReturn(mockConn);
 		when(mockConn.prepareStatement(Mockito.anyString())).thenThrow(new SQLException());
 		try {
-			sql.getByDate(1L, Timestamp.valueOf(LocalDateTime.now()));
+			sql.getByDate(1L, LocalDate.now());
+			fail("Exception should be thrown");
+		} catch (DBException e) {
+			assertNotNull(e.getMessage());
+		}
+	}
+
+	@Test
+	public void testUpdateException() throws Exception {
+		// Invoke SQLException catch block via mocking
+		sql = new ObstetricsInitMySQL(mockDS);
+		Mockito.doThrow(SQLException.class).when(mockDS).getConnection();
+		try {
+			sql.update(defaultBean());
 			fail("Exception should be thrown");
 		} catch (DBException e) {
 			assertNotNull(e.getMessage());

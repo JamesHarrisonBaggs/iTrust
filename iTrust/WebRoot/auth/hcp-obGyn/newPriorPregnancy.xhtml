@@ -15,8 +15,9 @@
 		</ui:define>
 		<ui:define name="mainContent">
 			<itrust:patientNav thisTitle="Prior Pregnancy" />
-			<div align="center">
-
+			<div align="center">		
+				<br />	
+				<h:message for="pregnancyForm" class="iTrustError" />
 				<h:form id="pregnancyForm">
 					<br />
 					<table cellspacing="0" align="center" cellpadding="0">
@@ -40,23 +41,19 @@
 											</h:inputText></td>
 									</tr>
 									<tr>
-										<td class="subHeaderVertical">Number of Days Pregnant:</td>
+										<td class="subHeaderVertical">Days Pregnant:</td>
 										<td><h:inputText name="numberOfWeeks"
 												value="#{pregBean.daysPregnant}">
 											</h:inputText></td>
 									</tr>
-
 									<tr>
-
-										<td class="subHeaderVertical">Number of Hours in Labor:</td>
+										<td class="subHeaderVertical">Hours in Labor:</td>
 										<td><h:inputText name="numberOfHours"
 												value="#{pregBean.hoursInLabor}">
 											</h:inputText></td>
-
 									</tr>
 									<tr>
-										<td class="subHeaderVertical">Weight Gain During
-											Pregnancy:</td>
+										<td class="subHeaderVertical">Weight Gain:</td>
 										<td><h:inputText name="weightGain"
 												value="#{pregBean.weightGain}">
 											</h:inputText></td>
@@ -77,7 +74,7 @@
 											</h:selectOneMenu></td>
 									</tr>
 									<tr>
-										<td class="subHeaderVertical">Multiple Pregnancy?:</td>
+										<td class="subHeaderVertical">Multiple Pregnancy?</td>
 										<td><h:selectOneMenu value="#{pregBean.amount}">
 												<f:selectItem itemValue="1" itemLabel="Single" />
 												<f:selectItem itemValue="2" itemLabel="Twins" />
@@ -94,12 +91,12 @@
 										<td><h:commandButton id="createNewPreg"
 												style="font-size:11px; font-weight:bold" align="left"
 												value="Create New Prior Pregnancy"
-												action="#{obgyn_controller.updatePregnancy(pregBean)}">
+												action="#{pregnancy_controller.update(pregBean)}">
 											</h:commandButton></td>
-											<td><h:commandButton id="return"
+										<td><h:commandButton id="return"
 												style="font-size:11px; font-weight:bold" align="left"
 												value="Return to New Obstetrics Initialization"
-												action="newObstetricsInit">
+												action="viewObstetricsInit">
 											</h:commandButton></td>
 									</tr>
 								</table>

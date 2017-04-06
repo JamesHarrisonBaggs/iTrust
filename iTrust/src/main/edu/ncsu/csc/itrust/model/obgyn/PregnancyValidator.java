@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust.model.obgyn;
 import edu.ncsu.csc.itrust.exception.ErrorList;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.POJOValidator;
+import edu.ncsu.csc.itrust.model.ValidationFormat;
 
 public class PregnancyValidator extends POJOValidator<Pregnancy> {
 
@@ -13,6 +14,10 @@ public class PregnancyValidator extends POJOValidator<Pregnancy> {
 	 */
 	public void validate(Pregnancy bean) throws FormValidationException {
 		ErrorList errorList = new ErrorList();
+		if (bean == null) {
+			errorList.addIfNotNull("Bean cannot be null");
+			throw new FormValidationException(errorList);
+		}
 		if (bean.getPatientId() < 0)
 			errorList.addIfNotNull("Patient id cannot be negative");		
 		if (bean.getDateOfBirth() == null)
@@ -24,36 +29,12 @@ public class PregnancyValidator extends POJOValidator<Pregnancy> {
 			errorList.addIfNotNull("Days pregnant cannot be negative");
 		if (bean.getHoursInLabor() < 0)
 			errorList.addIfNotNull("Hours in labor cannot be negative");
-		// TODO validate weight gain
-		if (!isValidDeliveryType(bean.getDeliveryType()))
-			errorList.addIfNotNull("Delivery type is invalid");
-		// TODO validate deliveryType
+		errorList.addIfNotNull(
+			checkFormat("Delivery Type", bean.getDeliveryType(), ValidationFormat.DELIVERY_TYPE, false));
 		if (bean.getAmount() <= 0)
 			errorList.addIfNotNull("Amount cannot be zero or less");
 		if (errorList.hasErrors())
 			throw new FormValidationException(errorList);
-	}
-	
-	/**
-	 * Returns true if a specified delivery type is valid
-	 */
-	private boolean isValidDeliveryType(String deliveryType) {
-		if (deliveryType == null) {
-			return false;
-		}
-		switch (deliveryType) {
-			case "vaginal":
-				return true;
-			case "vacuum":
-				return true;
-			case "forceps":
-				return true;
-			case "caesarean":
-				return true;
-			case "miscarriage":
-				return true;
-		}
-		return false;
 	}
 
 }

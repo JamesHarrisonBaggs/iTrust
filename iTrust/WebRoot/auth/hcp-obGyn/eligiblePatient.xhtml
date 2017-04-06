@@ -7,12 +7,6 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 <f:view
 	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
-
-<f:metadata>
-	<f:event type="preRenderView"
-		listener="#{prescription_controller.logViewPrescriptionReport()}" />
-</f:metadata>
-
 <h:body>
 	<ui:composition template="/iTrust_template.xhtml">
 		<ui:define name="pageStyle"></ui:define>
@@ -26,8 +20,7 @@
 				<br />
 				<h4 id="header">
 					#{user.getUserNameForID(session.getAttribute("pid"))} is not
-					eligible to receive obstetric care at this time (hardcoded for
-					looks)</h4>
+					eligible to receive obstetric care at this time</h4>
 				<br />
 				<h:panelGrid class="fTable"
 					style="margin: 0 auto; text-align:center;" width="100%" columns="4"

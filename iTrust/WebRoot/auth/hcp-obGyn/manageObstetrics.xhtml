@@ -6,10 +6,10 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
 <h:body>
+	<h3>Edit Obstetric Visit</h3>
 	<h:panelGrid columns="2" class="fTable"
 		rendered="#{obs_visit_controller.eligible}">
 		<h:panelGroup id="manage_obstetrics_formSuccess">
-			<h4>Edit Obstetric Visit</h4>
 			<h:form id="manage_obstetrics_formError">
 				<div style="width: 300px">
 					<h:message for="manage_obstetrics_formError" class="iTrustError" />
@@ -21,27 +21,31 @@
 						<h:outputText id="date" name="date"
 							value="#{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel for="weeksPregnant" style="padding-right:20px">Weeks Pregnant:</h:outputLabel>
 						<h:outputText id="weeksPregnant" name="weeksPregnant"
 							value="#{obs_visit_controller.weeksPregnant}" />
 						<br />
+						<c:set var="lmp" value="#{obgyn_controller.getObstetricsRecords().get(0).getLastMenstrualPeriod()}"/>
+						<c:set var="vd" value="#{obs_visit_controller.visitDate}"/>
 						<h:outputText id="timeline" name="timeline"
 							style="font-weight:bold; font-size:12px"
-							value="Date Range: #{obgyn_controller.obstetricsList.get(0).getLastMenstrualPeriod().getMonthValue()}/#{obgyn_controller.obstetricsList.get(0).getLastMenstrualPeriod().getDayOfMonth()}/#{obgyn_controller.obstetricsList.get(0).getLastMenstrualPeriod().getYear()} - #{obs_visit_controller.visitDate.getMonthValue()}/#{obs_visit_controller.visitDate.getDayOfMonth()}/#{obs_visit_controller.visitDate.getYear()}" />
-
+							value="Date Range: #{lmp.getMonthValue()}/#{lmp.getDayOfMonth()}/#{lmp.getYear()} - 
+							#{vd.getMonthValue()}/#{vd.getDayOfMonth()}/#{vd.getYear()}" />
 					</h:panelGroup>
+					
 					<h:panelGroup
 						rendered="#{obs_visit_controller.notice and obs_visit_controller.rhFlag}">
-						<outputText style="color:red">NOTICE: Patient should
-						be given RH immune globulin shot (pregnancy is past 28 weeks)</outputText>
+						<outputText style="color:red">NOTICE: Patient should be given RH immune globulin shot (pregnancy is past 28 weeks)</outputText>
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel for="Weight" style="padding-right:20px">Weight (lbs):</h:outputLabel>
 						<h:inputText id="weight" name="weight"
 							value="#{obs_visit_controller.weight}" />
-
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel for="bloodPressure" style="padding-right:20px">Blood Pressure (mmHg):</h:outputLabel>
 						<h:inputText id="bloodPressure" name="bloodPressure"
@@ -60,6 +64,7 @@
 							value="#{obs_visit_controller.amount}" />
 
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel for="lowLyingPlacenta" style="padding-right:20px">Low Lying Placenta:</h:outputLabel>
 						<h:selectOneMenu id="lowLyingPlacenta" name="lowLyingPlacenta"
@@ -72,6 +77,7 @@
 								itemLabel="#{!obs_visit_controller.lowLyingPlacenta}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
+					
 					<h:panelGroup>
 						<h:outputLabel for="rhFlag" style="padding-right:20px">RH-flag:</h:outputLabel>
 						<h:selectOneMenu id="rhFlag" name="rhFlag"
@@ -82,6 +88,7 @@
 								itemLabel="#{!obs_visit_controller.rhFlag}" />
 						</h:selectOneMenu>
 					</h:panelGroup>
+					
 					<h:panelGroup rendered="#{obs_visit_controller.obgyn}">
 						<h:commandButton id="editObstetricVisit"
 							style="font-size:11px; font-weight:bold" align="left"
@@ -89,7 +96,6 @@
 							action="#{obs_visit_controller.submit}">
 							<f:param name="run" value="true" />
 						</h:commandButton>
-
 						<h:commandButton id="cancelObstetricVisit"
 							style="font-size:11px; font-weight:bold" align="left"
 							value="Cancel" action="#{navigation_controller.baseOfficeVisit}">

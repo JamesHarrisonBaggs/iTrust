@@ -1,3 +1,5 @@
+DELETE FROM childbirths;
+DELETE FROM childbirth_visits;
 DELETE FROM cptCode;
 DELETE FROM immunization;
 ALTER TABLE immunization AUTO_INCREMENT = 0;

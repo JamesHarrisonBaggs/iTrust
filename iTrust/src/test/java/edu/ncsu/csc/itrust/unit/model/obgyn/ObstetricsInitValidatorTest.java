@@ -18,12 +18,6 @@ public class ObstetricsInitValidatorTest {
 	public void setUp() {
 		validator = new ObstetricsInitValidator();
 	}
-	
-	@Test
-	public void testGetInstance() {
-		ObstetricsInitValidator val = new ObstetricsInitValidator();
-		assertNotNull(val);
-	}
 
 	@Test
 	public void testValidBeans() {
@@ -50,6 +44,9 @@ public class ObstetricsInitValidatorTest {
 		bean = new ObstetricsInit();
 		invalidate(bean, "Initialization date cannot be null");
 		
+		// null bean
+		invalidate(null, "Bean cannot be null");
+		
 		// test id < 0
 		bean = new ObstetricsInit();
 		bean.setPatientId(-7);
@@ -64,16 +61,7 @@ public class ObstetricsInitValidatorTest {
 		bean = new ObstetricsInit();
 		bean.setLastMenstrualPeriod(null);
 		invalidate(bean, "Last menstrual period cannot be null");
-		
-		// test EDD == null
-		bean = new ObstetricsInit();
-		bean.setEstimatedDueDate(null);
 		invalidate(bean, "Expected due date cannot be null");
-		
-		// test days pregnant < 0
-		bean = new ObstetricsInit();
-		bean.setDaysPregnant(-5);
-		invalidate(bean, "Days pregnant cannot be negative");
 		
 	}
 	

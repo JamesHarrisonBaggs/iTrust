@@ -46,7 +46,8 @@ public class ObstetricsVisitController extends iTrustController {
 	private int amount;
 	private boolean lowLyingPlacenta;
 	private boolean rhFlag;
-	private ObstetricsController obc;
+	private ObstetricsInitController obc;
+	
 	private ApptDAO aDAO;
 	private ApptRequestDAO arDAO;
 	private ApptTypeDAO atDAO;
@@ -64,7 +65,7 @@ public class ObstetricsVisitController extends iTrustController {
 
 	public ObstetricsVisitController() throws DBException {
 		super();
-		obc = new ObstetricsController();
+		obc = new ObstetricsInitController();
 		sql = new ObstetricsVisitMySQL();
 		sessionUtils = getSessionUtils();
 		ob = getObstetricsVisit();
@@ -239,7 +240,7 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 
 	public int getWeeksPregnant() throws DBException {
-		LocalDate lmp = obc.getObstetricsList().get(0).getLastMenstrualPeriod();
+		LocalDate lmp = obc.getObstetricsRecords().get(0).getLastMenstrualPeriod();
 		LocalDate visitDateLD = visitDate.toLocalDate();
 		long days = Math.abs(lmp.toEpochDay() - visitDateLD.toEpochDay());
 		weeksPregnant = (int) (days/7);
@@ -336,7 +337,7 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 
 	public void setObstetricsList() throws DBException {
-		this.obstetricsList = obc.getObstetricsList();
+		this.obstetricsList = obc.getObstetricsRecords();
 	}
 
 	public boolean isNotice() {

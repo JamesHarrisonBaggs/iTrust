@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class PregnancySQLLoader implements SQLLoader<Pregnancy> {
 		// set parameters
 		int i = 1;
 		ps.setLong(i++, bean.getPatientId());
-		ps.setTimestamp(i++, bean.getDOBTimestamp());
+		ps.setTimestamp(i++, Timestamp.valueOf(bean.getDateOfBirth().atStartOfDay()));
 		ps.setInt(i++, bean.getYearOfConception());
 		ps.setInt(i++, bean.getDaysPregnant());
 		ps.setInt(i++, bean.getHoursInLabor());
@@ -69,7 +70,7 @@ public class PregnancySQLLoader implements SQLLoader<Pregnancy> {
 
 		// set again for duplicate
 		ps.setLong(i++, bean.getPatientId());
-		ps.setTimestamp(i++, bean.getDOBTimestamp());
+		ps.setTimestamp(i++, Timestamp.valueOf(bean.getDateOfBirth().atStartOfDay()));
 		ps.setInt(i++, bean.getYearOfConception());
 		ps.setInt(i++, bean.getDaysPregnant());
 		ps.setInt(i++, bean.getHoursInLabor());

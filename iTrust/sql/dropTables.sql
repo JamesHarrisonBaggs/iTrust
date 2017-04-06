@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS appointment;
 DROP TABLE IF EXISTS appointmentrequests;
 DROP TABLE IF EXISTS appointmenttype;
 DROP TABLE IF EXISTS billing;
+DROP TABLE IF EXISTS childbirths;
+DROP TABLE IF EXISTS childbirth_visits;
 DROP TABLE IF EXISTS cptCode;
 DROP TABLE IF EXISTS declaredhcp;
 DROP TABLE IF EXISTS diagnosis;

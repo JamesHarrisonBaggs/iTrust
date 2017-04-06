@@ -39,7 +39,7 @@ public class HealthTrackerMySQL {
 	/**
 	 * Constructs a HealthTrackerMySQL with a data source
 	 */
-	public HealthTrackerMySQL(DataSource ds) throws DBException {
+	public HealthTrackerMySQL(DataSource ds) {
 		this.ds = ds;
 		this.loader = new HealthTrackerSQLLoader();
 		this.validator = new HealthTrackerValidator();
@@ -123,9 +123,9 @@ public class HealthTrackerMySQL {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement stmt = loader.loadParameters(conn, null, data, true)) {
 				return stmt.executeUpdate();
-			} catch (SQLException e) {
-				throw new DBException(e);
-			}
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}
 	}
 	
 }

@@ -42,95 +42,53 @@ public class ObstetricsVisitValidatorTest {
 	@Test
 	public void testInvalid() throws Exception {
 		
+		// null bean
+		invalidate(null, "Bean cannot be null");
+		
 		// patient id < 0
 		bean = defaultBean();
 		bean.setPatientId(-1);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Patient id cannot be negative"));
-		}
+		invalidate(bean, "Patient ID cannot be negative");
 		
 		// visit id < 0
 		bean = defaultBean();
 		bean.setVisitId(-1);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Office visit id cannot be negative"));
-		}
+		invalidate(bean, "Office visit ID cannot be negative");
 		
 		// visitDate = null
 		bean = defaultBean();
 		bean.setVisitDate(null);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Office visit date cannot be null"));
-		}
+		invalidate(bean, "Office visit date cannot be null");
 		
 		// weeksPregnant < 0
 		bean = defaultBean();
 		bean.setWeeksPregnant(-1);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Weeks pregnant cannot be negative"));
-		}
+		invalidate(bean, "Weeks pregnant cannot be negative");
 		
 		// weight = 0
 		bean = defaultBean();
 		bean.setWeight(0.0);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Weight cannot be zero or less"));
-		}
+		invalidate(bean, "Weight cannot be zero or less");
 		
 		// weight < 0
 		bean = defaultBean();
 		bean.setWeight(-100.82);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Weight cannot be zero or less"));
-		}
+		invalidate(bean, "Weight cannot be zero or less");
 		
 		// fetal heart rate < 0
 		bean = defaultBean();
 		bean.setFetalHeartRate(-1);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Fetal heart rate cannot be negative"));
-		}
+		invalidate(bean, "Fetal heart rate cannot be negative");
 		
 		// amount < 1
 		bean = defaultBean();
 		bean.setAmount(0);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Multiples cannot be less than 1"));
-		}
+		invalidate(bean, "Multiples cannot be less than 1");
 		
 		// amount < 0
 		bean = defaultBean();
 		bean.setAmount(-1);
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Multiples cannot be less than 1"));
-		}
+		invalidate(bean, "Multiples cannot be less than 1");
 		
 	}
 	
@@ -140,49 +98,31 @@ public class ObstetricsVisitValidatorTest {
 	 */
 	@Test
 	public void testBloodPressure() throws Exception {
+		String errorMsg = "Blood Pressure: Up to 3-digit number / Up to 3-digit number";
+		
 		// blood pressure string
 		bean = defaultBean();
 		bean.setBloodPressure("asd");
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Blood Pressure: Up to 3-digit number / Up to 3-digit number"));
-		}
+		invalidate(bean, errorMsg);
 	
 		// blood pressure int
 		bean = defaultBean();
 		bean.setBloodPressure("4");
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Blood Pressure: Up to 3-digit number / Up to 3-digit number"));
-		}
+		invalidate(bean, errorMsg);
 		
 		// blood pressure large
 		bean = defaultBean();
 		bean.setBloodPressure("1000/1000");
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Blood Pressure: Up to 3-digit number / Up to 3-digit number"));
-		}
+		invalidate(bean, errorMsg);
 		
 		// blood pressure negative
 		bean = defaultBean();
 		bean.setBloodPressure("-1/-2");
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Blood Pressure: Up to 3-digit number / Up to 3-digit number"));
-		}
+		invalidate(bean, errorMsg);
+	
 	}
 
 	/**
-	 * Returns a default ObstetricsVisit bean
 	 * @return a default ObstetricsVisit bean
 	 */
 	private ObstetricsVisit defaultBean() {
@@ -197,6 +137,15 @@ public class ObstetricsVisitValidatorTest {
 		bean.setAmount(1);
 		bean.setLowLyingPlacenta(false);
 		return bean;
+	}
+	
+	private void invalidate(ObstetricsVisit bean, String errorMsg) {
+		try {
+			validator.validate(bean);
+			fail("Validation passed unexpectedly");
+		} catch (FormValidationException e) {
+			assertTrue(e.getMessage().contains(errorMsg));
+		}
 	}
 	
 }

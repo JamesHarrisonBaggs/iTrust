@@ -20,8 +20,19 @@ public class PregnancyValidatorTest {
 		validator = new PregnancyValidator();
 	}
 
+	/**
+	 * Test valid beans
+	 */
 	@Test
 	public void testValidBeans() {
+		
+		// default bean
+		bean = defaultBean();
+		try {
+			validator.validate(bean);
+		} catch (FormValidationException e) {
+			fail(e.getMessage());
+		}
 		
 		// valid bean
 		bean = new Pregnancy();
@@ -33,29 +44,48 @@ public class PregnancyValidatorTest {
 		bean.setWeightGain(7.2);
 		bean.setDeliveryType("vaginal");
 		bean.setAmount(2);
-		
 		try {
 			validator.validate(bean);
 		} catch (FormValidationException e) {
 			fail(e.getMessage());
 		}
-		
-		// default bean
-		bean = defaultBean();
-		try {
-			validator.validate(bean);
-		} catch (FormValidationException e) {
-			fail(e.getMessage());
-		}
-		
+				
 	}
 	
+	/**
+	 * Test valid delivery types
+	 */
+	@Test
+	public void testValidDeliveryType() {
+		try {
+			bean = defaultBean();
+			bean.setDeliveryType("vaginal");
+			validator.validate(bean);
+			bean.setDeliveryType("forceps");
+			validator.validate(bean);
+			bean.setDeliveryType("vacuum");
+			validator.validate(bean);
+			bean.setDeliveryType("caesarean");
+			validator.validate(bean);
+			bean.setDeliveryType("miscarriage");
+			validator.validate(bean);
+		} catch (FormValidationException e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Test invalid beans
+	 */
 	@Test
 	public void testInvalidBeans() {
 		
 		// new bean
 		bean = new Pregnancy();
 		invalidate(bean, "");
+		
+		// null bean
+		invalidate(null, "Bean cannot be null");
 				
 		// test id < 0
 		bean = defaultBean();
@@ -87,12 +117,7 @@ public class PregnancyValidatorTest {
 		
 		bean = defaultBean();
 		bean.setDeliveryType("meh");
-		try {
-			validator.validate(bean);
-			fail("Validation passed unexpectedly");
-		} catch (FormValidationException e) {
-			assertTrue(e.getMessage().contains("Delivery type is invalid"));
-		}
+		invalidate(bean, "Delivery Type: must be one of {vaginal, vacuum, forceps, caesarean, miscarriage}");
 		
 		// test amount < 1
 		bean = defaultBean();
@@ -107,7 +132,7 @@ public class PregnancyValidatorTest {
 	}
 	
 	/**
-	 * Return a default Ultrasound bean
+	 * Return a default Pregnancy bean
 	 */
 	private Pregnancy defaultBean() {
 		Pregnancy bean = new Pregnancy();

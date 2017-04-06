@@ -22,13 +22,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import edu.ncsu.csc.itrust.exception.DBException;
-
 /*
  * Adapted from http://stackoverflow.com/questions/15074465/how-to-populate-hgraphicimage-value-with-image-content-from-database
  */
 @WebServlet("/ultrasoundImageServlet")
 public class ConvertImage extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
