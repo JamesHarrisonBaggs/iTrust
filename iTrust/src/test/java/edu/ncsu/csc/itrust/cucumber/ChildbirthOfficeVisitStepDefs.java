@@ -54,7 +54,7 @@ public class ChildbirthOfficeVisitStepDefs {
 		}
 	}
 	
-	@And("^enters patient's name (.*) and select the correct MID (.*)$")
+	@And("^enters patient's name (.*) and chooses the correct MID (.*)$")
 	public void cov_select_patient(String name, String patient) {
 		driver.findElement(By.name("FIRST_NAME")).clear();
 		driver.findElement(By.name("FIRST_NAME")).sendKeys(name);
@@ -150,7 +150,7 @@ public class ChildbirthOfficeVisitStepDefs {
 		assertEquals("Childbirth Visit Updated Successfully", driver.findElement(By.xpath("//*[@id=\"content-child\"]/div/span")).getText());
 	}
 	
-	@When("^enters patient's name (.*)$")
+	@When("^types in the patient's name (.*)$")
 	public void voc_find(String name) {
 		driver.findElement(By.name("FIRST_NAME")).clear();
 		driver.findElement(By.name("FIRST_NAME")).sendKeys(name);

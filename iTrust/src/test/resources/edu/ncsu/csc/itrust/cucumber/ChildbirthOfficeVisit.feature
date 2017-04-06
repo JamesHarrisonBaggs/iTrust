@@ -6,7 +6,7 @@ so the childbirth will be saved and newborns will be added to the system
 Scenario Outline: New Childbirth Office Visit
 	Given an OB/GYN HCP has logged in with MID <hcp> and password <pw>
 	And selects Document Office Visit in Obstetrics Info
-	And enters patient's name <name> and select the correct MID <patient>
+	And enters patient's name <name> and chooses the correct MID <patient>
 	And clicks on Create a New Office Visit
 	When enters Date <date> and appointment type as Childbirth and click save
 	And chooses delivery type <type>, and enter drugs <pi>, <no>, <pe>, <ea>, and <ms>, and Pre-Estimate Flag <flag>, then click Save Childbirth Visit
@@ -20,7 +20,7 @@ Scenario Outline: New Childbirth Office Visit
 Scenario Outline: Edit Childbirth Office Visit
 	Given an OB/GYN HCP has logged in with MID <hcp> and password <pw>
 	And selects Document Office Visit in Obstetrics Info
-	And enters patient's name <name> and select the correct MID <patient>
+	And enters patient's name <name> and chooses the correct MID <patient>
 	And clicks on an existed Childbirth Office Visit <date>
 	When edit the delivery type <type>, and clicks Save Childbirth Visit
 	Then the Childbirth Office Visit is modified
@@ -32,7 +32,7 @@ Scenario Outline: Edit Childbirth Office Visit
 Scenario Outline: Invalid Patient
 	Given an OB/GYN HCP has logged in with MID <hcp> and password <pw>
 	And selects Document Office Visit in Obstetrics Info
-	When enters patient's name <name>
+	When types in the patient's name <name>
 	Then the patient can not be found in system
 	
 	Examples:
