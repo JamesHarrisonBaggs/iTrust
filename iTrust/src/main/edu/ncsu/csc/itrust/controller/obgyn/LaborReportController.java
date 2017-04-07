@@ -25,7 +25,7 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 @ManagedBean(name="report_controller")
 @SessionScoped
-public class ReportController extends iTrustController {
+public class LaborReportController extends iTrustController {
 
 	/** OBGYN databases */
 	private ObstetricsInitMySQL inits;
@@ -41,7 +41,7 @@ public class ReportController extends iTrustController {
 	/** Other stuff */
 	private long patientID;
 	
-	public ReportController() throws DBException {
+	public LaborReportController() throws DBException {
 		super();
 		inits = new ObstetricsInitMySQL();
 		pregnancies = new PregnancyMySQL();
@@ -53,7 +53,7 @@ public class ReportController extends iTrustController {
 		patients = DAOFactory.getProductionInstance().getPatientDAO();
 	}
 	
-	public ReportController(DataSource ds) throws DBException {
+	public LaborReportController(DataSource ds) throws DBException {
 		super();
 		inits = new ObstetricsInitMySQL(ds);
 		pregnancies = new PregnancyMySQL(ds);
