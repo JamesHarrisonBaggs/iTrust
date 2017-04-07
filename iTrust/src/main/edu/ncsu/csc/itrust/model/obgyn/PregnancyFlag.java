@@ -6,18 +6,20 @@ public class PregnancyFlag {
 	private String name;
 	private String description;
 	
+	public PregnancyFlag() {
+		this(false, "empty flag", "");
+	}
+
+	public PregnancyFlag(boolean flag, String name) {
+		this(flag, name, "");
+	}
+	
 	public PregnancyFlag(boolean flag, String name, String description) {
 		this.flag = flag;
 		this.name = name;
 		this.description = description;
 	}
-	
-	public PregnancyFlag(boolean flag, String name) {
-		this.flag = flag;
-		this.name = name;
-		this.description = "";
-	}
-	
+
 	public boolean isFlag() {
 		return flag;
 	}
