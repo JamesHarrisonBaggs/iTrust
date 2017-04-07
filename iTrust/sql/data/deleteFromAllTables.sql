@@ -21,7 +21,7 @@ DELETE FROM healthtrackerdata;
 DELETE FROM loginfailures;
 DELETE FROM message;
 ALTER TABLE message AUTO_INCREMENT = 0;
-DELETE FROM obstetrics;
+DELETE FROM obstetrics_inits;
 DELETE FROM obstetrics_visits;
 DELETE FROM pregnancies;
 DELETE FROM reportrequests;
