@@ -1,6 +1,6 @@
 UPDATE patients SET obgynEligible=1 WHERE MID < 5;	
 
-INSERT INTO obstetrics
+INSERT INTO obstetrics_inits
 (id, init_date, lmp_date, current) 
 VALUES
 (2, '1992-05-02 00:00:00', '1992-01-01 00:00:00', 0),

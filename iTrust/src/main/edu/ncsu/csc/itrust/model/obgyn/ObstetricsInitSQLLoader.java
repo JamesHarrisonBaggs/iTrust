@@ -44,7 +44,7 @@ public class ObstetricsInitSQLLoader implements SQLLoader<ObstetricsInit> {
 			boolean newInstance) throws SQLException {	
 		
 		// prepare statement
-		String statement = "INSERT INTO obstetrics(id, init_date, lmp_date, current) "
+		String statement = "INSERT INTO obstetrics_inits(id, init_date, lmp_date, current) "
 				+ "VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE "
 				+ "id=?, init_date=?, lmp_date=?, current=?";
 		ps = conn.prepareStatement(statement);
