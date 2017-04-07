@@ -88,6 +88,13 @@ public class ObstetricsInitController extends iTrustController {
 	public List<ObstetricsInit> getObstetricsRecordByDate(LocalDate date) throws DBException {
 		return sql.getByDate(mid.longValue(), date);
 	}
+	
+	/**
+	 * Return the most recent obstetrics initialization record
+	 */
+	public ObstetricsInit getCurrentInitialization() throws DBException {
+		return sql.getByID(mid.longValue()).get(0);
+	}
 
 	/**
 	 * Create or update the obstetric record specified in the given bean

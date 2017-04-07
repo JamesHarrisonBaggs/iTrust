@@ -63,7 +63,7 @@ public class ObstetricsVisitMySQL {
 	 */
 	public List<ObstetricsVisit> getByID(long id) throws DBException {
 		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_visits WHERE id="+id);
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_visits WHERE id="+id + " ORDER BY visitDate DESC");
 				ResultSet results = stmt.executeQuery()) {
 			return loader.loadList(results);
 		} catch (SQLException e) {
