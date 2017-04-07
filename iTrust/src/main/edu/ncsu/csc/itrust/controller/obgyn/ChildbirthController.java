@@ -31,7 +31,7 @@ import edu.ncsu.csc.itrust.webutils.SessionUtils;
  *
  */
 @ManagedBean(name = "child_controller")
-@SessionScoped()
+@SessionScoped
 public class ChildbirthController extends iTrustController {
 
 	private SessionUtils sessionUtils;

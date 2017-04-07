@@ -94,6 +94,7 @@ CREATE TABLE patients(
 	PRIMARY KEY (MID)
 ) ENGINE=MyISAM;
 
+/*NOTE: This table does not appear to be used in iTrust */
 CREATE TABLE flags(
 	FID BIGINT unsigned auto_increment,
 	MID BIGINT unsigned NOT NULL default '0',
@@ -234,7 +235,7 @@ CREATE TABLE billing( /* UC60 */
 	FOREIGN KEY  (HCPID) REFERENCES personnel (MID)
 ) ENGINE=MyISAM;
 
-
+/*NOTE: This table does not appear to be used in iTrust */
 CREATE TABLE personalallergies(
 	PatientID BIGINT unsigned NOT NULL COMMENT 'MID of the Patient',
 	Allergy VARCHAR( 50 ) NOT NULL COMMENT 'Description of the allergy'
