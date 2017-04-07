@@ -37,9 +37,9 @@ public class ObstetricsInitTest {
 	public void testEmptyInit() {
 		ob = new ObstetricsInit();
 		assertEquals(LocalDate.now(), ob.getInitDate());
-		assertEquals(LocalDate.now(), ob.getLastMenstrualPeriod());
-		assertEquals(LocalDate.now().plusDays(280), ob.getEstimatedDueDate());
-		assertEquals(0, ob.getDaysPregnant());
+		assertNull(ob.getLastMenstrualPeriod());
+		assertNull(ob.getEstimatedDueDate());
+		assertEquals(-1, ob.getDaysPregnant());
 		
 		ob.setInitDate(null);
 		ob.setLastMenstrualPeriod(null);

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
@@ -19,19 +20,22 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 @ManagedBean(name = "obgyn_controller")
+@SessionScoped
 public class ObstetricsInitController extends iTrustController {
 
 	private ObstetricsInitMySQL sql;
 	private ObstetricsInit newInit;
+	private boolean added;
 	
 	private DAOFactory factory;
 	private PatientDAO patientDB;
-
-	private Long mid;
+	
+	private long mid;
 	private Long hcpid;
 	
 	private boolean obGyn;
 	private boolean eligible;
+	
 		
 	// TODO should handle exceptions and not just throw them
 
@@ -66,41 +70,43 @@ public class ObstetricsInitController extends iTrustController {
 		setObGyn();
 		
 		// determine if patient is OB/GYN eligible
-		mid = getSessionUtils().getCurrentPatientMIDLong();
-		if (mid != null) {
-			setEligible(patientDB.getPatient(mid.longValue()).isObgynEligible());
+		Long pid = getSessionUtils().getCurrentPatientMIDLong();
+		if (pid != null) {
+			mid = pid.longValue();
+			setEligible(patientDB.getPatient(mid).isObgynEligible());
 		}
 		
 		// set up submission bean
 		newInit = new ObstetricsInit();
+		added = false;
 	}
 		
 	/**
 	 * Return all obstetrics initialization records for the current patient
 	 */
 	public List<ObstetricsInit> getObstetricsRecords() throws DBException {
-		return sql.getByID(mid.longValue());
+		return sql.getByID(mid);
 	}
 
 	/**
 	 * Return the obstetrics record for the current patient for the given date
 	 */
 	public List<ObstetricsInit> getObstetricsRecordByDate(LocalDate date) throws DBException {
-		return sql.getByDate(mid.longValue(), date);
+		return sql.getByDate(mid, date);
 	}
 	
 	/**
 	 * Return the most recent obstetrics initialization record
 	 */
 	public ObstetricsInit getCurrentInitialization() throws DBException {
-		return sql.getByID(mid.longValue()).get(0);
+		return sql.getByID(mid).get(0);
 	}
 
 	/**
 	 * Create or update the obstetric record specified in the given bean
 	 */
 	public void update(ObstetricsInit bean) throws DBException {
-		bean.setPatientId(mid.longValue());
+		bean.setPatientId(mid);
 		try {
 			int result = sql.update(bean);
 			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_RECORD : TransactionType.UPDATE_OBSTETRIC_RECORD, "");
@@ -114,7 +120,7 @@ public class ObstetricsInitController extends iTrustController {
 	/** Other Methods */
 	
 	public long getMid() {
-		return mid.longValue();
+		return mid;
 	}
 	
 	public void setMid(long mid) {
@@ -130,6 +136,7 @@ public class ObstetricsInitController extends iTrustController {
 	public void submitInit() throws DBException {
 		newInit.setInitDate(LocalDate.now());
 		this.update(newInit);
+		added = true;
 	}
 	
 	public ObstetricsInit getNewInit() {
@@ -143,6 +150,14 @@ public class ObstetricsInitController extends iTrustController {
 		this.newInit = newInit;
 	}
 	
+	public boolean isAdded() {
+		return this.added;
+	}
+	
+	public void setAdded(boolean added) {
+		this.added = added;
+	}
+	
 	/** Eligibility */
 	
 	public void submitEligible() throws DBException {
@@ -153,7 +168,7 @@ public class ObstetricsInitController extends iTrustController {
 	}
 	
 	public void submitNotEligible() throws DBException {
-		PatientBean p = patientDB.getPatient(mid.longValue());
+		PatientBean p = patientDB.getPatient(mid);
 		p.setObgynEligible(false);
 		patientDB.editPatient(p, hcpid.longValue());
 		setEligible(p.isObgynEligible());

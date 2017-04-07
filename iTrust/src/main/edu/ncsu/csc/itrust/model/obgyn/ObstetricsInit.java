@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedBean;
  * @author erein
  *
  */
-@ManagedBean(name = "obsInitBean")
+@ManagedBean(name = "obstetrics_init_bean")
 public class ObstetricsInit {
 
 	/** MID of the patient */
@@ -22,7 +22,6 @@ public class ObstetricsInit {
 	public ObstetricsInit() {
 		this.patientId = -1;
 		this.initDate = LocalDate.now();
-		this.lastMenstrualPeriod = LocalDate.now();
 	}
 		
 	public long getPatientId() {
