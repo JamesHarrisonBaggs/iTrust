@@ -82,7 +82,6 @@ public class ObstetricsInitMySQLTest {
 		assertEquals(LocalDate.of(1992, 5, 2), list.get(0).getInitDate());
 		assertEquals(LocalDate.of(1992, 1, 1), list.get(0).getLastMenstrualPeriod());
 		assertEquals(2, list.get(0).getPatientId());
-		assertFalse(list.get(0).isCurrent());
 	}
 
 	@Test
@@ -152,7 +151,6 @@ public class ObstetricsInitMySQLTest {
 		bean.setPatientId(101);
 		bean.setInitDate(LocalDate.of(2016, 3, 24));
 		bean.setLastMenstrualPeriod(LocalDate.now().minusDays(9));
-		bean.setCurrent(true);
 		return bean;
 	}
 

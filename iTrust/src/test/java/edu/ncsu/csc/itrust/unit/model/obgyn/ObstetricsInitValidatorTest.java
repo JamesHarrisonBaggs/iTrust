@@ -27,7 +27,6 @@ public class ObstetricsInitValidatorTest {
 		bean.setPatientId(101);
 		bean.setInitDate(LocalDate.of(2016, 3, 24));
 		bean.setLastMenstrualPeriod(LocalDate.now().minusDays(9));
-		bean.setCurrent(true);
 		
 		try {
 			validator.validate(bean);
@@ -42,7 +41,7 @@ public class ObstetricsInitValidatorTest {
 		
 		// default bean
 		bean = new ObstetricsInit();
-		invalidate(bean, "Initialization date cannot be null");
+		invalidate(bean, "Patient id cannot be negative");
 		
 		// null bean
 		invalidate(null, "Bean cannot be null");

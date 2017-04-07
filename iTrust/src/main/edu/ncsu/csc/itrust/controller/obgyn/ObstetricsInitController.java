@@ -41,7 +41,7 @@ public class ObstetricsInitController extends iTrustController {
 	public ObstetricsInitController() throws DBException {
 		super();
 		this.sql = new ObstetricsInitMySQL();
-		this.setUpObstetricsInit();
+		this.setUpInitialization();
 	}
 	/**
 	 * Constructs an ObstetricsInitController with a data source
@@ -50,13 +50,13 @@ public class ObstetricsInitController extends iTrustController {
 		super();
 		this.sql = new ObstetricsInitMySQL(ds);
 		this.patientDB = DAOFactory.getProductionInstance().getPatientDAO();
-		this.setUpObstetricsInit();
+		this.setUpInitialization();
 	}
 	
 	/**
 	 * Called from both constructors to set up class
 	 */
-	private void setUpObstetricsInit() throws DBException {
+	private void setUpInitialization() throws DBException {
 		// set up patient database
 		this.factory = DAOFactory.getProductionInstance();
 		this.patientDB = factory.getPatientDAO();
