@@ -39,21 +39,35 @@ public class ChildbirthMySQL {
 
 	public int update(Childbirth bean) throws DBException, FormValidationException {
 		validator.validate(bean);
-		if(bean.getBirthID() == -1) {
+		
+		// new (create)
+		if (bean.getBirthID() == -1) {
 			try (Connection conn = ds.getConnection();
 					PreparedStatement stmt = loader.loadParameters(conn, null, bean, true)) {
 				return stmt.executeUpdate();
 			} catch (SQLException e) {
 				throw new DBException(e);
 			}
-		} else {
+		}
+		// existing (update)
+		else {
 			try (Connection conn = ds.getConnection();
-					PreparedStatement stmt = conn.prepareStatement("UPDATE itrust.childbirths SET added="+bean.isAdded()+", birthDate='"+bean.getBirthdate()+"', gender='"+bean.getGender()+"', estimated="+bean.isEstimated()+" WHERE birthID="+bean.getBirthID()+" AND visitID="+bean.getVisitID())) {
+					PreparedStatement stmt = loader.loadParameters(conn, null, bean, false)) {
 				return stmt.executeUpdate();
 			} catch (SQLException e) {
 				throw new DBException(e);
 			}
 		}
+	}
+	
+	public List<Childbirth> getByParentID(long parentID) throws DBException {
+		try (Connection conn = ds.getConnection();
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM childbirths WHERE parentID="+parentID);
+				ResultSet results = stmt.executeQuery()) {
+			return loader.loadList(results);
+		} catch (SQLException e) {
+			throw new DBException(e);
+		}		
 	}
 
 	public List<Childbirth> getByVisitID(long visitID) throws DBException {
@@ -81,14 +95,14 @@ public class ChildbirthMySQL {
 		}
 	}
 
-	public void remove(long visitId, int birthID) throws DBException {
+	public void remove(long visitID, int birthID) throws DBException {
 		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("DELETE FROM childbirths WHERE visitID="+visitId+" AND birthID="+birthID))
-				{
-					stmt.execute();
-				} catch (SQLException e) {
-					throw new DBException(e);			
-				}
+				PreparedStatement stmt = conn.prepareStatement("DELETE FROM childbirths WHERE visitID="+visitID+" AND birthID="+birthID))
+		{
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DBException(e);			
+		}
 	}
 
 }
