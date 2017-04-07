@@ -5,15 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
-
-<f:metadata>
-</f:metadata>
 <f:view
 	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
 <head>
 </head>
 <h:body>
-
 	<ui:composition template="/iTrust_template.xhtml">
 		<ui:define name="pageStyle"></ui:define>
 		<ui:define name="pageTitle">iTrust - Obstetrics Care</ui:define>
@@ -40,7 +36,7 @@
 			<h:outputText id="initializations" value="Obstetrics Initializations"
 				style="font-size:20px; font-weight:bold" align="left" />
 			<h:dataTable id="PIRTable" class="fTable" width="75%"
-				value="#{obgyn_controller.getObstetricsRecords()}" var="init"
+				value="#{report_controller.getObInits()}" var="init"
 				border="1">
 				<h:column>
 					<f:facet name="header">
@@ -81,10 +77,11 @@
 			</h:dataTable>
 
 			<!-- Table of Prior Pregnancies -->
+			<br />
 			<h:outputText id="priorPregnancies" value="Prior Pregnancies"
 				style="font-size:20px; font-weight:bold" align="left" />
 			<h:dataTable id="preg_table" class="fTable" width="75%"
-				value="#{pregnancy_controller.getPregnancies()}" var="preg"
+				value="#{report_controller.getPregnancies()}" var="preg"
 				border="1">
 				<h:column>
 					<f:facet name="header">

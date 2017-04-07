@@ -27,6 +27,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name="report_controller")
 @SessionScoped
@@ -40,25 +41,21 @@ public class LaborReportController extends iTrustController {
 //	private ChildbirthMySQL childbirthsDB;
 //	private ChildbirthVisitMySQL cbVisitsDB;
 	
-	/** OBGYN data */
-	private ObstetricsInit currentInit;
-	private List<ObstetricsVisit> obVisits;
-	private List<Pregnancy> pregnancies;
-	
 	/** Patient databases */
 	private PatientDAO patientDB;
 	private AllergyDAO allergyDB;
 	
-	/** Patient data */
+	/** Other data */
 	private long patientID;
-	private PatientBean patientBean;
-	private List<AllergyBean> allergies;
+	private SessionUtils sessionUtils;
 	
 	/**
 	 * Constructs a LaborReportController
 	 */
 	public LaborReportController() throws DBException {
 		super();
+		sessionUtils = getSessionUtils();
+		assert(sessionUtils != null);
 		
 		// OBGYN databases
 		initsDB = new ObstetricsInitMySQL();
@@ -71,16 +68,9 @@ public class LaborReportController extends iTrustController {
 		// patient databases
 		patientDB = DAOFactory.getProductionInstance().getPatientDAO();
 		allergyDB = DAOFactory.getProductionInstance().getAllergyDAO();
-
-		// patient data
-		patientID = getSessionUtils().getCurrentPatientMIDLong().longValue();
-		patientBean = patientDB.getPatient(patientID);
-		allergies = allergyDB.getAllergies(patientID);
 		
-		// OBGYN data
-		pregnancies = pregnancyDB.getByID(patientID);
-		obVisits = obVisitsDB.getByID(patientID);
-		currentInit = initsDB.getByID(patientID).get(0);
+		// patient data
+		patientID = sessionUtils.getCurrentPatientMIDLong();
 
 	}
 	
@@ -98,33 +88,44 @@ public class LaborReportController extends iTrustController {
 //		cbVisitsDB = new ChildbirthVisitMySQL(ds);
 	}
 		
+	// TODO handle and not just throw DBExceptions
+	
 	/**
 	 * Returns data to display
 	 */	
-	public ObstetricsInit getCurrentInit() {
-		return currentInit;
+	public List<ObstetricsInit> getObInits() throws DBException {
+		return initsDB.getByID(patientID);
 	}
-	public List<ObstetricsVisit> getObVisits() {
-		return obVisits;
+	public ObstetricsInit getCurrentInit() throws DBException {
+		return initsDB.getByID(patientID).get(0);
+	}
+	public List<ObstetricsVisit> getObVisits() throws DBException {
+		return obVisitsDB.getByID(patientID);
 	}	
-	public List<Pregnancy> getPregnancies() {
-		return pregnancies;
+	public List<Pregnancy> getPregnancies() throws DBException {
+		return pregnancyDB.getByID(patientID);
 	}
-	public List<AllergyBean> getAllergies() {
-		return allergies;
+	public List<AllergyBean> getAllergies() throws DBException {
+		return allergyDB.getAllergies(patientID);
 	}
 	
 	/**
 	 * Returns the patient's blood type
 	 */
-	public String getBloodType() {
-		return patientBean.getBloodType().toString();
+	public String getBloodType() throws DBException {
+		PatientBean patient = patientDB.getPatient(patientID);
+		return patient.getBloodType().toString();
 	}
 	
 	/**
 	 * Returns a list of all Pregnancy Warning Flags
 	 */
-	public List<PregnancyFlag>getPregnancyWarningFlags() {
+	public List<PregnancyFlag>getPregnancyWarningFlags() throws DBException {
+		
+		// information sources
+		List<ObstetricsInit> obInits = getObInits();
+		List<ObstetricsVisit> obVisits = getObVisits();
+		PatientBean patient = patientDB.getPatient(patientID);
 		
 		// all warning flags
 		boolean rhFlag = false;
@@ -151,8 +152,8 @@ public class LaborReportController extends iTrustController {
 		}
 		
 		// advanced age
-		Instant dateOfBirth = patientBean.getDateOfBirth().toInstant();
-		Instant expDueDate = currentInit.getEstimatedDueDate().atStartOfDay().toInstant(ZoneOffset.UTC);		
+		Instant dateOfBirth = patient.getDateOfBirth().toInstant();
+		Instant expDueDate = obInits.get(0).getEstimatedDueDate().atStartOfDay().toInstant(ZoneOffset.UTC);		
 		long ageSec = expDueDate.getEpochSecond() - dateOfBirth.getEpochSecond();
 		long ageYears = ageSec / (60L * 60L * 24L * 365L);
 		if (ageYears >= 35) {
