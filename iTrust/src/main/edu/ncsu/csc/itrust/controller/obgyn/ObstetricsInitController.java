@@ -36,7 +36,6 @@ public class ObstetricsInitController extends iTrustController {
 	private boolean obGyn;
 	private boolean eligible;
 	
-		
 	// TODO should handle exceptions and not just throw them
 
 	/**
