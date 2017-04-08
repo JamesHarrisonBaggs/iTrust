@@ -43,14 +43,13 @@
 			<h4>Create New Initialization Record</h4>
 			<div class="form-group" style="width: 100%">
 				<h:message for="newInitializationForm" class="iTrustError" />
-				<h:form id="newInitializationForm">
 				<div style="width: 100%">	
 					<h:form id="newInitializationForm">
 						<h:panelGrid class="fTable" width="75%" columns="1">
 							<h:panelGroup>
-								<h:outputLabel for="dateInit">Last Menstrual Period:</h:outputLabel>
+								<h:outputLabel for="lmp_input">Last Menstrual Period:</h:outputLabel>
 								<br />
-								<h:inputText type="text" id="dateInit"
+								<h:inputText type="text" id="lmp_input"
 									value="#{obgyn_controller.newInit.lastMenstrualPeriod}">
 									<f:converter converterId="localDateConverter" />
 								</h:inputText>
@@ -85,7 +84,6 @@
 						</h:panelGrid>
 					</h:form>
 				</div>
-				</h:form>
 			</div>
 		</ui:define>.
 	</ui:composition>

@@ -565,7 +565,7 @@ CREATE TABLE obstetrics_visits(
 CREATE TABLE pregnancies(
 	id				BIGINT(20)		UNSIGNED DEFAULT 0,
 	birth_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	conception_year	INTEGER(15)		UNSIGNED DEFAULT 0,
+	conception_year	INTEGER(15)		DEFAULT 0,
 	days_pregnant	INTEGER(15)		UNSIGNED DEFAULT 0,
 	hours_labor		INTEGER(15)		UNSIGNED DEFAULT 0,
 	weight_gain		FLOAT(19)		DEFAULT 0,
