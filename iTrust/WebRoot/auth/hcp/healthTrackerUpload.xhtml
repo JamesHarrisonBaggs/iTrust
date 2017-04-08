@@ -43,12 +43,9 @@
 			<h:outputLabel for="uploadForm">Upload Data File:</h:outputLabel>
 			<h:form id="uploadForm" enctype="multipart/form-data" prependId="false">
 				<p>
-					<h:inputFile id="uploadFile" value="#{fileUploadBean.uploadedFile}">
-					</h:inputFile>
+				<!-- <h:inputFile id="uploadFile" value="#{fileUploadBean.uploadedFile}"></h:inputFile>  -->
 				</p>
-				<h:commandButton id="uploadButton" value="Upload File"
-					action="#{fileUploadBean.upload}">
-				</h:commandButton>
+				<!-- <h:commandButton id="uploadButton" value="Upload File" action="#{fileUploadBean.upload}"></h:commandButton> -->
 				<!-- <p id="textOutput">Text: #{fileUploadBean.text}</p>  -->
 			</h:form>
 									
