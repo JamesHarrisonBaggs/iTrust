@@ -43,31 +43,30 @@
 			<h4>Create New Initialization Record</h4>
 			<div class="form-group" style="width: 100%">
 				<h:message for="newInitializationForm" class="iTrustError" />
-				<h:form id="newInitializationForm">
 				<div style="width: 100%">	
 					<h:form id="newInitializationForm">
 						<h:panelGrid class="fTable" width="75%" columns="1">
 							<h:panelGroup>
-								<h:outputLabel for="dateInit">Last Menstrual Period:</h:outputLabel>
+								<h:outputLabel for="lmp_input">Last Menstrual Period:</h:outputLabel>
 								<br />
-								<h:inputText type="text" id="dateInit"
+								<h:inputText type="text" id="lmp_input"
 									value="#{obgyn_controller.newInit.lastMenstrualPeriod}">
 									<f:converter converterId="localDateConverter" />
 								</h:inputText>
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="edd">Expected Delivery Date: </h:outputLabel>
+								<h:outputLabel for="edd">Expected Delivery Date:</h:outputLabel>
 								<br />
-								<h:outputText id="edd" style="color: green"
-									value="#{obgyn_controller.newInit.initDate}">
+								<h:outputText id="edd" rendered="#{obgyn_controller.added}" 
+									style="color: green" value="#{obgyn_controller.newInit.getEstimatedDueDate()}">
 									<f:converter converterId="localDateConverter" />
 								</h:outputText>
 							</h:panelGroup>
 							<h:panelGroup>
-								<h:outputLabel for="tpp">Pregnant for: </h:outputLabel>
+								<h:outputLabel for="tpp">Pregnant for:</h:outputLabel>
 								<br />
-								<h:outputText style="color: green"
-									value="#{obgyn_controller.newInit.timePregnant}"/>
+								<h:outputText id="tpp" rendered="#{obgyn_controller.added}"
+									style="color: green" value="#{obgyn_controller.newInit.getTimePregnant()}"/>
 							</h:panelGroup>
 							<h:panelGroup>
 								<h:commandButton id="submitDateButton"
@@ -85,7 +84,6 @@
 						</h:panelGrid>
 					</h:form>
 				</div>
-				</h:form>
 			</div>
 		</ui:define>.
 	</ui:composition>

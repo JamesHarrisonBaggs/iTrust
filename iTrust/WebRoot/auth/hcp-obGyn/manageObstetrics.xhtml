@@ -59,10 +59,18 @@
 
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputLabel for="multiples" style="padding-right:20px">Multiples:</h:outputLabel>
-						<h:inputText id="multiples" name="multiples"
-							value="#{obs_visit_controller.amount}" />
-
+						<h:outputLabel for="multiple_dd" style="padding-right:20px">Multiples:</h:outputLabel>
+						<h:selectOneMenu value="#{obs_visit_controller.amount}" id="multiple_dd">
+							<f:selectItem itemValue="1" itemLabel="1" />
+							<f:selectItem itemValue="2" itemLabel="2" />
+							<f:selectItem itemValue="3" itemLabel="3" />
+							<f:selectItem itemValue="4" itemLabel="4" />
+							<f:selectItem itemValue="5" itemLabel="5" />
+							<f:selectItem itemValue="6" itemLabel="6" />
+							<f:selectItem itemValue="7" itemLabel="7" />
+							<f:selectItem itemValue="8" itemLabel="8" />
+							<f:selectItem itemValue="9" itemLabel="9" />
+						</h:selectOneMenu>
 					</h:panelGroup>
 					
 					<h:panelGroup>
@@ -142,7 +150,7 @@
 					</h:link>
 				</h:column>
 			</h:dataTable>
-			<h:form rendered="#{ultrasound_controller.obgyn}">
+			<h:form rendered="#{ultrasound_controller.obgyn}" id="ultrasoundForm">
 				<h:button id="addUltraSound"
 					style="font-size:11px; font-weight:bold" align="left"
 					value="Add Ultrasound"

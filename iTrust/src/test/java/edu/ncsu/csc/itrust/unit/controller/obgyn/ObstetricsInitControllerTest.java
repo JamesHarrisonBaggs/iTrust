@@ -76,6 +76,10 @@ public class ObstetricsInitControllerTest {
 		assertEquals(list.get(1).getInitDate(), LocalDate.of(2014, 5, 1));
 		assertEquals(list.get(0).getLastMenstrualPeriod(), LocalDate.of(1990, 1, 1));
 		assertEquals(list.get(1).getLastMenstrualPeriod(), LocalDate.of(1990, 1, 1));
+		
+		bean = controller.getCurrentInitialization();
+		assertEquals(bean.getInitDate(), LocalDate.of(2016, 5, 7));
+		assertEquals(bean.getLastMenstrualPeriod(), LocalDate.of(1990, 1, 1));	
 	}
 	
 	/**
@@ -91,6 +95,17 @@ public class ObstetricsInitControllerTest {
 		assertEquals(bean.getInitDate(), LocalDate.of(2016, 5, 7));
 		assertEquals(bean.getLastMenstrualPeriod(), LocalDate.of(1990, 1, 1));
 	}
+	
+	@Test
+	public void testMisc() throws Exception {
+		controller.logView();
+		// test?
+		controller.setAdded(true);
+		assertTrue(controller.isAdded());
+		
+		controller.getObGyn();
+		controller.isBothObGynEligible();
+	}
 
 	@Test
 	public void testUpdate() throws Exception {
@@ -99,12 +114,18 @@ public class ObstetricsInitControllerTest {
 		bean.setInitDate(LocalDate.of(1992, 5, 2));
 		bean.setLastMenstrualPeriod(LocalDate.of(1992, 2, 7));
 		
-		controller.setMid(2L);		
+		controller.setMid(2L);
+		controller.update(bean);
+		
+		// test form validation exception
+		bean = new ObstetricsInit();
 		controller.update(bean);
 	}
 	
 	@Test
 	public void testInit() throws Exception {
+		controller.setNewInit(null);
+		
 		// submit new init
 		bean = controller.getNewInit();
 		controller.setNewInit(new ObstetricsInit());

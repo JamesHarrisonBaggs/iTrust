@@ -510,9 +510,9 @@ public enum TransactionType {
 	VIEW_HEALTHTRACKER_SUMMARY(8704, "View Health Tracker Summary Data", "viewed health tracker summary data", true),
 	
 	/** Create Obstetrics Record **/
-	CREATE_OBSTETRIC_RECORD(9300, "Create Initial Obstetric Record", " created obstetric record", true),
+	CREATE_OBSTETRIC_RECORD(9300, "Create Initial Obstetric Record", "created obstetric record", true),
 	/** View Obstetrics Record **/
-	VIEW_OBSTETRIC_RECORD(9301, "View Initial Obstetric Record", " viewed obstetric record", true),
+	VIEW_OBSTETRIC_RECORD(9301, "View Initial Obstetric Record", "viewed obstetric record", true),
 	/** Update Obstetrics Record **/
 	UPDATE_OBSTETRIC_RECORD(9302, "Update Obstetric Record", "updated obstetric record", true),
 	
@@ -524,17 +524,31 @@ public enum TransactionType {
 	UPDATE_PREGNANCY(9312, "Update Pregnancy", "updated pregnancy", true),
 	
 	/** Create Obstetric Office Visit **/
-	CREATE_OBSTETRIC_OFFICE_VISIT(9400, "Create Obstetric Office Visit", " created obstetric office visit", true),
+	CREATE_OBSTETRIC_OFFICE_VISIT(9400, "Create Obstetric Office Visit", "created obstetric office visit", true),
 	/** View Obstetric Office Visit **/
-	VIEW_OBSTETRIC_OFFICE_VISIT(9401, "View Obstetric Office Visit", " viewed obstetric office visit", true),
+	VIEW_OBSTETRIC_OFFICE_VISIT(9401, "View Obstetric Office Visit", "viewed obstetric office visit", true),
 	/** Edit Obstetric Office Visit **/
-	EDIT_OBSTETRIC_OFFICE_VISIT(9402, "Edit Obstetric Office Visit", " edited obstetric office visit", true),
+	EDIT_OBSTETRIC_OFFICE_VISIT(9402, "Edit Obstetric Office Visit", "edited obstetric office visit", true),
 	/** Edit Ultrasound **/
-	EDIT_ULTRASOUND(9403, "Edit Ultrasound", " edited ultrasound", true),
+	EDIT_ULTRASOUND(9403, "Edit Ultrasound", "edited ultrasound", true),
 	/** Schedule Obstetric Office Visit **/
-	SCHEDULE_OFFICE_VISIT(9404, "Schedule Office Visit", " scheduled obstetric office visit", true),
+	SCHEDULE_OFFICE_VISIT(9404, "Schedule Office Visit", "scheduled obstetric office visit", true),
 	/** Schedule Childbirth Appointment **/
-	SCHEDULE_CHILDBIRTH(9405, "Schedule Childbirth", " scheduled childbirth appointment", true)
+	SCHEDULE_CHILDBIRTH(9405, "Schedule Childbirth", "scheduled childbirth appointment", true),
+	
+	/** Labor and Delivery Report **/
+	LABOR_DELIVERY_REPORT(9500, "Labor and Delivery Report", "accessed labor and delivery report", true),
+	
+	/** Create Childbirth Visit **/
+	CREATE_CHILDBIRTH_VISIT(9600, "Create Childbirth Visit", "created childbirth visit", true),
+	/** Add Childbirth Drugs **/
+	ADD_CHILDBIRTH_DRUGS(9601, "Add Childbirth Drugs", "added childbirth drugs", true),
+	/** Baby is Born **/
+	CHILDBIRTH_BABY_BORN(9602, "Baby is Born", "recorded a baby was born", true),
+	/** Baby is Recorded **/
+	CHILDBIRTH_BABY_RECORDED(9603, "Create Baby Record", "created a baby record", true),
+	/** Edit Childbirth Visit **/
+	EDIT_CHILDBIRTH_VISIT(9604, "Edit Childbirth Visit", "edited a childbirth visit", true)
 	;
 	
 	/**

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:view
+	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<head>
+</head>
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle"></ui:define>
+		<ui:define name="pageTitle">iTrust - Obstetrics Care</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+		<ui:define name="mainContent">
+
+			<!-- Title and header -->
+			<div class="form-group" style="width: 500px">
+				<h2>Labor and Delivery Report</h2>
+				<c:set var="name"
+					value="#{user.getUserNameForID(session.getAttribute(&#34;pid&#34;))}" />
+				<h:outputText style="color: green"
+					rendered="#{obgyn_controller.eligible}"
+					value="#{name} is eligible for obstetric care" width="50%"></h:outputText>
+				<h:outputText style="color: red"
+					rendered="#{!obgyn_controller.eligible}"
+					value="#{name} is ineligible for obstetric care" width="50%"></h:outputText>
+			</div>
+			<br />
+
+			<!-- Table of Initializations -->
+			<h:outputText id="initializations" value="Obstetrics Initializations"
+				style="font-size:20px; font-weight:bold" align="left" />
+			<h:dataTable id="PIRTable" class="fTable" width="75%"
+				value="#{report_controller.getObInits()}" var="init"
+				border="1">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Initialization Date" />
+					</f:facet>
+					<h:outputText value="#{init.initDate}">
+						<f:converter converterId="localDateConverter" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Last Menstrual Period" />
+					</f:facet>
+					<h:outputText value="#{init.lastMenstrualPeriod}">
+						<f:converter converterId="localDateConverter" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Estimated Due Date" />
+					</f:facet>
+					<h:outputText value="#{init.estimatedDueDate}">
+						<f:converter converterId="localDateConverter" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Pregnant for" />
+					</f:facet>
+					<h:outputText value="#{init.timePregnant}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Select Link" />
+					</f:facet>
+					<h:link outcome="viewSingleObstetricsInit" value="Link"></h:link>
+				</h:column>
+			</h:dataTable>
+
+			<!-- Table of Prior Pregnancies -->
+			<br />
+			<h:outputText id="priorPregnancies" value="Prior Pregnancies"
+				style="font-size:20px; font-weight:bold" align="left" />
+			<h:dataTable id="preg_table" class="fTable" width="75%"
+				value="#{report_controller.getPregnancies()}" var="preg"
+				border="1">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Date of Birth" />
+					</f:facet>
+					<h:outputText value="#{preg.dateOfBirth}">
+						<f:converter converterId="localDateConverter" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Conception Year" />
+					</f:facet>
+					<h:outputText value="#{preg.yearOfConception}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Days Pregnant" />
+					</f:facet>
+					<h:outputText value="#{preg.daysPregnant}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Hours in Labor" />
+					</f:facet>
+					<h:outputText value="#{preg.hoursInLabor}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Weight Gain" />
+					</f:facet>
+					<h:outputText value="#{preg.weightGain}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Delivery Type" />
+					</f:facet>
+					<h:outputText value="#{preg.deliveryType}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Amount" />
+					</f:facet>
+					<h:outputText value="#{preg.amount}" />
+				</h:column>
+			</h:dataTable>
+		</ui:define>
+	</ui:composition>
+
+
+</h:body>
+</html>

@@ -29,38 +29,38 @@
 									</tr>
 									<tr>
 										<td class="subHeaderVertical">Date of Birth:</td>
-										<td><h:inputText name="dob"
+										<td><h:inputText id="dob"
 												value="#{pregBean.dateOfBirth}">
 												<f:converter converterId="localDateConverter" />
 											</h:inputText></td>
 									</tr>
 									<tr>
 										<td class="subHeaderVertical">Year of Conception:</td>
-										<td><h:inputText name="yearOfConception"
-												value="#{pregBean.yearOfConception}">
+										<td><h:inputText id="yearOfConception"
+												value="#{pregBean.yearOfConception}" required="true">
 											</h:inputText></td>
 									</tr>
 									<tr>
 										<td class="subHeaderVertical">Days Pregnant:</td>
-										<td><h:inputText name="numberOfWeeks"
-												value="#{pregBean.daysPregnant}">
+										<td><h:inputText id="numberOfWeeks"
+												value="#{pregBean.daysPregnant}" required="true">
 											</h:inputText></td>
 									</tr>
 									<tr>
 										<td class="subHeaderVertical">Hours in Labor:</td>
-										<td><h:inputText name="numberOfHours"
-												value="#{pregBean.hoursInLabor}">
+										<td><h:inputText id="numberOfHours"
+												value="#{pregBean.hoursInLabor}" required="true">
 											</h:inputText></td>
 									</tr>
 									<tr>
 										<td class="subHeaderVertical">Weight Gain:</td>
-										<td><h:inputText name="weightGain"
-												value="#{pregBean.weightGain}">
+										<td><h:inputText id="weightGain"
+												value="#{pregBean.weightGain}" required="true">
 											</h:inputText></td>
 									</tr>
 									<tr>
 										<td class="subHeaderVertical">Delivery Type:</td>
-										<td><h:selectOneMenu value="#{pregBean.deliveryType}">
+										<td><h:selectOneMenu value="#{pregBean.deliveryType}" id="delivery_drop_down">
 												<f:selectItem itemValue="vaginal"
 													itemLabel="Vaginal Delivery" />
 												<f:selectItem itemValue="vacuum"
@@ -74,17 +74,17 @@
 											</h:selectOneMenu></td>
 									</tr>
 									<tr>
-										<td class="subHeaderVertical">Multiple Pregnancy?</td>
-										<td><h:selectOneMenu value="#{pregBean.amount}">
-												<f:selectItem itemValue="1" itemLabel="Single" />
-												<f:selectItem itemValue="2" itemLabel="Twins" />
-												<f:selectItem itemValue="3" itemLabel="Triplets" />
-												<f:selectItem itemValue="4" itemLabel="Quadruplets" />
-												<f:selectItem itemValue="5" itemLabel="Quintuplets" />
-												<f:selectItem itemValue="6" itemLabel="Sextuplets" />
-												<f:selectItem itemValue="7" itemLabel="Septuplets" />
-												<f:selectItem itemValue="8" itemLabel="Octuplets" />
-												<f:selectItem itemValue="9" itemLabel="Nontuplets" />
+										<td class="subHeaderVertical">Multiples:</td>
+										<td><h:selectOneMenu value="#{pregBean.amount}" id="multiple_drop_down">
+												<f:selectItem itemValue="1" itemLabel="1" />
+												<f:selectItem itemValue="2" itemLabel="2" />
+												<f:selectItem itemValue="3" itemLabel="3" />
+												<f:selectItem itemValue="4" itemLabel="4" />
+												<f:selectItem itemValue="5" itemLabel="5" />
+												<f:selectItem itemValue="6" itemLabel="6" />
+												<f:selectItem itemValue="7" itemLabel="7" />
+												<f:selectItem itemValue="8" itemLabel="8" />
+												<f:selectItem itemValue="9" itemLabel="9" />
 											</h:selectOneMenu></td>
 									</tr>
 									<tr>
@@ -93,9 +93,9 @@
 												value="Create New Prior Pregnancy"
 												action="#{pregnancy_controller.update(pregBean)}">
 											</h:commandButton></td>
-										<td><h:commandButton id="return"
+										<td><h:commandButton id="returnToOBCare"
 												style="font-size:11px; font-weight:bold" align="left"
-												value="Return to New Obstetrics Initialization"
+												value="Return to Obstetrics Care"
 												action="viewObstetricsInit">
 											</h:commandButton></td>
 									</tr>

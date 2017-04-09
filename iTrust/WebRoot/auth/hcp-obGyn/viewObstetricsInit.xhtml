@@ -60,7 +60,7 @@
 					<f:facet name="header">
 						<h:outputText value="Estimated Due Date"/>
 					</f:facet>
-					<h:outputText value="#{init.estimatedDueDate}">
+					<h:outputText value="#{init.getEstimatedDueDate()}">
 						<f:converter converterId="localDateConverter"/>
 					</h:outputText>
 				</h:column>
@@ -68,18 +68,22 @@
 					<f:facet name="header">
 						<h:outputText value="Pregnant for"/>
 					</f:facet>
-					<h:outputText value="#{init.timePregnant}"/>
+					<h:outputText value="#{init.getTimePregnant()}"/>
 				</h:column>
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="Select Link"/>
 					</f:facet>
-					<h:link outcome="viewSingleObstetricsInit" value="Link"></h:link>
+					<h:link outcome="viewSingleObstetricsInit">
+						<h:outputText value="#{init.lastMenstrualPeriod}">
+							<f:converter converterId="localDateConverter"/>
+						</h:outputText>
+					</h:link>
 				</h:column>
 			</h:dataTable>
 			
 			<!-- Form with initialization buttons -->
-			<h:form>
+			<h:form id="initButtonForm">
 				<h:panelGrid class="fTable" width="75%" columns="2">
 					<h:panelGroup rendered="#{!obgyn_controller.eligible}">
 						<h:commandButton id="setPatientEligible"
@@ -158,7 +162,7 @@
 			</h:dataTable>
 			
 			<!-- Form with pregnancy buttons -->
-			<h:form>
+			<h:form id="pregButtonForm">
 			<h:panelGrid class="fTable" width="75%" columns="1">
 				<h:panelGroup>
 					<h:commandButton id="newPreg" style="font-size:11px; font-weight:bold" align="left"

@@ -1,8 +1,6 @@
 package edu.ncsu.csc.itrust.model.obgyn;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import javax.faces.bean.ManagedBean;
 
@@ -11,7 +9,7 @@ import javax.faces.bean.ManagedBean;
  * @author erein
  *
  */
-@ManagedBean(name = "obsInitBean")
+@ManagedBean(name = "obstetrics_init_bean")
 public class ObstetricsInit {
 
 	/** MID of the patient */
@@ -20,135 +18,78 @@ public class ObstetricsInit {
 	private LocalDate initDate;
 	/** Date of last menstrual period */
 	private LocalDate lastMenstrualPeriod;
-	/** Estimated due date */
-	private LocalDate estimatedDueDate;
-	/** Number of days pregnant */
-	private int daysPregnant;
-	/** String representing time pregnant */
-	private String timePregnant;
-	/** Boolean for if record is current */
-	private boolean current;
 	
 	public ObstetricsInit() {
-		this(false);
+		this.patientId = -1;
+		this.initDate = LocalDate.now();
 	}
-	
-	public ObstetricsInit(boolean current) {
-		if (current) {
-			this.setInitDate(LocalDate.now());
-			this.setLastMenstrualPeriod(LocalDate.now());
-		}
-	}
-
-	/**
-	 * Calculates and sets the estimated due date and days pregnant
-	 */
-	public void calculateData() {
-		// Estimated due date = LMP + 280 days
-		LocalDate edd = lastMenstrualPeriod.plus(280, ChronoUnit.DAYS);
-		this.setEstimatedDueDate(edd);
 		
-		// determine if past or current initialization
-		boolean dueDateIsFuture = estimatedDueDate.isAfter(LocalDate.now());
-		this.setCurrent(dueDateIsFuture);
-
-		// If in future:  days pregnant = days between LMP and now
-		// If in past:    days pregnant = days between LMP and EDD
-		LocalDateTime end = dueDateIsFuture ? LocalDate.now().atStartOfDay() : estimatedDueDate.atStartOfDay();
-		this.setDaysPregnant((int) ChronoUnit.DAYS.between(lastMenstrualPeriod.atStartOfDay(), end));
-				
-		// String representing days pregnant
-		StringBuilder sb = new StringBuilder();
-		int weeks = daysPregnant/7;
-		sb.append(weeks);
-		sb.append(weeks == 1 ? " week " : " weeks ");
-		int days = daysPregnant % 7;
-		sb.append(days);
-		sb.append(days == 1 ? " day" : " days");
-		this.timePregnant = sb.toString();
-	}
-	
-	/** GETTERS **/
-	
 	public long getPatientId() {
 		return patientId;
 	}
 
-	// might need to change in XHTML
 	public LocalDate getInitDate() {
 		return initDate;
 	}
 	
-	// return java.time.LocalDate as java.sql.Timestamp
-	public Timestamp getInitTimestamp() {
-		return Timestamp.valueOf(initDate.atStartOfDay());
-	}
-
 	public LocalDate getLastMenstrualPeriod() {
-		if (lastMenstrualPeriod != null) {
-			calculateData();
-		}
 		return lastMenstrualPeriod;
 	}
 	
-	// return java.time.LocalDate as java.sql.Timestamp
-	public Timestamp getLMPTimestamp() {
-		return Timestamp.valueOf(lastMenstrualPeriod.atStartOfDay());
-	}
-	
+	/**
+	 * Returns the estimated due date, which is 280 days past the last menstrual period
+	 */
 	public LocalDate getEstimatedDueDate() {
-		return estimatedDueDate;
+		if (lastMenstrualPeriod != null) {
+			return lastMenstrualPeriod.plus(280, ChronoUnit.DAYS);			
+		}
+		return null;
 	}
 
-	public int getDaysPregnant() {
-		return daysPregnant;
+	/**
+	 * Returns the number of days pregnant, which is the number of days between
+	 * the last menstrual period and initialization date. Note that this is misleading
+	 * on days following the initialization date, but also avoids cases further
+	 * in the future where it says something like "8000 days pregnant". 
+	 */
+	public long getDaysPregnant() {
+		if (lastMenstrualPeriod != null && initDate != null) {
+			return ChronoUnit.DAYS.between(lastMenstrualPeriod.atStartOfDay(), initDate.atStartOfDay());						
+		}
+		return -1;
 	}
-	
+
+	/**
+	 * Returns a String describing the time pregnant at the time of initialization
+	 */
 	public String getTimePregnant() {
-		return timePregnant;
+		long daysPregnant = getDaysPregnant();
+		
+		// parse weeks pregnant
+		StringBuilder sb = new StringBuilder();
+		long weeks = daysPregnant/7;
+		sb.append(weeks);
+		sb.append(weeks == 1 ? " week " : " weeks ");
+		
+		// add days pregnant
+		long days = daysPregnant % 7;
+		sb.append(days);
+		sb.append(days == 1 ? " day" : " days");
+		return sb.toString();
 	}
 
-	public boolean isCurrent() {
-		return current;
-	}
-	
 	/** SETTERS **/
 
 	public void setPatientId(long patientId) {
 		this.patientId = patientId;
 	}
 
-	// might need to change in XHTML
 	public void setInitDate(LocalDate initDate) {
 		this.initDate = initDate;
 	}
 	
-	public void setInitTimestamp(Timestamp initDate) {
-		this.setInitDate(initDate.toLocalDateTime().toLocalDate());
-	}
-	
 	public void setLastMenstrualPeriod(LocalDate lastMenstrualPeriod) {
 		this.lastMenstrualPeriod = lastMenstrualPeriod;
-		if (this.lastMenstrualPeriod != null) {
-			calculateData();
-		}
 	}
 
-	// set java.time.LocalDate from java.sql.Timestamp
-	public void setLMPTimestamp(Timestamp lmpDate) {
-		this.setLastMenstrualPeriod(lmpDate.toLocalDateTime().toLocalDate());
-	}
-
-	public void setCurrent(boolean current) {
-		this.current = current;
-	}
-	
-	private void setDaysPregnant(int daysPregnant) {
-		this.daysPregnant = daysPregnant;
-	}
-	
-	private void setEstimatedDueDate(LocalDate estimatedDueDate) {
-		this.estimatedDueDate = estimatedDueDate;
-	}
-	
 }

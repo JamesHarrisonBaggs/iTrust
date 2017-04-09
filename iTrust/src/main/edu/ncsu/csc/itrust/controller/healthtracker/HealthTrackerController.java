@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.print.attribute.standard.Severity;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
@@ -59,7 +60,7 @@ public class HealthTrackerController extends iTrustController {
 	 * @param bean - the data bean
 	 * @throws FormValidationException
 	 */
-	public void updateData(HealthTrackerBean bean) throws FormValidationException {
+	public void updateData(HealthTrackerBean bean) {
 		bean.setPatientId(getSessionUtils().getCurrentPatientMIDLong());
 		try {
 			int rows = sql.updateData(bean);
@@ -68,8 +69,8 @@ public class HealthTrackerController extends iTrustController {
 			} else {
 				logTransaction(TransactionType.ENTER_HEALTHTRACKER_DATA, "Rows modified: " + rows);
 			}
-		} catch (DBException | FormValidationException e) {
-			FacesContext.getCurrentInstance().addMessage("htform", new FacesMessage(e.getMessage()));
+		} catch (Exception e) {
+			printFacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage(), "htform");
 		}
 	}
 	
@@ -81,7 +82,7 @@ public class HealthTrackerController extends iTrustController {
 	 */
 	public void searchForData() throws DBException {
 		// search for current patient and date
-		dataList = this.getDataInDay(Timestamp.valueOf(searchDate.atStartOfDay()));
+		dataList = this.getDataInDay(searchDate);
 		// if no results, add empty bean
 		if (dataList.isEmpty()) {
 			dataList.add(new HealthTrackerBean());
@@ -105,12 +106,16 @@ public class HealthTrackerController extends iTrustController {
 	}
 	
 	/** BASE METHODS CORRESPONDING TO SQL CLASS */
-	public List<HealthTrackerBean> getDataInDay(Timestamp day) throws DBException {
-		return sql.getDataOnDay(getSessionUtils().getCurrentPatientMIDLong(), day);
+	public List<HealthTrackerBean> getDataInDay(LocalDate day) throws DBException {
+		Timestamp date = Timestamp.valueOf(day.atStartOfDay());
+		return sql.getDataOnDay(getSessionUtils().getCurrentPatientMIDLong(), date);
 	}
-	public List<HealthTrackerBean> getDataInRange(Timestamp start, Timestamp end) throws DBException {
-		return sql.getDataInRange(getSessionUtils().getCurrentPatientMIDLong(), start, end);
-	}	
+	
+	public List<HealthTrackerBean> getDataInRange(LocalDate start, LocalDate end) throws DBException {
+		long id = getSessionUtils().getCurrentPatientMIDLong();
+		return sql.getDataInRange(id, Timestamp.valueOf(start.atStartOfDay()), Timestamp.valueOf(end.atStartOfDay()));
+	}
+	
 	public List<HealthTrackerBean> getAllData() throws DBException {
 		return sql.getByID(getSessionUtils().getCurrentPatientMIDLong());
 	}

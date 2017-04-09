@@ -63,7 +63,7 @@ public class ObstetricsInitMySQL {
 	 */
 	public List<ObstetricsInit> getByID(long id) throws DBException {
 		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id="+id+" ORDER BY init_date DESC");
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_inits WHERE id="+id+" ORDER BY init_date DESC");
 				ResultSet results = stmt.executeQuery()) {
 			return loader.loadList(results);
 		} catch (SQLException e) {
@@ -76,7 +76,7 @@ public class ObstetricsInitMySQL {
 	 */
 	public List<ObstetricsInit> getByDate(long id, LocalDate date) throws DBException {
 		try (Connection conn = ds.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics WHERE id="+id+" AND init_date=?")) {
+				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM obstetrics_inits WHERE id="+id+" AND init_date=?")) {
 			stmt.setTimestamp(1, Timestamp.valueOf(date.atStartOfDay()));
 			ResultSet results = stmt.executeQuery();
 			return loader.loadList(results);

@@ -92,28 +92,26 @@ public class ObstetricsOfficeVisitStepDefs {
 	
 	@And("^I click on Obstetrics, and enter weight (.*), blood pressure (.*), FHR (.*), multiples (.*), LLP (.*), RHflag (.*), and click Save Obstetrics Visit$")
 	public void office_visit_info(String weight, String bp, String fhr, String num, String llp, String rh) {
-		//driver.findElement(By.linkText("Obstetrics")).click();
+		// driver.findElement(By.linkText("Obstetrics")).click();
 		driver.findElement(By.id("manage_obstetrics_formError:weight")).clear();
 		driver.findElement(By.id("manage_obstetrics_formError:weight")).sendKeys(weight);
 		driver.findElement(By.id("manage_obstetrics_formError:bloodPressure")).clear();
 		driver.findElement(By.id("manage_obstetrics_formError:bloodPressure")).sendKeys(bp);
 		driver.findElement(By.id("manage_obstetrics_formError:fetalHeartRate")).clear();
 		driver.findElement(By.id("manage_obstetrics_formError:fetalHeartRate")).sendKeys(fhr);
-		driver.findElement(By.id("manage_obstetrics_formError:multiples")).clear();
-		driver.findElement(By.id("manage_obstetrics_formError:multiples")).sendKeys(num);
+		Select multiples = new Select(driver.findElement(By.id("manage_obstetrics_formError:multiple_dd")));
+		multiples.selectByVisibleText(num);		
 		Select s_llp = new Select(driver.findElement(By.id("manage_obstetrics_formError:lowLyingPlacenta")));
-		s_llp.deselectAll();
 		s_llp.selectByVisibleText(llp);
 		Select s_rh = new Select(driver.findElement(By.id("manage_obstetrics_formError:rhFlag")));
-		s_rh.deselectAll();
 		s_rh.selectByVisibleText(llp);
 		driver.findElement(By.id("manage_obstetrics_formError:editObstetricVisit")).click();
 	}
 	
 	@And("^I click on Add Ultrasound, and enter id (.*), CRL (.*), BPD (.*), HC (.*), FL (.*), OFD (.*), AC (.*), HL (.*), EFW (.*), and click save Ultrasound$")
 	public void ultrasound_info(String id, String crl, String bpd, String hc, String fl, String ofd, String ac, String hl, String efw) {
-		//driver.findElement(By.linkText("Obstetrics")).click();
-		driver.findElement(By.id("j_idt155:addUltraSound")).click();
+//		driver.findElement(By.linkText("Obstetrics")).click();
+		driver.findElement(By.id("ultrasoundForm:addUltraSound")).click();
 		driver.findElement(By.id("ultrasound_formSuccess:fetusId")).clear();
 		driver.findElement(By.id("ultrasound_formSuccess:fetusId")).sendKeys(id);
 		driver.findElement(By.id("ultrasound_formSuccess:crl")).clear();
@@ -144,7 +142,7 @@ public class ObstetricsOfficeVisitStepDefs {
 	@And("^I click Go Back To Office Vist, and click Save Obsteterics Visit$")
 	public void save_visit() {
 		driver.findElement(By.id("ultrasound_formSuccess:goBack")).click();
-		//driver.findElement(By.linkText("Obstetrics")).click();
+//		driver.findElement(By.linkText("Obstetrics")).click();
 		driver.findElement(By.id("manage_obstetrics_formError:editObstetricVisit")).click();
 	}
 	
@@ -168,8 +166,7 @@ public class ObstetricsOfficeVisitStepDefs {
 		String time = driver.findElement(By.xpath("//*[@id=\"previousVisits\"]/tbody/tr[5]/td[3]")).getText();
 		assertEquals(date, time);
 		driver.findElement(By.xpath("//*[@id=\"previousVisits\"]/tbody/tr[5]/td[1]/a")).click();
-		//driver.findElement(By.linkText("Obstetrics")).click();
-		
+//		driver.findElement(By.linkText("Obstetrics")).click();
 	}
 	
 	@When("^I edit weight (.*), and click save Obstetrics Visit$")

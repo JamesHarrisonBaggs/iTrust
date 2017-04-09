@@ -34,8 +34,8 @@ import javax.sql.DataSource;
 @ManagedBean(name = "obs_visit_controller")
 public class ObstetricsVisitController extends iTrustController {
 
-	ObstetricsVisitMySQL sql;
-	ObstetricsVisit ob;
+	private ObstetricsVisitMySQL sql;
+	private ObstetricsVisit ob;
 	private long visitId;
 	private long patientId;
 	private LocalDateTime visitDate;
@@ -46,12 +46,13 @@ public class ObstetricsVisitController extends iTrustController {
 	private int amount;
 	private boolean lowLyingPlacenta;
 	private boolean rhFlag;
+	
 	private ObstetricsInitController obc;
+	private OfficeVisitController ovc;
 	
 	private ApptDAO aDAO;
 	private ApptRequestDAO arDAO;
 	private ApptTypeDAO atDAO;
-	private ApptAction aa;
 
 	private boolean eligible;
 	private boolean obgyn;
@@ -65,10 +66,14 @@ public class ObstetricsVisitController extends iTrustController {
 
 	public ObstetricsVisitController() throws DBException {
 		super();
+		
 		obc = new ObstetricsInitController();
 		sql = new ObstetricsVisitMySQL();
+		ovc = new OfficeVisitController();
 		sessionUtils = getSessionUtils();
-		ob = getObstetricsVisit();
+		
+		setUpController();
+		
 		if (getOfficeVisit().getVisitID() != 0) {
 			ob.setVisitId(getOfficeVisit().getVisitID());
 			ob.setVisitDate(getOfficeVisit().getDate());
@@ -92,10 +97,12 @@ public class ObstetricsVisitController extends iTrustController {
 		amount = ob.getAmount();
 		lowLyingPlacenta = ob.isLowLyingPlacenta();
 		rhFlag = ob.isRhFlag();
+		
 		setObgyn();
 		setObstetricsList();
 		setEligible();
 		setNotice();
+
 		String run = sessionUtils.getRequestParameter("run");
 		if (run != null) {
 			if(Boolean.parseBoolean(sessionUtils.getRequestParameter("run"))) {
@@ -109,34 +116,54 @@ public class ObstetricsVisitController extends iTrustController {
 		}
 	}
 
-	public ObstetricsVisitController(DataSource ds) throws DBException {
+	public ObstetricsVisitController(DataSource ds, SessionUtils utils) throws DBException {
 		super();
+		sessionUtils = utils;
+		obc = new ObstetricsInitController(ds);
+		obc.setSessionUtils(utils);
 		sql = new ObstetricsVisitMySQL(ds);
+		ovc = new OfficeVisitController(ds);
+		ovc.setSessionUtils(utils);		
+		setUpController();
+	}
+	
+	private void setUpController() throws DBException {
+		ObstetricsVisit ov = getObstetricsVisit();
+		ob = ov == null ? ov : new ObstetricsVisit();
 	}
 	
 	/**
 	 * Creates or updates an ObstetricsVisit
 	 */
-	public void update(ObstetricsVisit bean) throws DBException {
+	public void update(ObstetricsVisit bean) {
 		try {
 			int result = sql.update(bean);
-			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formSuccess", new FacesMessage("Obstetrics Visit Updated Successfully"));
-			
-			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_OFFICE_VISIT : TransactionType.EDIT_OBSTETRIC_OFFICE_VISIT, String.valueOf(visitId));
-		} catch (FormValidationException e) {
-			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formError", new FacesMessage(e.getMessage()));
+			printFacesMessage(FacesMessage.SEVERITY_INFO, "Obstetrics Visit updated", 
+					"Obstetrics Visit updated", "manage_obstetrics_formSuccess");
+			logTransaction(result != 2 ? TransactionType.CREATE_OBSTETRIC_OFFICE_VISIT : 
+				TransactionType.EDIT_OBSTETRIC_OFFICE_VISIT, String.valueOf(visitId));
+		} catch (Exception e) { //FormValidation, DB, etc.
+			printFacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(),
+					e.getMessage(), "manage_obstetrics_formError");			
 		}
 	}
 
-	public OfficeVisit getOfficeVisit() throws DBException {
+	public OfficeVisit getOfficeVisit() {
 		long id = sessionUtils.getCurrentOfficeVisitId();
-		return new OfficeVisitController().getVisitByID(id);
+		return ovc.getVisitByID(id);
 	}
 	
-	public ObstetricsVisit getObstetricsVisit() throws DBException {
+	public ObstetricsVisit getObstetricsVisit() {
 		long id = sessionUtils.getCurrentOfficeVisitId();
 		logTransaction(TransactionType.VIEW_OBSTETRIC_OFFICE_VISIT, String.valueOf(visitId));
-		return sql.getByVisit(id);
+		ObstetricsVisit ov = null;
+		try {
+			ov = sql.getByVisit(id);
+		} catch (Exception e) {
+			printFacesMessage(FacesMessage.SEVERITY_INFO, e.getMessage(),
+					e.getMessage(), "manage_obstetrics_formError");			
+		}
+		return ov;
 	}
 
 	public void submit() throws DBException {
@@ -157,73 +184,73 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 	
 	public boolean autoScheduleAppt() throws DBException, SQLException {
-		factory = DAOFactory.getProductionInstance();
-		aDAO = new ApptDAO(factory);
-		arDAO = new ApptRequestDAO(factory);
-		atDAO = new ApptTypeDAO(factory);
-		LocalDateTime visitDate2 = visitDate;
-		long pid = sessionUtils.getCurrentPatientMIDLong();
-		long mid = sessionUtils.getSessionLoggedInMIDLong();
-		ApptBean appt = new ApptBean();
-		ApptTypeBean apptType = atDAO.getApptType("OB/GYN");
-		appt.setApptType(apptType.getName());
-		appt.setPrice(apptType.getPrice());
-		appt.setHcp(mid);
-		appt.setPatient(pid);
-		if(visitDate2.getHour() > 16 || visitDate2.getHour() < 9) {
-			visitDate2 = visitDate2.withHour(12);
-		}
-		if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
-			visitDate2 = visitDate2.plusDays(2);
-		}
-		if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
-			visitDate2 = visitDate2.plusDays(1);
-		}
-		if (weeksPregnant >= 0 && weeksPregnant <= 13) {
-			long months = 1;
-			visitDate2 = visitDate2.plusMonths(months);
-			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-			appt.setDate(timestamp);
-		} else if (weeksPregnant >= 14 && weeksPregnant <= 28) {
-			long weeks = 2;
-			visitDate2 = visitDate2.plusWeeks(weeks);
-			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-			appt.setDate(timestamp);
-		} else if (weeksPregnant >= 29 && weeksPregnant <= 40) {
-			long weeks = 1;
-			visitDate2 = visitDate2.plusWeeks(weeks);
-			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-			appt.setDate(timestamp);
-		} else if (weeksPregnant >= 40 && weeksPregnant <= 42) {
-			long days = 2;
-			visitDate2 = visitDate2.plusDays(days);
-			if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
-				visitDate2 = visitDate2.plusDays(2);
-			}
-			if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
-				visitDate2 = visitDate2.plusDays(1);
-			}
-			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-			appt.setDate(timestamp);
-		} 
-		List<ApptBean> conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
-		List<ApptBean> conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
-		if (conflictsHCP.isEmpty() && conflictsPatient.isEmpty()) {
-			aDAO.scheduleAppt(appt);	
-		} else {
-			while(!conflictsHCP.isEmpty() || !conflictsPatient.isEmpty()) {
-				long days = 2;
-				visitDate2 = visitDate2.plusDays(days);
-				Timestamp timestamp = Timestamp.valueOf(visitDate2);
-				appt.setDate(timestamp);
-				conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
-				conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
-			}
-			aDAO.scheduleAppt(appt);
-			
-		}
-		List<ApptBean> appzs = aDAO.getAllApptsFor(mid);
-		logTransaction(TransactionType.SCHEDULE_OFFICE_VISIT, String.valueOf(this.visitId)+ ", " + String.valueOf(appzs.get(appzs.size()-1).getApptID()));
+//		factory = DAOFactory.getProductionInstance();
+//		aDAO = new ApptDAO(factory);
+//		arDAO = new ApptRequestDAO(factory);
+//		atDAO = new ApptTypeDAO(factory);
+//		LocalDateTime visitDate2 = visitDate;
+//		long pid = sessionUtils.getCurrentPatientMIDLong();
+//		long mid = sessionUtils.getSessionLoggedInMIDLong();
+//		ApptBean appt = new ApptBean();
+//		ApptTypeBean apptType = atDAO.getApptType("OB/GYN");
+//		appt.setApptType(apptType.getName());
+//		appt.setPrice(apptType.getPrice());
+//		appt.setHcp(mid);
+//		appt.setPatient(pid);
+//		if(visitDate2.getHour() > 16 || visitDate2.getHour() < 9) {
+//			visitDate2 = visitDate2.withHour(12);
+//		}
+//		if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
+//			visitDate2 = visitDate2.plusDays(2);
+//		}
+//		if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
+//			visitDate2 = visitDate2.plusDays(1);
+//		}
+//		if (weeksPregnant >= 0 && weeksPregnant <= 13) {
+//			long months = 1;
+//			visitDate2 = visitDate2.plusMonths(months);
+//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+//			appt.setDate(timestamp);
+//		} else if (weeksPregnant >= 14 && weeksPregnant <= 28) {
+//			long weeks = 2;
+//			visitDate2 = visitDate2.plusWeeks(weeks);
+//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+//			appt.setDate(timestamp);
+//		} else if (weeksPregnant >= 29 && weeksPregnant <= 40) {
+//			long weeks = 1;
+//			visitDate2 = visitDate2.plusWeeks(weeks);
+//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+//			appt.setDate(timestamp);
+//		} else if (weeksPregnant >= 40 && weeksPregnant <= 42) {
+//			long days = 2;
+//			visitDate2 = visitDate2.plusDays(days);
+//			if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
+//				visitDate2 = visitDate2.plusDays(2);
+//			}
+//			if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
+//				visitDate2 = visitDate2.plusDays(1);
+//			}
+//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+//			appt.setDate(timestamp);
+//		} 
+//		List<ApptBean> conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
+//		List<ApptBean> conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
+//		if (conflictsHCP.isEmpty() && conflictsPatient.isEmpty()) {
+//			aDAO.scheduleAppt(appt);	
+//		} else {
+//			while(!conflictsHCP.isEmpty() || !conflictsPatient.isEmpty()) {
+//				long days = 2;
+//				visitDate2 = visitDate2.plusDays(days);
+//				Timestamp timestamp = Timestamp.valueOf(visitDate2);
+//				appt.setDate(timestamp);
+//				conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
+//				conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
+//			}
+//			aDAO.scheduleAppt(appt);
+//			
+//		}
+//		List<ApptBean> appzs = aDAO.getAllApptsFor(mid);
+//		logTransaction(TransactionType.SCHEDULE_OFFICE_VISIT, String.valueOf(this.visitId)+ ", " + String.valueOf(appzs.get(appzs.size()-1).getApptID()));
 		return true;
 	}
 
@@ -355,6 +382,14 @@ public class ObstetricsVisitController extends iTrustController {
 
 	public void setAutoSchedule(boolean autoSchedule) {
 		this.autoSchedule = autoSchedule;
+	}
+
+	public ObstetricsVisitMySQL getSql() {
+		return sql;
+	}
+
+	public void setSql(ObstetricsVisitMySQL sql) {
+		this.sql = sql;
 	}
 
 }

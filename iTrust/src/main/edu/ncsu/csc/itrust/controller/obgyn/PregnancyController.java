@@ -12,37 +12,41 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "pregnancy_controller")
 public class PregnancyController extends iTrustController {
 	
 	private PregnancyMySQL sql;
+	private long patientId;
+	private SessionUtils utils;
 	
 	public PregnancyController() throws DBException {
 		super();
-		sql = new PregnancyMySQL();
+		this.utils = this.getSessionUtils();
+		this.sql = new PregnancyMySQL();
+		this.patientId = utils.getCurrentPatientMIDLong().longValue();
 	}
 	
-	public PregnancyController(DataSource ds) {
+	public PregnancyController(DataSource ds, SessionUtils utils) {
 		super();
-		sql = new PregnancyMySQL(ds);
+		this.utils = utils;
+		this.sql = new PregnancyMySQL(ds);
+		this.patientId = utils.getCurrentPatientMIDLong().longValue();
 	}
 	
 	public List<Pregnancy> getPregnancies() throws DBException {
 		logTransaction(TransactionType.VIEW_PREGNANCY, "");
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return sql.getByID(id);
+		return sql.getByID(patientId);
 	}
 	
 	public List<Pregnancy> getPregnancyByDate(LocalDate date) throws DBException {
 		logTransaction(TransactionType.VIEW_PREGNANCY, "");
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		return sql.getByDate(id, date);
+		return sql.getByDate(patientId, date);
 	}
 	
 	public void update(Pregnancy bean) {
-		long id = getSessionUtils().getCurrentPatientMIDLong();
-		bean.setPatientId(id);
+		bean.setPatientId(patientId);
 		try {
 			int result = sql.update(bean);
 			logTransaction(result != 2 ? TransactionType.CREATE_PREGNANCY : TransactionType.UPDATE_PREGNANCY, "");
@@ -53,6 +57,14 @@ public class PregnancyController extends iTrustController {
 		} catch (Exception e) {
 			printFacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to modify Pregnancy", e.getMessage(), "pregnancyForm");
 		}
+	}
+
+	public PregnancyMySQL getSql() {
+		return sql;
+	}
+
+	public void setSql(PregnancyMySQL sql) {
+		this.sql = sql;
 	}
 	
 }

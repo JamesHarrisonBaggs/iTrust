@@ -56,31 +56,31 @@ Scenario Outline: Enter Non-Numerical Health Tracker Data
 	# STILL NEED TO TEST: Entering nothing into a field
 	# (htform:calories: Validation Error: Value is required.)
 
-Scenario Outline: Upload and View Health Tracker Data
-	Given I have logged in as the HCP with MID <hcp> and password <pwd>
-	And I select Patient Information, then Health Tracker Data
-	And I input patient first name <name> and MID <mid> and select the patient
-	And select Upload to navigate to the Upload page
-	When I click the button to upload the file <filename>
-	And select View to navigate to the View page
-	And enter the date to view <date>
-	Then I can view the data: <cals>, <steps>, <dist>, <fs>, <mins>, <minl>, <minf>, <minv>, and <acal>
-	
-	Examples:
-	| hcp 			| pwd	| name	| mid	| filename														| date			| cals 	| steps | dist | fs | mins 	| minl	| minf 	| minv 	| acal 	|
-	| 9000000000	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	| 10/1/2016		| 2455	| 11017 | 4.89 | 15	| 970	| 463	| 2		| 5		| 1448	|
-	| 9000000000 	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	| 10/2/2016		| 2603	| 13537 | 6.01 | 15 | 967	| 406	| 39	| 28	| 1596	|
-	| 9000000000 	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	| 10/31/2016	| 2212	| 7137  | 3.17 | 16 | 1143	| 285	| 5		| 7		| 1015	|
+#Scenario Outline: Upload and View Health Tracker Data
+#	Given I have logged in as the HCP with MID <hcp> and password <pwd>
+#	And I select Patient Information, then Health Tracker Data
+#	And I input patient first name <name> and MID <mid> and select the patient
+#	And select Upload to navigate to the Upload page
+#	When I click the button to upload the file <filename>
+#	And select View to navigate to the View page
+#	And enter the date to view <date>
+#	Then I can view the data: <cals>, <steps>, <dist>, <fs>, <mins>, <minl>, <minf>, <minv>, and <acal>
+#	
+#	Examples:
+#	| hcp 			| pwd	| name	| mid	| filename														| date			| cals 	| steps | dist | fs | mins 	| minl	| minf 	| minv 	| acal 	|
+#	| 9000000000	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	| 10/1/2016		| 2455	| 11017 | 4.89 | 15	| 970	| 463	| 2		| 5		| 1448	|
+#	| 9000000000 	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	| 10/2/2016		| 2603	| 13537 | 6.01 | 15 | 967	| 406	| 39	| 28	| 1596	|
+#	| 9000000000 	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	| 10/31/2016	| 2212	| 7137  | 3.17 | 16 | 1143	| 285	| 5		| 7		| 1015	|
 
-Scenario Outline: View Health Tracker Summary Data
-	Given I have logged in as the HCP with MID <hcp> and password <pwd>
-	And I select Patient Information, then Health Tracker Data
-	And I input patient first name <name> and MID <mid> and select the patient
-	And select Upload to navigate to the Upload page
-	When I click the button to upload the file <filename>
-	And select Summary to navigate to the Summary page
-	Then I can see a summary of the data
-	
-	Examples:
-	| hcp 			| pwd	| name	| mid	| filename													|
-	| 9000000000	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	|
+#Scenario Outline: View Health Tracker Summary Data
+#	Given I have logged in as the HCP with MID <hcp> and password <pwd>
+#	And I select Patient Information, then Health Tracker Data
+#	And I input patient first name <name> and MID <mid> and select the patient
+#	And select Upload to navigate to the Upload page
+#	When I click the button to upload the file <filename>
+#	And select Summary to navigate to the Summary page
+#	Then I can see a summary of the data
+#	
+#	Examples:
+#	| hcp 			| pwd	| name	| mid	| filename													|
+#	| 9000000000	| pw	| Andy	| 2		| /testing-files/sample_healthtracker/fitbit-test-data.csv	|

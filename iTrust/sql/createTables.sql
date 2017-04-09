@@ -94,6 +94,7 @@ CREATE TABLE patients(
 	PRIMARY KEY (MID)
 ) ENGINE=MyISAM;
 
+/*NOTE: This table does not appear to be used in iTrust */
 CREATE TABLE flags(
 	FID BIGINT unsigned auto_increment,
 	MID BIGINT unsigned NOT NULL default '0',
@@ -234,7 +235,7 @@ CREATE TABLE billing( /* UC60 */
 	FOREIGN KEY  (HCPID) REFERENCES personnel (MID)
 ) ENGINE=MyISAM;
 
-
+/*NOTE: This table does not appear to be used in iTrust */
 CREATE TABLE personalallergies(
 	PatientID BIGINT unsigned NOT NULL COMMENT 'MID of the Patient',
 	Allergy VARCHAR( 50 ) NOT NULL COMMENT 'Description of the allergy'
@@ -539,11 +540,10 @@ CREATE TABLE childbirth_visits(
 	FOREIGN KEY(visitID) 			REFERENCES officeVisit(visitID)
 ) ENGINE=MyISAM;
 
-CREATE TABLE obstetrics(
+CREATE TABLE obstetrics_inits(
 	id				BIGINT(20)		UNSIGNED DEFAULT 0,
 	init_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	lmp_date		TIMESTAMP		NOT NULL DEFAULT '1970-01-01 00:00:01',
-	current			BOOLEAN			NOT NULL DEFAULT FALSE,
 	PRIMARY KEY(id, init_date)
 ) ENGINE=MyISAM;
 
@@ -565,7 +565,7 @@ CREATE TABLE obstetrics_visits(
 CREATE TABLE pregnancies(
 	id				BIGINT(20)		UNSIGNED DEFAULT 0,
 	birth_date		TIMESTAMP		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	conception_year	INTEGER(15)		UNSIGNED DEFAULT 0,
+	conception_year	INTEGER(15)		DEFAULT 0,
 	days_pregnant	INTEGER(15)		UNSIGNED DEFAULT 0,
 	hours_labor		INTEGER(15)		UNSIGNED DEFAULT 0,
 	weight_gain		FLOAT(19)		DEFAULT 0,
