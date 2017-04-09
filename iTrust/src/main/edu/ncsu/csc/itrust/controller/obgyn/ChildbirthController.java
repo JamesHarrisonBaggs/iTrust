@@ -82,7 +82,7 @@ public class ChildbirthController extends iTrustController {
 		cbvs = new ChildbirthVisitMySQL(ds);
 		ovc = new OfficeVisitController(ds);
 		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
-		pid = Integer.parseInt(sessionUtils.getCurrentPatientMID());
+		pid = sessionUtils.getCurrentPatientMIDLong();
 		setValues();
 	}
 	
@@ -205,9 +205,7 @@ public class ChildbirthController extends iTrustController {
 			FacesContext.getCurrentInstance().addMessage("manage_obstetrics_formBabyError", new FacesMessage(e.getMessage()));
 		}
 	}
-	public ChildbirthController(SessionUtils sessionUtils, TransactionLogger logger) {
-		super(sessionUtils, logger);
-	}
+
 	public List<Childbirth> getChildbirthVisitID() throws DBException {
 		return cbs.getByVisitID(visitId);
 	}
