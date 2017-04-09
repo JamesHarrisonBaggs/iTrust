@@ -2,7 +2,6 @@ package edu.ncsu.csc.itrust.controller.healthtracker;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
+import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 /**
  * Bean providing the data for the Google Chart
@@ -36,6 +37,13 @@ public class HealthTrackerChartData implements Serializable {
 
 	public HealthTrackerChartData() throws DBException {
 		htcontrol = new HealthTrackerController();
+		this.dataList = htcontrol.getAllData();
+		refreshChartData();
+	}
+	
+	public HealthTrackerChartData(DataSource ds, SessionUtils utils) throws DBException {
+		htcontrol = new HealthTrackerController(ds);
+		htcontrol.setSessionUtils(utils);
 		this.dataList = htcontrol.getAllData();
 		refreshChartData();
 	}
@@ -70,7 +78,7 @@ public class HealthTrackerChartData implements Serializable {
 	 */
 	public void updateChartRange() throws DBException, IOException {
 		// get data in range
-		dataList = htcontrol.getDataInRange(Timestamp.valueOf(startDate.atStartOfDay()), Timestamp.valueOf(endDate.atStartOfDay()));
+		dataList = htcontrol.getDataInRange(startDate, endDate);
 		// refresh chart data
 		refreshChartData();
 		// reload page

@@ -23,15 +23,16 @@ public class PregnancyController extends iTrustController {
 	
 	public PregnancyController() throws DBException {
 		super();
-		utils = this.getSessionUtils();
-		patientId = utils.getCurrentPatientMIDLong().longValue();
-		sql = new PregnancyMySQL();
+		this.utils = this.getSessionUtils();
+		this.sql = new PregnancyMySQL();
+		this.patientId = utils.getCurrentPatientMIDLong().longValue();
 	}
 	
-	public PregnancyController(DataSource ds) {
+	public PregnancyController(DataSource ds, SessionUtils utils) {
 		super();
-		// need to set id to test
-		sql = new PregnancyMySQL(ds);
+		this.utils = utils;
+		this.sql = new PregnancyMySQL(ds);
+		this.patientId = utils.getCurrentPatientMIDLong().longValue();
 	}
 	
 	public List<Pregnancy> getPregnancies() throws DBException {
@@ -56,6 +57,14 @@ public class PregnancyController extends iTrustController {
 		} catch (Exception e) {
 			printFacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to modify Pregnancy", e.getMessage(), "pregnancyForm");
 		}
+	}
+
+	public PregnancyMySQL getSql() {
+		return sql;
+	}
+
+	public void setSql(PregnancyMySQL sql) {
+		this.sql = sql;
 	}
 	
 }
