@@ -126,7 +126,7 @@ public class GroupReportActionTest extends TestCase {
 			String res = action.getComprehensiveMedicalInfo(b, filterType);
 			switch (filterType) {
 			case ALLERGY:
-				assertEquals("\n664662530\n", res);
+				assertEquals("891671548\n664662530\n", res);
 				break;
 			default:
 				break;

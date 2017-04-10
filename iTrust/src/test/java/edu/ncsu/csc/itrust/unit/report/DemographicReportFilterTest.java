@@ -245,7 +245,7 @@ public class DemographicReportFilterTest extends TestCase {
 	public void testFilterByGender() throws Exception {
 		filter = new DemographicReportFilter(DemographicReportFilterType.GENDER, "Female", factory);
 		List<PatientBean> res = filter.filter(allPatients);
-		assertEquals(21, res.size());
+		assertEquals(22, res.size());
 		Set<Long> retVals = new HashSet<Long>();
 		for (int i =0; i<res.size(); i++){
 			retVals.add(res.get(i).getMID());
