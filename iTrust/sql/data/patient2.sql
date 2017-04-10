@@ -68,11 +68,14 @@ INSERT INTO users(MID, password, role, sQuestion, sAnswer)
 
 DELETE FROM allergies WHERE PatientID = 2;
 INSERT INTO allergies(PatientID,Code,Description, FirstFound) 
-	VALUES (2, '', 'Pollen', '2007-06-05 20:33:58'),
+	VALUES (2, '891671548', 'Pollen', '2007-06-05 20:33:58'),
 	       (2, '664662530', 'Penicillin', '2007-06-04 20:33:58');
 	       
 INSERT INTO ndcodes(Code, Description) VALUES
-('664662530','Penicillin')
+('664662530','Penicillin'),
+('664662531', 'Sulfa Drugs'),
+('664662532', 'Codeine'),
+('664662533', 'NSAIDs')
 ON DUPLICATE KEY UPDATE Code = Code;
 
 INSERT INTO declaredhcp(PatientID,HCPID) VALUE(2, 9000000003)

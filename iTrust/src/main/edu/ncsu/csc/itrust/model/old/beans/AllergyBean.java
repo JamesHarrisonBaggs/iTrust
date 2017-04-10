@@ -3,6 +3,8 @@ package edu.ncsu.csc.itrust.model.old.beans;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.faces.bean.ManagedBean;
+
 /**
  * A bean for storing data about Allergies.
  * 
@@ -12,6 +14,7 @@ import java.util.Date;
  * Setters (Eclipse Hint: Use Source > Generate Getters and Setters.to create
  * these easily)
  */
+@ManagedBean(name = "allergies_bean")
 public class AllergyBean {
 	private long id;
 	private long patientID;

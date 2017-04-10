@@ -35,7 +35,7 @@
 					value="#{name} is ineligible for obstetric care" width="50%"></h:outputText>
 			</div>
 			<br />
-			<h:panelGrid class="fTable" width="75%" columns="1">
+			<h:panelGrid class="fTable" width="75%" columns="1" rendered=>
 
 				<!-- Information for each past pregnancy -->
 				<h:panelGroup>
@@ -134,7 +134,7 @@
 							<f:facet name="header">
 								<h:outputText value="Pregnancy Multiples" />
 							</f:facet>
-							<h:outputText value="#{visits.amount}"/>
+							<h:outputText value="#{visits.amount}" />
 						</h:column>
 						<h:column>
 							<f:facet name="header">
@@ -172,9 +172,21 @@
 
 				<!-- List of the mother's common drug allergies -->
 				<h:panelGroup>
-					<h:outputLabel for="allergies"
+					<h:outputLabel for="allergies_table"
 						style="font-size:20px; font-weight:bold" align="left"> Mother's common drug allergies
 						</h:outputLabel>
+					<h:dataTable id="allergies_table" class="fTable" width="75%"
+						value="#{report_controller.getAllergies()}" var="allergies"
+						border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Allergy Description" />
+							</f:facet>
+							<h:outputText value="#{allergies.description}" />
+						</h:column>
+						
+
+					</h:dataTable>
 
 				</h:panelGroup>
 
