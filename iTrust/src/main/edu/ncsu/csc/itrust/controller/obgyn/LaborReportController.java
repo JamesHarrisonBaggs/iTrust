@@ -1,6 +1,7 @@
 package edu.ncsu.csc.itrust.controller.obgyn;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,10 @@ public class LaborReportController extends iTrustController {
 	}
 	public List<AllergyBean> getAllergies() throws DBException {
 		return allergyDB.getAllergies(patientID);
+	}
+	public LocalDate getMostRecentEDD() throws DBException{
+		ObstetricsInit recent = getCurrentInit();
+		return recent.getEstimatedDueDate();
 	}
 	
 	/**
