@@ -28,14 +28,14 @@
 				<c:set var="name"
 					value="#{user.getUserNameForID(session.getAttribute(&#34;pid&#34;))}" />
 				<h:outputText style="color: green"
-					rendered="#{obgyn_controller.eligible}"
+					rendered="#{report_controller.reportAvailable()}"
 					value="#{name} is eligible for obstetric care" width="50%"></h:outputText>
 				<h:outputText style="color: red"
-					rendered="#{!obgyn_controller.eligible}"
-					value="#{name} is ineligible for obstetric care" width="50%"></h:outputText>
+					rendered="#{!report_controller.reportAvailable()}"
+					value="#{name} is ineligible for obstetric care or does not have an obstetrics initialization" width="50%"></h:outputText>
 			</div>
 			<br />
-			<h:panelGrid class="fTable" width="75%" columns="1" rendered='true'>
+			<h:panelGrid class="fTable" width="75%" columns="1" rendered="#{report_controller.reportAvailable()}">
 
 				<!-- Information for each past pregnancy -->
 				<h:panelGroup>
@@ -44,7 +44,7 @@
 						</h:outputLabel>
 					<h:dataTable id="preg_table" class="fTable" width="75%"
 						value="#{report_controller.getPregnancies()}" var="preg"
-						border="1">
+						rendered="#{!report_controller.getPregnancies().isEmpty()}" border="1">
 						<h:column>
 							<f:facet name="header">
 								<h:outputText value="Date of Birth" />
@@ -72,6 +72,7 @@
 							<h:outputText value="#{preg.yearOfConception}" />
 						</h:column>
 					</h:dataTable>
+					<h:outputText rendered="#{report_controller.getPregnancies().isEmpty()}" value=" - No Prior Pregnancies"/>
 				</h:panelGroup>
 
 
@@ -104,7 +105,7 @@
 					<h:outputLabel for="ovInfo_table"
 						style="font-size:20px; font-weight:bold" align="left"> Obstetrics Office Visit Information
 						</h:outputLabel>
-					<h:dataTable id="ovInfo_table" class="fTable" width="75%"
+					<h:dataTable id="ovInfo_table" class="fTable" width="75%" rendered="#{!report_controller.getObVisits().isEmpty()}"
 						value="#{report_controller.getObVisits()}" var="visits" border="1">
 						<h:column>
 							<f:facet name="header">
@@ -155,8 +156,8 @@
 							<h:outputText
 								value="#{report_controller.getComplication(visits) ? 'Yes, see complication warning list below' : 'No'} " />
 						</h:column>
-
 					</h:dataTable>
+					<h:outputText value=" - No Obstetrics Office Visits" rendered="#{report_controller.getObVisits().isEmpty()}" />
 
 				</h:panelGroup>
 
@@ -165,7 +166,7 @@
 					<h:outputLabel for="pregFlags"
 						style="font-size:20px; font-weight:bold" align="left"> Pregnancy Complication Warning Flags
 						</h:outputLabel>
-					<h:dataTable id="pregFlags_table" class="fTable" width="75%"
+					<h:dataTable id="pregFlags_table" class="fTable" width="75%" rendered="#{!report_controller.getAllPregnancyWarningFlags().isEmpty()}"
 						value="#{report_controller.getAllPregnancyWarningFlags()}"
 						var="flags" border="1">
 						<h:column>
@@ -175,6 +176,7 @@
 							<h:outputText value="#{flags}"/>
 						</h:column>
 					</h:dataTable>
+					<h:outputText value=" - No Pregnancy Warnings" rendered="#{report_controller.getAllPregnancyWarningFlags().isEmpty()}" />
 
 
 				</h:panelGroup>
@@ -186,7 +188,7 @@
 						</h:outputLabel>
 					<h:dataTable id="preConditions_table" class="fTable" width="75%"
 						value="#{report_controller.getRelevantConditions()}"
-						var="conditions" border="1">
+						rendered="#{!report_controller.getRelevantConditions().isEmpty()}" var="conditions" border="1">
 						<h:column>
 							<f:facet name="header">
 								<h:outputText value="Conditions" />
@@ -200,6 +202,7 @@
 							<h:outputText value="#{conditions.isChronic ? 'Yes' : 'No'}" />
 						</h:column>
 					</h:dataTable>
+					<h:outputText value=" - No Relevant Pre-existing Conditions" rendered="#{report_controller.getRelevantConditions().isEmpty()}" />
 				</h:panelGroup>
 
 				<!-- List of the mother's common drug allergies -->
@@ -208,7 +211,7 @@
 						style="font-size:20px; font-weight:bold" align="left"> Mother's common drug allergies
 						</h:outputLabel>
 					<h:dataTable id="allergies_table" class="fTable" width="75%"
-						value="#{report_controller.getAllergies()}" var="allergies"
+						rendered="#{!report_controller.getAllergies().isEmpty()}" value="#{report_controller.getAllergies()}" var="allergies"
 						border="1">
 						<h:column>
 							<f:facet name="header">
@@ -216,9 +219,8 @@
 							</f:facet>
 							<h:outputText value="#{allergies.description}" />
 						</h:column>
-
-
 					</h:dataTable>
+					<h:outputText value=" - No Relevant Allergies" rendered="#{report_controller.getAllergies().isEmpty()}" />
 
 				</h:panelGroup>
 

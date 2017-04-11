@@ -110,14 +110,20 @@ public class LaborReportController extends iTrustController {
 	public List<ObstetricsInit> getObInits() throws DBException {
 		return initsDB.getByID(patientID);
 	}
-	public ObstetricsInit getCurrentInit() throws DBException {
-		ObstetricsInit init = null;
-		try{
-			init = initsDB.getByID(patientID).get(0);;
-		} catch (Exception e) {
-			//TODO Faces message?
+	
+	public boolean reportAvailable() throws DBException{
+		
+		boolean isAvailable = true;
+		PatientBean patient = patientDB.getPatient(patientID);
+		if(!patient.isObgynEligible()){
+			isAvailable = false;
+		} else if (initsDB.getByID(patientID).isEmpty()){
+			isAvailable = false;
 		}
-		return init;
+		return isAvailable;
+	}
+	public ObstetricsInit getCurrentInit() throws DBException {
+		return initsDB.getByID(patientID).get(0);
 	}
 	public List<ObstetricsVisit> getObVisits() throws DBException {
 		return obVisitsDB.getByID(patientID);
