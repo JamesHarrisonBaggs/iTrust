@@ -140,13 +140,14 @@
 							<f:facet name="header">
 								<h:outputText value="Low Lying Placenta" />
 							</f:facet>
-							<h:outputText value="#{visits.lowLyingPlacenta}" />
+							<h:outputText value="#{visits.lowLyingPlacenta ? 'Yes' : 'No'}" />
 						</h:column>
 						<h:column>
 							<f:facet name="header">
 								<h:outputText value="Complications" />
 							</f:facet>
-							<h:outputText value="Listed Below" />
+							<h:outputText
+								value="#{report_controller.getComplication(visits) ? 'Yes, see complication warnings below' : 'No'} " />
 						</h:column>
 
 					</h:dataTable>
@@ -156,7 +157,7 @@
 				<!-- Pregnancy Complication warning flags -->
 				<h:panelGroup>
 					<h:outputLabel for="pregFlags"
-						style="font-size:20px; font-weight:bold" align="left"> Pregnancy Complication warning flags
+						style="font-size:20px; font-weight:bold" align="left"> Pregnancy Complication Warnings
 						</h:outputLabel>
 
 
@@ -164,10 +165,25 @@
 
 				<!-- List of relevant pre-existing conditions -->
 				<h:panelGroup>
-					<h:outputLabel for="preConditions"
+					<h:outputLabel for="preConditions_table"
 						style="font-size:20px; font-weight:bold" align="left"> Mother's pre-existing conditions
 						</h:outputLabel>
-
+					<h:dataTable id="preConditions_table" class="fTable" width="75%"
+						value="#{report_controller.getRelevantConditions()}"
+						var="conditions" border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Conditions" />
+							</f:facet>
+							<h:outputText value="#{conditions.name}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Is Chronic?" />
+							</f:facet>
+							<h:outputText value="#{conditions.isChronic ? 'Yes' : 'No'}"/>
+						</h:column>
+					</h:dataTable>
 				</h:panelGroup>
 
 				<!-- List of the mother's common drug allergies -->
@@ -184,7 +200,7 @@
 							</f:facet>
 							<h:outputText value="#{allergies.description}" />
 						</h:column>
-						
+
 
 					</h:dataTable>
 

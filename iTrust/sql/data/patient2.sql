@@ -72,10 +72,7 @@ INSERT INTO allergies(PatientID,Code,Description, FirstFound)
 	       (2, '664662530', 'Penicillin', '2007-06-04 20:33:58');
 	       
 INSERT INTO ndcodes(Code, Description) VALUES
-('664662530','Penicillin'),
-('664662531', 'Sulfa Drugs'),
-('664662532', 'Codeine'),
-('664662533', 'NSAIDs')
+('664662530','Penicillin')
 ON DUPLICATE KEY UPDATE Code = Code;
 
 INSERT INTO declaredhcp(PatientID,HCPID) VALUE(2, 9000000003)

@@ -468,7 +468,7 @@ CREATE TABLE immunization(
 
 CREATE TABLE icdCode(
 	code VARCHAR(8),
-	name VARCHAR(30) NOT NULL,
+	name VARCHAR(70) NOT NULL,
 	is_chronic TINYINT(1) NOT NULL DEFAULT '0',
 	PRIMARY KEY (code)
 ) ENGINE=MyISAM;

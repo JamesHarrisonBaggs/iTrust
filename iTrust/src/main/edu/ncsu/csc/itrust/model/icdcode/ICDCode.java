@@ -75,7 +75,13 @@ public class ICDCode {
 	public boolean isChronic() {
 		return isChronic;
 	}
-
+	
+	/**
+	 * @return the isChronic flag of the instance
+	 */
+	public boolean getIsChronic(){
+		return isChronic;
+	}
 	/**
 	 * Sets the isChronic flag of the instance.
 	 * @param code
@@ -91,5 +97,21 @@ public class ICDCode {
 	        return ret + "Chronic";
         return  ret + "Not Chronic";
     }
+
+	public boolean isPregnancyRelated() {
+		String code = getCode();
+		if(code.contains("O24") || 
+				code.contains("C") || 
+				code.contains("O03.9") ||
+				code.contains("E02") ||
+				code.contains("O210")){
+			return true;
+		} else if (code.substring(0,1).equals("A") && 
+				(Integer.parseInt(code.substring(1,3)) <= 64 ) &&
+				(Integer.parseInt(code.substring(1,3)) >= 50 ) ){
+			return true;
+		}
+		return false;
+	}
 
 }
