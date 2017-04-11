@@ -168,75 +168,65 @@ public class LaborReportController extends iTrustController {
 		//officevisitDB
 	}
 	
-	/**
-	 * Returns a list of all Pregnancy Warning Flags
-	 */
-	public List<PregnancyFlag>getPregnancyWarningFlags() throws DBException {
-		
-		// information sources
-		List<ObstetricsInit> obInits = getObInits();
-		List<ObstetricsVisit> obVisits = getObVisits();
-		PatientBean patient = patientDB.getPatient(patientID);
-		
-		// all warning flags
-		boolean rhFlag = false;
-		boolean highBP = false;
-		boolean advancedAge = false;
-		boolean preExisting = false;
-		boolean allergies = false;
-		boolean lowLying = false;
-		boolean genMiscarriage = false;
-		boolean abnormalFHR = false;
-		boolean multiples = false;
-		boolean atypicalWeight = false;
-		boolean hGravidarum = false;
-		boolean hypothyroidism = false;
-		
-		// get flags from visit
-		for (ObstetricsVisit v : obVisits) {
-			if (v.isRhFlag()) rhFlag = true;
-			// high blood pressure?
-			if (v.isLowLyingPlacenta()) lowLying = true;
-			int fhr = v.getFetalHeartRate();
-			if (fhr < 120 || fhr > 160) abnormalFHR = true;
-			if (v.getAmount() > 1) multiples = true;
-			
+	public List<String> getPregnancyWarningFlagsForVisit(ObstetricsVisit obvisit){
+		List<String> flags = new ArrayList<String>();
+		String vid = Long.toString(obvisit.getVisitId());
+		if(obvisit.isRhFlag()){
+			flags.add("Visit " + vid + " has RH Flag set!");
+		}
+		String bp = obvisit.getBloodPressure();
+		String parts[] = bp.split("/");			
+		if(Integer.parseInt(parts[0]) >= 140 || Integer.parseInt(parts[1]) >= 90){
+			flags.add("Visit " + vid + " has High Blood Pressure");
+		}
+		if(obvisit.isLowLyingPlacenta()){
+			flags.add("Visit " + vid + " has Low Lying Placenta");
+		}
+		if(obvisit.getFetalHeartRate() > 160 || obvisit.getFetalHeartRate() < 120){
+			flags.add("Visit " + vid + " has Abnormal Fetal Heartrate!");
+		}
+		if(obvisit.getAmount() > 1){
+			flags.add("Visit " + vid + "has Multiples in pregnancy");
 		}
 		
-		// advanced age
+		return flags;
+	}
+	
+	public List<String> getAllPregnancyWarningFlags() throws DBException{
+		List<ObstetricsInit> obInits = getObInits();
+		PatientBean patient = patientDB.getPatient(patientID);
+		List<ObstetricsVisit> obVisits = getObVisits();
+		List<String> flags = new ArrayList<String>();
+		for(ObstetricsVisit v : obVisits){
+			List<String> hold = getPregnancyWarningFlagsForVisit(v);
+			for(String s: hold){
+				flags.add(s);
+			}
+		}
+		
 		Instant dateOfBirth = patient.getDateOfBirth().toInstant();
 		Instant expDueDate = obInits.get(0).getEstimatedDueDate().atStartOfDay().toInstant(ZoneOffset.UTC);		
 		long ageSec = expDueDate.getEpochSecond() - dateOfBirth.getEpochSecond();
 		long ageYears = ageSec / (60L * 60L * 24L * 365L);
 		if (ageYears >= 35) {
-			advancedAge = true;
+			flags.add("Warning: Advanced Maternal Age");
 		}
 		
-		// TODO pre existing?
-		// TODO allergies?
-		// TODO genetic miscarriage?
-		// TODO atypical weight?
-		// TODO hyperemesis gravidarum?
-		// TODO hypothyroidism?
-
-		// assemble flag list
-		List<PregnancyFlag> flags = new ArrayList<PregnancyFlag>();
-		flags.add(new PregnancyFlag(rhFlag, "RH factor"));
-		flags.add(new PregnancyFlag(highBP, "High Blood Pressure"));
-		flags.add(new PregnancyFlag(advancedAge, "Advanced Maternal Age"));
-		flags.add(new PregnancyFlag(lowLying, "Low-Lying Placenta"));
-		flags.add(new PregnancyFlag(multiples, "Multiples"));
-		flags.add(new PregnancyFlag(abnormalFHR, "Abnormal Fetal Heart Rate"));
+		if(!getRelevantConditions().isEmpty()){
+			flags.add("Mother has a relevant pre-existing condition (listed Below)");
+		}
+		
+		if(!getAllergies().isEmpty()){
+			flags.add("There are relevant maternal allergies (listed Below)");
+		}
 		
 		return flags;
 	}
 	
-	// TODO Actually implement this
 	public boolean getComplication(ObstetricsVisit visit){
-		return true;
+		return !getPregnancyWarningFlagsForVisit(visit).isEmpty();
 	}
-		
-	// TODO get pre-existing conditions???
+	
 	
 	/**
 	 * Logs the viewing of a report

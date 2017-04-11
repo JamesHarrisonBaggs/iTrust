@@ -93,7 +93,7 @@ INSERT INTO obstetrics_inits(id, init_date, lmp_date) Values(85, '2015-01-01', '
 INSERT INTO obstetrics_visits
 (id, visitID, visitDate, weeksPregnant, weight, bloodPressure, fetalHR, amount, lowLying, rhFlag)
 VALUES
-(85, @visit_id_2, '2016-07-28 11:00:00', 20, 125.7, '120/60', 120, 1, false, true);
+(85, @visit_id_2, '2016-07-28 11:00:00', 30, 125.7, '120/60', 120, 1, false, true);
 
 INSERT INTO ndcodes(Code, Description) VALUES
 ('50090-0015', 'Sulfamethoxazole and Trimethoprim'),
@@ -119,6 +119,7 @@ VALUES
 (@visit_id_2, 'O210'),
 (@visit_id_2, 'E02'),
 (@visit_id_2, 'J45'),
+(@visit_id_2, 'U21'),
 (@visit_id_2, 'O03.9');
 
 insert into allergies
