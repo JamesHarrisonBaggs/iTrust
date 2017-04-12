@@ -18,7 +18,7 @@ import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
-import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
+import edu.ncsu.csc.itrust.model.user.patient.Patient;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "obgyn_controller")
@@ -31,9 +31,6 @@ public class ObstetricsInitController extends iTrustController {
 	
 	private DAOFactory factory;
 	private PatientDAO patientDB;
-	
-//	private long mid;
-//	private Long hcpid;
 	
 	private SessionUtils utils;
 	
@@ -48,15 +45,17 @@ public class ObstetricsInitController extends iTrustController {
 	public ObstetricsInitController() throws DBException {
 		super();
 		this.utils = getSessionUtils();
+		this.factory = DAOFactory.getProductionInstance();
 		this.sql = new ObstetricsInitMySQL();
 		this.setUpInitialization();
 	}
 	/**
 	 * Constructs an ObstetricsInitController with a data source
 	 */
-	public ObstetricsInitController(DataSource ds, SessionUtils utils) throws DBException {
+	public ObstetricsInitController(DataSource ds, SessionUtils utils, DAOFactory factory) throws DBException {
 		super();
 		this.utils = utils;
+		this.factory = factory;
 		this.sql = new ObstetricsInitMySQL(ds);
 		this.setUpInitialization();
 	}
@@ -66,7 +65,6 @@ public class ObstetricsInitController extends iTrustController {
 	 */
 	private void setUpInitialization() throws DBException {
 		// set up patient database
-		this.factory = TestDAOFactory.getTestInstance();
 		this.patientDB = factory.getPatientDAO();
 		
 		// determine if current HCP is an OB/GYN
@@ -74,8 +72,9 @@ public class ObstetricsInitController extends iTrustController {
 		
 		// determine if patient is OB/GYN eligible
 		Long mid = utils.getCurrentPatientMIDLong();
-		if (mid != null) {			
-			setEligible(patientDB.getPatient(mid.longValue()).isObgynEligible());
+		if (mid != null) {		
+			PatientBean p = patientDB.getPatient(mid.longValue());
+			setEligible(p.isObgynEligible());
 		}
 		
 		// set up submission bean

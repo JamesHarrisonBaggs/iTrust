@@ -27,6 +27,7 @@ import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptRequestDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.ApptTypeDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 import javax.sql.DataSource;
@@ -119,7 +120,7 @@ public class ObstetricsVisitController extends iTrustController {
 	public ObstetricsVisitController(DataSource ds, SessionUtils utils) throws DBException {
 		super();
 		sessionUtils = utils;
-		obc = new ObstetricsInitController(ds, utils);
+		obc = new ObstetricsInitController(ds, utils, TestDAOFactory.getTestInstance());
 		sql = new ObstetricsVisitMySQL(ds);
 		ovc = new OfficeVisitController(ds);
 		ovc.setSessionUtils(utils);		

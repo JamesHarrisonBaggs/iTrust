@@ -38,6 +38,7 @@ public class ObstetricsVisitControllerTest {
 	public void setUp() throws Exception {
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
 		Mockito.doReturn(51L).when(mockSessionUtils).getCurrentOfficeVisitId();
+		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
 		
 		ds = ConverterDAO.getDataSource();
 		controller = new ObstetricsVisitController(ds, mockSessionUtils);

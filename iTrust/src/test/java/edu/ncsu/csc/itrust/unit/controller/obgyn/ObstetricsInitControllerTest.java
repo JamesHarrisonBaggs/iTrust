@@ -16,7 +16,9 @@ import edu.ncsu.csc.itrust.controller.obgyn.ObstetricsInitController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class ObstetricsInitControllerTest {
@@ -27,11 +29,14 @@ public class ObstetricsInitControllerTest {
 	
 	List<ObstetricsInit> list;
 	ObstetricsInit bean;
-	@Mock SessionUtils mockSessionUtils;	
-
+	
+	@Mock SessionUtils mockUtils;	
+	DAOFactory factory;
+	
 	@Before
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
+		factory = TestDAOFactory.getTestInstance();
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();
@@ -62,9 +67,9 @@ public class ObstetricsInitControllerTest {
 	@Test
 	public void testGetInits() throws Exception {
 		
-		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		Mockito.doReturn(4L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		controller = new ObstetricsInitController(ds, mockSessionUtils);
+		mockUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn(4L).when(mockUtils).getCurrentPatientMIDLong();
+		controller = new ObstetricsInitController(ds, mockUtils, factory);
 		
 		list = controller.getObstetricsRecords();
 		assertEquals(2, list.size());
@@ -84,10 +89,10 @@ public class ObstetricsInitControllerTest {
 	@Test
 	public void testGetByDate() throws Exception {
 		
-		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		Mockito.doReturn(4L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		Mockito.doReturn(50L).when(mockSessionUtils).getSessionLoggedInMIDLong();
-		controller = new ObstetricsInitController(ds, mockSessionUtils);
+		mockUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn(4L).when(mockUtils).getCurrentPatientMIDLong();
+		Mockito.doReturn(50L).when(mockUtils).getSessionLoggedInMIDLong();
+		controller = new ObstetricsInitController(ds, mockUtils, factory);
 
 		list = controller.getObstetricsRecordByDate(LocalDate.of(2016, 5, 7));
 		assertEquals(1, list.size());
@@ -99,10 +104,11 @@ public class ObstetricsInitControllerTest {
 	
 	@Test
 	public void testMisc() throws Exception {
-		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		Mockito.doReturn(50L).when(mockSessionUtils).getSessionLoggedInMIDLong();
-		controller = new ObstetricsInitController(ds, mockSessionUtils);
+		mockUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn(2L).when(mockUtils).getCurrentPatientMIDLong();
+		Mockito.doReturn(50L).when(mockUtils).getSessionLoggedInMIDLong();
+		controller = new ObstetricsInitController(ds, mockUtils, factory);
+
 		controller.setAdded(true);
 		assertTrue(controller.isAdded());
 		controller.getObGyn();
@@ -116,10 +122,10 @@ public class ObstetricsInitControllerTest {
 		bean.setInitDate(LocalDate.of(1992, 5, 2));
 		bean.setLastMenstrualPeriod(LocalDate.of(1992, 2, 7));
 		
-		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		Mockito.doReturn(50L).when(mockSessionUtils).getSessionLoggedInMIDLong();
-		controller = new ObstetricsInitController(ds, mockSessionUtils);
+		mockUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn(2L).when(mockUtils).getCurrentPatientMIDLong();
+		Mockito.doReturn(50L).when(mockUtils).getSessionLoggedInMIDLong();
+		controller = new ObstetricsInitController(ds, mockUtils, factory);
 		controller.update(bean);
 		
 		// test form validation exception
@@ -131,10 +137,10 @@ public class ObstetricsInitControllerTest {
 	public void testInit() throws Exception {
 		
 		// new controller
-		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		Mockito.doReturn(3L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		Mockito.doReturn(50L).when(mockSessionUtils).getSessionLoggedInMIDLong();
-		controller = new ObstetricsInitController(ds, mockSessionUtils);
+		mockUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn(3L).when(mockUtils).getCurrentPatientMIDLong();
+		Mockito.doReturn(50L).when(mockUtils).getSessionLoggedInMIDLong();
+		controller = new ObstetricsInitController(ds, mockUtils, factory);
 		controller.setNewInit(null);
 		
 		// submit new init
@@ -158,10 +164,10 @@ public class ObstetricsInitControllerTest {
 	@Test
 	public void testEligibility() throws Exception {
 		
-		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		Mockito.doReturn(4L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		Mockito.doReturn(50L).when(mockSessionUtils).getSessionLoggedInMIDLong();
-		controller = new ObstetricsInitController(ds, mockSessionUtils);
+		mockUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn(4L).when(mockUtils).getCurrentPatientMIDLong();
+		Mockito.doReturn(50L).when(mockUtils).getSessionLoggedInMIDLong();
+		controller = new ObstetricsInitController(ds, mockUtils, factory);
 		
 		controller.setEligible(true);
 		assertTrue(controller.isEligible());
