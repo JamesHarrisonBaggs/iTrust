@@ -39,9 +39,6 @@ public class ObstetricsInitController extends iTrustController {
 	
 	// TODO should handle exceptions and not just throw them
 
-	/**
-	 * Constructs an ObstetricsInitController
-	 */
 	public ObstetricsInitController() throws DBException {
 		super();
 		this.utils = getSessionUtils();
@@ -49,9 +46,7 @@ public class ObstetricsInitController extends iTrustController {
 		this.sql = new ObstetricsInitMySQL();
 		this.setUpInitialization();
 	}
-	/**
-	 * Constructs an ObstetricsInitController with a data source
-	 */
+
 	public ObstetricsInitController(DataSource ds, SessionUtils utils, DAOFactory factory) throws DBException {
 		super();
 		this.utils = utils;

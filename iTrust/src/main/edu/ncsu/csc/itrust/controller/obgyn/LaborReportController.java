@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.controller.iTrustController;
@@ -17,8 +16,6 @@ import edu.ncsu.csc.itrust.model.diagnosis.Diagnosis;
 import edu.ncsu.csc.itrust.model.diagnosis.DiagnosisMySQL;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
-import edu.ncsu.csc.itrust.model.obgyn.ChildbirthMySQL;
-import edu.ncsu.csc.itrust.model.obgyn.ChildbirthVisitMySQL;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsInitMySQL;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisit;
@@ -26,7 +23,6 @@ import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyFlag;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
-import edu.ncsu.csc.itrust.model.obgyn.UltrasoundMySQL;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;

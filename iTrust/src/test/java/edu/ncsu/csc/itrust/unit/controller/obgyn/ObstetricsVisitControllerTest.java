@@ -20,6 +20,7 @@ import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisit;
 import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class ObstetricsVisitControllerTest {
@@ -41,7 +42,7 @@ public class ObstetricsVisitControllerTest {
 		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
 		
 		ds = ConverterDAO.getDataSource();
-		controller = new ObstetricsVisitController(ds, mockSessionUtils);
+		controller = new ObstetricsVisitController(ds, mockSessionUtils, TestDAOFactory.getTestInstance());
 		sql = controller.getSql();
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
