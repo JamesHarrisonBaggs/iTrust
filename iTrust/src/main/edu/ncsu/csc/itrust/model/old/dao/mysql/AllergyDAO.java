@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc.itrust.exception.DBException;
@@ -57,6 +58,29 @@ public class AllergyDAO {
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
+	}
+	
+	public List<AllergyBean> getPregnancyRelatedAllergies(final long pid) throws DBException{
+		List<AllergyBean> allergies = getAllergies(pid);
+		List<AllergyBean> prAllergies = new ArrayList<AllergyBean>();
+		List<String> prNDCodes = new ArrayList<String>();
+		prNDCodes.add("00904-2407");
+		prNDCodes.add("664662530");
+		prNDCodes.add("54868-0971-1");
+		prNDCodes.add("50090-0015");
+		prNDCodes.add("50090-0007");
+		prNDCodes.add("62211-0838");
+		prNDCodes.add("50090-1609");
+		prNDCodes.add("50090-0538");
+		for(AllergyBean a : allergies){
+			for(String s: prNDCodes){
+				if(a.getNDCode().equals(s)){
+					prAllergies.add(a);
+				}
+			}
+			
+		}
+		return prAllergies;
 	}
 
 	/**

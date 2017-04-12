@@ -5,6 +5,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:metadata>
+	<f:event type="preRenderView"
+		listener="#{report_controller.logReportView()}" />
+</f:metadata>
 <f:view
 	beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
 <head>
@@ -24,110 +28,203 @@
 				<c:set var="name"
 					value="#{user.getUserNameForID(session.getAttribute(&#34;pid&#34;))}" />
 				<h:outputText style="color: green"
-					rendered="#{obgyn_controller.eligible}"
+					rendered="#{report_controller.reportAvailable()}"
 					value="#{name} is eligible for obstetric care" width="50%"></h:outputText>
 				<h:outputText style="color: red"
-					rendered="#{!obgyn_controller.eligible}"
-					value="#{name} is ineligible for obstetric care" width="50%"></h:outputText>
+					rendered="#{!report_controller.reportAvailable()}"
+					value="#{name} is ineligible for obstetric care or does not have an obstetrics initialization" width="50%"></h:outputText>
 			</div>
 			<br />
+			<h:panelGrid class="fTable" width="75%" columns="1" rendered="#{report_controller.reportAvailable()}">
 
-			<!-- Table of Initializations -->
-			<h:outputText id="initializations" value="Obstetrics Initializations"
-				style="font-size:20px; font-weight:bold" align="left" />
-			<h:dataTable id="PIRTable" class="fTable" width="75%"
-				value="#{report_controller.getObInits()}" var="init"
-				border="1">
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Initialization Date" />
-					</f:facet>
-					<h:outputText value="#{init.initDate}">
-						<f:converter converterId="localDateConverter" />
-					</h:outputText>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Last Menstrual Period" />
-					</f:facet>
-					<h:outputText value="#{init.lastMenstrualPeriod}">
-						<f:converter converterId="localDateConverter" />
-					</h:outputText>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Estimated Due Date" />
-					</f:facet>
-					<h:outputText value="#{init.estimatedDueDate}">
-						<f:converter converterId="localDateConverter" />
-					</h:outputText>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Pregnant for" />
-					</f:facet>
-					<h:outputText value="#{init.timePregnant}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Select Link" />
-					</f:facet>
-					<h:link outcome="viewSingleObstetricsInit" value="Link"></h:link>
-				</h:column>
-			</h:dataTable>
+				<!-- Information for each past pregnancy -->
+				<h:panelGroup>
+					<h:outputLabel for="preg_table"
+						style="font-size:20px; font-weight:bold" align="left">Prior Pregnancies
+						</h:outputLabel>
+					<h:dataTable id="preg_table" class="fTable" width="75%"
+						value="#{report_controller.getPregnancies()}" var="preg"
+						rendered="#{!report_controller.getPregnancies().isEmpty()}" border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date of Birth" />
+							</f:facet>
+							<h:outputText value="#{preg.dateOfBirth}">
+								<f:converter converterId="localDateConverter" />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Pregnancy Term" />
+							</f:facet>
+							<h:outputText value="#{preg.daysPregnant} days" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Delivery Type" />
+							</f:facet>
+							<h:outputText value="#{preg.deliveryType}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Conception Year" />
+							</f:facet>
+							<h:outputText value="#{preg.yearOfConception}" />
+						</h:column>
+					</h:dataTable>
+					<h:outputText rendered="#{report_controller.getPregnancies().isEmpty()}" value=" - No Prior Pregnancies"/>
+				</h:panelGroup>
 
-			<!-- Table of Prior Pregnancies -->
-			<br />
-			<h:outputText id="priorPregnancies" value="Prior Pregnancies"
-				style="font-size:20px; font-weight:bold" align="left" />
-			<h:dataTable id="preg_table" class="fTable" width="75%"
-				value="#{report_controller.getPregnancies()}" var="preg"
-				border="1">
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Date of Birth" />
-					</f:facet>
-					<h:outputText value="#{preg.dateOfBirth}">
+
+				<!-- Estimated delivery date -->
+				<h:panelGroup>
+					<h:outputLabel for="edd" style="font-size:20px; font-weight:bold"
+						align="left">Estimated Due Date (of most recent pregnancy)
+							</h:outputLabel>
+					<br />
+					<h:outputText id="edd"
+						value="#{report_controller.getMostRecentEDD()}">
 						<f:converter converterId="localDateConverter" />
 					</h:outputText>
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Conception Year" />
-					</f:facet>
-					<h:outputText value="#{preg.yearOfConception}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Days Pregnant" />
-					</f:facet>
-					<h:outputText value="#{preg.daysPregnant}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Hours in Labor" />
-					</f:facet>
-					<h:outputText value="#{preg.hoursInLabor}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Weight Gain" />
-					</f:facet>
-					<h:outputText value="#{preg.weightGain}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Delivery Type" />
-					</f:facet>
-					<h:outputText value="#{preg.deliveryType}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputText value="Amount" />
-					</f:facet>
-					<h:outputText value="#{preg.amount}" />
-				</h:column>
-			</h:dataTable>
+				</h:panelGroup>
+
+
+				<!-- Blood Type -->
+				<h:panelGroup>
+					<h:outputLabel for="bloodType"
+						style="font-size:20px; font-weight:bold" align="left"> Mother's Blood Type
+						</h:outputLabel>
+					<br />
+					<h:outputText id="bloodType"
+						value="#{report_controller.getBloodType()}">
+					</h:outputText>
+				</h:panelGroup>
+
+				<!-- Obstetrics Office Visit Information -->
+				<h:panelGroup>
+					<h:outputLabel for="ovInfo_table"
+						style="font-size:20px; font-weight:bold" align="left"> Obstetrics Office Visit Information
+						</h:outputLabel>
+					<h:dataTable id="ovInfo_table" class="fTable" width="75%" rendered="#{!report_controller.getObVisits().isEmpty()}"
+						value="#{report_controller.getObVisits()}" var="visits" border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Visit ID" />
+							</f:facet>
+							<h:outputText value="#{visits.visitId}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Weeks Pregnant" />
+							</f:facet>
+							<h:outputText value="#{visits.weeksPregnant} weeks pregnant" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Weight" />
+							</f:facet>
+							<h:outputText value="#{visits.weight} pounds" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Blood Pressure" />
+							</f:facet>
+							<h:outputText value="#{visits.bloodPressure}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Fetal Heart Rate" />
+							</f:facet>
+							<h:outputText value="#{visits.fetalHeartRate} bpm" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Pregnancy Multiples" />
+							</f:facet>
+							<h:outputText value="#{visits.amount}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Low Lying Placenta" />
+							</f:facet>
+							<h:outputText value="#{visits.lowLyingPlacenta ? 'Yes' : 'No'}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Complications" />
+							</f:facet>
+							<h:outputText
+								value="#{report_controller.getComplication(visits) ? 'Yes, see complication warning list below' : 'No'} " />
+						</h:column>
+					</h:dataTable>
+					<h:outputText value=" - No Obstetrics Office Visits" rendered="#{report_controller.getObVisits().isEmpty()}" />
+
+				</h:panelGroup>
+
+				<!-- Pregnancy Complication warning flags -->
+				<h:panelGroup>
+					<h:outputLabel for="pregFlags"
+						style="font-size:20px; font-weight:bold" align="left"> Pregnancy Complication Warning Flags
+						</h:outputLabel>
+					<h:dataTable id="pregFlags_table" class="fTable" width="75%" rendered="#{!report_controller.getAllPregnancyWarningFlags().isEmpty()}"
+						value="#{report_controller.getAllPregnancyWarningFlags()}"
+						var="flags" border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Complications"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{flags}"/>
+						</h:column>
+					</h:dataTable>
+					<h:outputText value=" - No Pregnancy Warnings" rendered="#{report_controller.getAllPregnancyWarningFlags().isEmpty()}" />
+
+
+				</h:panelGroup>
+
+				<!-- List of relevant pre-existing conditions -->
+				<h:panelGroup>
+					<h:outputLabel for="preConditions_table"
+						style="font-size:20px; font-weight:bold" align="left"> Mother's pre-existing conditions
+						</h:outputLabel>
+					<h:dataTable id="preConditions_table" class="fTable" width="75%"
+						value="#{report_controller.getRelevantConditions()}"
+						rendered="#{!report_controller.getRelevantConditions().isEmpty()}" var="conditions" border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Conditions" />
+							</f:facet>
+							<h:outputText value="#{conditions.name}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Is Chronic?" />
+							</f:facet>
+							<h:outputText value="#{conditions.isChronic ? 'Yes' : 'No'}" />
+						</h:column>
+					</h:dataTable>
+					<h:outputText value=" - No Relevant Pre-existing Conditions" rendered="#{report_controller.getRelevantConditions().isEmpty()}" />
+				</h:panelGroup>
+
+				<!-- List of the mother's common drug allergies -->
+				<h:panelGroup>
+					<h:outputLabel for="allergies_table"
+						style="font-size:20px; font-weight:bold" align="left"> Mother's common drug allergies
+						</h:outputLabel>
+					<h:dataTable id="allergies_table" class="fTable" width="75%"
+						rendered="#{!report_controller.getAllergies().isEmpty()}" value="#{report_controller.getAllergies()}" var="allergies"
+						border="1">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Allergy Description" />
+							</f:facet>
+							<h:outputText value="#{allergies.description}" />
+						</h:column>
+					</h:dataTable>
+					<h:outputText value=" - No Relevant Allergies" rendered="#{report_controller.getAllergies().isEmpty()}" />
+
+				</h:panelGroup>
+
+			</h:panelGrid>
 		</ui:define>
 	</ui:composition>
 

@@ -184,73 +184,73 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 	
 	public boolean autoScheduleAppt() throws DBException, SQLException {
-//		factory = DAOFactory.getProductionInstance();
-//		aDAO = new ApptDAO(factory);
-//		arDAO = new ApptRequestDAO(factory);
-//		atDAO = new ApptTypeDAO(factory);
-//		LocalDateTime visitDate2 = visitDate;
-//		long pid = sessionUtils.getCurrentPatientMIDLong();
-//		long mid = sessionUtils.getSessionLoggedInMIDLong();
-//		ApptBean appt = new ApptBean();
-//		ApptTypeBean apptType = atDAO.getApptType("OB/GYN");
-//		appt.setApptType(apptType.getName());
-//		appt.setPrice(apptType.getPrice());
-//		appt.setHcp(mid);
-//		appt.setPatient(pid);
-//		if(visitDate2.getHour() > 16 || visitDate2.getHour() < 9) {
-//			visitDate2 = visitDate2.withHour(12);
-//		}
-//		if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
-//			visitDate2 = visitDate2.plusDays(2);
-//		}
-//		if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
-//			visitDate2 = visitDate2.plusDays(1);
-//		}
-//		if (weeksPregnant >= 0 && weeksPregnant <= 13) {
-//			long months = 1;
-//			visitDate2 = visitDate2.plusMonths(months);
-//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-//			appt.setDate(timestamp);
-//		} else if (weeksPregnant >= 14 && weeksPregnant <= 28) {
-//			long weeks = 2;
-//			visitDate2 = visitDate2.plusWeeks(weeks);
-//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-//			appt.setDate(timestamp);
-//		} else if (weeksPregnant >= 29 && weeksPregnant <= 40) {
-//			long weeks = 1;
-//			visitDate2 = visitDate2.plusWeeks(weeks);
-//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-//			appt.setDate(timestamp);
-//		} else if (weeksPregnant >= 40 && weeksPregnant <= 42) {
-//			long days = 2;
-//			visitDate2 = visitDate2.plusDays(days);
-//			if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
-//				visitDate2 = visitDate2.plusDays(2);
-//			}
-//			if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
-//				visitDate2 = visitDate2.plusDays(1);
-//			}
-//			Timestamp timestamp = Timestamp.valueOf(visitDate2);
-//			appt.setDate(timestamp);
-//		} 
-//		List<ApptBean> conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
-//		List<ApptBean> conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
-//		if (conflictsHCP.isEmpty() && conflictsPatient.isEmpty()) {
-//			aDAO.scheduleAppt(appt);	
-//		} else {
-//			while(!conflictsHCP.isEmpty() || !conflictsPatient.isEmpty()) {
-//				long days = 2;
-//				visitDate2 = visitDate2.plusDays(days);
-//				Timestamp timestamp = Timestamp.valueOf(visitDate2);
-//				appt.setDate(timestamp);
-//				conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
-//				conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
-//			}
-//			aDAO.scheduleAppt(appt);
-//			
-//		}
-//		List<ApptBean> appzs = aDAO.getAllApptsFor(mid);
-//		logTransaction(TransactionType.SCHEDULE_OFFICE_VISIT, String.valueOf(this.visitId)+ ", " + String.valueOf(appzs.get(appzs.size()-1).getApptID()));
+		factory = DAOFactory.getProductionInstance();
+		aDAO = new ApptDAO(factory);
+		arDAO = new ApptRequestDAO(factory);
+		atDAO = new ApptTypeDAO(factory);
+		LocalDateTime visitDate2 = visitDate;
+		long pid = sessionUtils.getCurrentPatientMIDLong();
+		long mid = sessionUtils.getSessionLoggedInMIDLong();
+		ApptBean appt = new ApptBean();
+		ApptTypeBean apptType = atDAO.getApptType("OB/GYN");
+		appt.setApptType(apptType.getName());
+		appt.setPrice(apptType.getPrice());
+		appt.setHcp(mid);
+		appt.setPatient(pid);
+		if(visitDate2.getHour() > 16 || visitDate2.getHour() < 9) {
+			visitDate2 = visitDate2.withHour(12);
+		}
+		if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
+			visitDate2 = visitDate2.plusDays(2);
+		}
+		if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			visitDate2 = visitDate2.plusDays(1);
+		}
+		if (weeksPregnant >= 0 && weeksPregnant <= 13) {
+			long months = 1;
+			visitDate2 = visitDate2.plusMonths(months);
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} else if (weeksPregnant >= 14 && weeksPregnant <= 28) {
+			long weeks = 2;
+			visitDate2 = visitDate2.plusWeeks(weeks);
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} else if (weeksPregnant >= 29 && weeksPregnant <= 40) {
+			long weeks = 1;
+			visitDate2 = visitDate2.plusWeeks(weeks);
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} else if (weeksPregnant >= 40 && weeksPregnant <= 42) {
+			long days = 2;
+			visitDate2 = visitDate2.plusDays(days);
+			if(visitDate2.getDayOfWeek() == DayOfWeek.SATURDAY) {
+				visitDate2 = visitDate2.plusDays(2);
+			}
+			if (visitDate2.getDayOfWeek() == DayOfWeek.SUNDAY) {
+				visitDate2 = visitDate2.plusDays(1);
+			}
+			Timestamp timestamp = Timestamp.valueOf(visitDate2);
+			appt.setDate(timestamp);
+		} 
+		List<ApptBean> conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
+		List<ApptBean> conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
+		if (conflictsHCP.isEmpty() && conflictsPatient.isEmpty()) {
+			aDAO.scheduleAppt(appt);	
+		} else {
+			while(!conflictsHCP.isEmpty() || !conflictsPatient.isEmpty()) {
+				long days = 2;
+				visitDate2 = visitDate2.plusDays(days);
+				Timestamp timestamp = Timestamp.valueOf(visitDate2);
+				appt.setDate(timestamp);
+				conflictsHCP = aDAO.getAllHCPConflictsForAppt(mid, appt);
+				conflictsPatient = aDAO.getAllPatientConflictsForAppt(pid, appt);
+			}
+			aDAO.scheduleAppt(appt);
+			
+		}
+		List<ApptBean> appzs = aDAO.getAllApptsFor(mid);
+		logTransaction(TransactionType.SCHEDULE_OFFICE_VISIT, String.valueOf(this.visitId)+ ", " + String.valueOf(appzs.get(appzs.size()-1).getApptID()));
 		return true;
 	}
 
