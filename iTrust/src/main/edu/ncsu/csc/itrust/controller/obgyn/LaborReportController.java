@@ -192,7 +192,7 @@ public class LaborReportController extends iTrustController {
 			flags.add("Visit " + vid + " has Abnormal Fetal Heartrate!");
 		}
 		if(obvisit.getAmount() > 1){
-			flags.add("Visit " + vid + "has Multiples in pregnancy");
+			flags.add("Visit " + vid + " has Multiples in pregnancy");
 		}
 		
 		return flags;
@@ -203,12 +203,23 @@ public class LaborReportController extends iTrustController {
 		PatientBean patient = patientDB.getPatient(patientID);
 		List<ObstetricsVisit> obVisits = getObVisits();
 		List<String> flags = new ArrayList<String>();
+		
+		double maxweight = 0;
+		double minweight = 0;
 		for(ObstetricsVisit v : obVisits){
 			List<String> hold = getPregnancyWarningFlagsForVisit(v);
 			for(String s: hold){
 				flags.add(s);
 			}
+			double weight = v.getWeight();
+			if(weight > maxweight){
+				maxweight = weight;
+			} 
+			if (weight < minweight || minweight <= 0){
+				minweight = weight;
+			}
 		}
+		double weightdifference = maxweight - minweight;
 		
 		Instant dateOfBirth = patient.getDateOfBirth().toInstant();
 		Instant expDueDate = obInits.get(0).getEstimatedDueDate().atStartOfDay().toInstant(ZoneOffset.UTC);		
@@ -224,6 +235,9 @@ public class LaborReportController extends iTrustController {
 		
 		if(!getAllergies().isEmpty()){
 			flags.add("There are relevant maternal allergies (listed Below)");
+		}
+		if(weightdifference > 35 || weightdifference < 15){
+			flags.add("Atypical Weight Change:" + weightdifference + " pounds (between first and last OB Office visit)");
 		}
 		
 		return flags;
