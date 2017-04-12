@@ -109,10 +109,10 @@ public class GroupReportActionTest extends TestCase {
 				assertEquals("Programmer\nA\nB\nC\n", res);
 				break;
 			case SIBLING_FIRST_NAME:
-				assertEquals("Care\nNoRecords\nBowser\nPrincess\n", res);
+				assertEquals("Care\nNoRecords\nBowser\nPrincess\nAaron\n", res);
 				break;
 			case SIBLING_LAST_NAME:
-				assertEquals("Needs\nHas\nKoopa\nPeach\n", res);
+				assertEquals("Needs\nHas\nKoopa\nPeach\nNicholson\n", res);
 				break;
 			default:
 				break;
