@@ -120,6 +120,8 @@ VALUES
 (@visit_id_2, 'E02'),
 (@visit_id_2, 'J45'),
 (@visit_id_2, 'U21'),
+(@visit_id_2, 'A5132'),
+(@visit_id_2, 'A46'),
 (@visit_id_2, 'O03.9');
 
 insert into allergies
