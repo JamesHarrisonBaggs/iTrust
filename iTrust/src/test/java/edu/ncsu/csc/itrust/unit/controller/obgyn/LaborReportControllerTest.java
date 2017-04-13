@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import edu.ncsu.csc.itrust.controller.obgyn.LaborReportController;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class LaborReportControllerTest {
@@ -24,14 +25,14 @@ public class LaborReportControllerTest {
 		ds = ConverterDAO.getDataSource();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
 		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		controller = new LaborReportController(ds, mockSessionUtils);
+		controller = new LaborReportController(ds, mockSessionUtils, TestDAOFactory.getTestInstance());
 	}
 
 	@Test
 	public void testLaborReportController() throws Exception {
+		assertNotNull(controller.getCurrentInit());
 		controller.getObInits();
 		controller.reportAvailable();
-		controller.getCurrentInit();
 		controller.getObVisits();
 		controller.getPregnancies();
 		controller.getAllergies();

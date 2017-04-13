@@ -31,7 +31,6 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
-import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name="report_controller")
@@ -75,10 +74,10 @@ public class LaborReportController extends iTrustController {
 	/**
 	 * Constructs a LaborReportController with a Data Source
 	 */
-	public LaborReportController(DataSource ds, SessionUtils utils) throws DBException {
+	public LaborReportController(DataSource ds, SessionUtils utils, DAOFactory dao) throws DBException {
 		super();
 		sessionUtils = utils;
-		factory = TestDAOFactory.getTestInstance();
+		factory = dao;
 		
 		initsDB = new ObstetricsInitMySQL(ds);
 		pregnancyDB = new PregnancyMySQL(ds);
