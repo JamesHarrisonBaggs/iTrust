@@ -50,6 +50,7 @@ public class ObstetricsVisitController extends iTrustController {
 	private ObstetricsInitController obc;
 	private OfficeVisitController ovc;
 	
+	private DAOFactory factory;
 	private ApptDAO aDAO;
 	private ApptRequestDAO arDAO;
 	private ApptTypeDAO atDAO;
@@ -59,7 +60,6 @@ public class ObstetricsVisitController extends iTrustController {
 	private boolean notice;
 
 	private List<ObstetricsInit> obstetricsList;
-	private DAOFactory factory;
 	private SessionUtils sessionUtils;
 	private boolean run;
 	private boolean autoSchedule;
@@ -71,6 +71,7 @@ public class ObstetricsVisitController extends iTrustController {
 		sql = new ObstetricsVisitMySQL();
 		ovc = new OfficeVisitController();
 		sessionUtils = getSessionUtils();
+		factory = DAOFactory.getProductionInstance();
 		
 		setUpController();
 		
@@ -116,11 +117,11 @@ public class ObstetricsVisitController extends iTrustController {
 		}
 	}
 
-	public ObstetricsVisitController(DataSource ds, SessionUtils utils) throws DBException {
+	public ObstetricsVisitController(DataSource ds, SessionUtils utils, DAOFactory dao) throws DBException {
 		super();
 		sessionUtils = utils;
-		obc = new ObstetricsInitController(ds);
-		obc.setSessionUtils(utils);
+		factory = dao;
+		obc = new ObstetricsInitController(ds, utils, factory);
 		sql = new ObstetricsVisitMySQL(ds);
 		ovc = new OfficeVisitController(ds);
 		ovc.setSessionUtils(utils);		
