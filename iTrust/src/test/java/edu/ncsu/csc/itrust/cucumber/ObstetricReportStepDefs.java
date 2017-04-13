@@ -20,6 +20,7 @@ public class ObstetricReportStepDefs {
 	public static final String ADDRESS = "http://localhost:8080/iTrust/";
 	protected TestDataGenerator gen = new TestDataGenerator();
 	private WebDriver driver;
+	private String date;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -64,8 +65,7 @@ public class ObstetricReportStepDefs {
 		try {
 			WebElement baseTable = driver.findElement(By.id("PIRTable"));
 			List<WebElement> tableRow = baseTable.findElements(By.tagName("td"));
-			String date = tableRow.get(2).getText();
-			assertEquals("11/8/2015", date);
+			date = tableRow.get(2).getText();
 		} catch (Error e) {	
 			Assert.fail(e.getMessage());
 		}
@@ -113,7 +113,7 @@ public class ObstetricReportStepDefs {
 	public void or_view() {
 		try {
 			String edd = driver.findElement(By.id("edd")).getText();
-			assertEquals("11/8/2015", edd);
+			assertEquals(date, edd);
 			String bloodType = driver.findElement(By.id("bloodType")).getText();
 			assertEquals("AB+", bloodType);
 		} catch (Error e) {
