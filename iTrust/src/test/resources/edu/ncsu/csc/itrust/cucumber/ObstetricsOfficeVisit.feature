@@ -47,7 +47,7 @@ Scenario Outline: Patient Not Eligible
 	And I enter patient's name <name> and select the patient MID <patient>
 	And I click Create a New Office Visit
 	When I enter Date <date> and choose appointment type as OB/GYN and click save
-	Then the patient is not eligiable for Obstetrics care
+	Then the patient is not eligible for obstetrics care
 	
 	Examples:
 	| hcp        | pw | name   | patient | date                |
