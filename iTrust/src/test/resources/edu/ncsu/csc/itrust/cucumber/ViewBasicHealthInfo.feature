@@ -8,21 +8,6 @@ Background:
 	And UC51 data is loaded
 	And UC52 data is loaded
 
-Scenario Outline: View Health Information
-	Given I have logged in as HCP: <HCPuser> with password: <HCPpw> 
-	And I select "iTrust - Basic Health Information"
-	When I input values name <firstName>, MID <mid> and select the patient
-	Then I can see the health information of patient <firstName> <lastName>
-
-	Examples:
-	| mid    | password | firstName | lastName	| HCPuser	| HCPpw			|
-	| 1		 | pw       | Random    | Person	| 9000000000| pw			|	
-	| 2		 | pw       | Andy      | Programmer| 9000000000| pw			|	
-	| 5		 | pw       | Baby      | Programmer| 9000000000| pw			|	
-	| 6		 | pw       | Baby      | Programmer| 9000000000| pw			|
-	| 7		 | pw       | Baby	    | Programmer| 9000000000| pw			|	
-	| 8		 | pw       | Baby	    | Programmer| 9000000000| pw			|
-
 # UC52: TestOfficeVisit4MonthOldViewHealthMetrics
 Scenario: Test Office Visit 4 Month Old View Health Metrics
 	Given user logs in as Shelly Vang with MID: 8000000011 and Password: pw
