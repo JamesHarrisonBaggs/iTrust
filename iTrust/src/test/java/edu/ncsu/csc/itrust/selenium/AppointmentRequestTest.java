@@ -56,7 +56,7 @@ public class AppointmentRequestTest extends iTrustSeleniumTest {
 		select = new Select(driver.findElement(By.name("apptType")));
 		select.selectByValue("General Checkup");
 		select = new Select(driver.findElement(By.name("time1")));
-		select.selectByValue("09");
+		select.selectByValue("03");
 		select = new Select(driver.findElement(By.name("time2")));
 		select.selectByValue("45");
 		select = new Select(driver.findElement(By.name("time3")));
@@ -87,7 +87,7 @@ public class AppointmentRequestTest extends iTrustSeleniumTest {
 		select = new Select(driver.findElement(By.name("apptType")));
 		select.selectByValue("General Checkup");
 		select = new Select(driver.findElement(By.name("time1")));
-		select.selectByValue("09");
+		select.selectByValue("03");
 		select = new Select(driver.findElement(By.name("time2")));
 		select.selectByValue("45");
 		select = new Select(driver.findElement(By.name("time3")));
