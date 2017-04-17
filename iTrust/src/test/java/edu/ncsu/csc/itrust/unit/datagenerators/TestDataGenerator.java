@@ -92,7 +92,7 @@ public class TestDataGenerator {
 	public void clearAllTables() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/deleteFromAllTables.sql");
 		
-		DataSource ds;
+		/**DataSource ds;
 		Connection conn = null;
 		PreparedStatement stmt;
 		
@@ -114,7 +114,7 @@ public class TestDataGenerator {
 			String s = results.getString(1);
 			stmt = conn.prepareStatement(s);
 			stmt.executeQuery();
-		}
+		}**/
 	}
 
 	public void clearAppointments() throws SQLException, FileNotFoundException, IOException {
