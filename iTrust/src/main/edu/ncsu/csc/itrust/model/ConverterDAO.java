@@ -22,7 +22,7 @@ import org.xml.sax.InputSource;
  */
 public class ConverterDAO {
 
-	static BasicDataSource ds;
+	private static BasicDataSource ds = null;
 
 	private static String getAttribute(Document document, String attribute) throws XPathExpressionException {
 		return (String) XPathFactory.newInstance().newXPath().compile("/Context/Resource/" + attribute)
@@ -36,7 +36,7 @@ public class ConverterDAO {
 		return builder.parse(new InputSource(reader));
 	}
 
-	public static synchronized DataSource getDataSource() {
+	public synchronized static DataSource getDataSource() {
 		FileReader f = null;
 		BufferedReader r = null;
 		if (ds == null) {
