@@ -7,6 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import edu.ncsu.csc.itrust.exception.DBException;
+import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.DBBuilder;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
@@ -84,6 +91,30 @@ public class TestDataGenerator {
 
 	public void clearAllTables() throws SQLException, FileNotFoundException, IOException {
 		new DBBuilder(factory).executeSQLFile(DIR + "/deleteFromAllTables.sql");
+		
+		DataSource ds;
+		Connection conn = null;
+		PreparedStatement stmt;
+		
+		try {
+			Context ctx = new InitialContext();
+			ds = ConverterDAO.getDataSource();
+			conn = ds.getConnection();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		stmt = conn.prepareStatement("select concat('KILL ',id,';') from information_schema.processlist where Command='Sleep' and time>100;");
+	
+
+		ResultSet results = stmt.executeQuery();
+		while(results.next()){
+			String s = results.getString(1);
+			stmt = conn.prepareStatement(s);
+			stmt.executeQuery();
+		}
 	}
 
 	public void clearAppointments() throws SQLException, FileNotFoundException, IOException {
