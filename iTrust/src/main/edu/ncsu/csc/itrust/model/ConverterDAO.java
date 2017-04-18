@@ -39,6 +39,14 @@ public class ConverterDAO {
 	public static synchronized  DataSource getDataSource() {
 		FileReader f = null;
 		BufferedReader r = null;
+		
+		if (ds != null) {
+			try {
+			ds.close();
+			} catch (Exception e) {
+			}
+		}
+
 		if (ds == null) {
 
 			try {
