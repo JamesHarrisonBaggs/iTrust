@@ -19,7 +19,9 @@ import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class ICDCodeControllerTest extends TestCase {
@@ -33,15 +35,15 @@ public class ICDCodeControllerTest extends TestCase {
     }
     
     public void testConstructor(){
-        ICDCodeController controller = new ICDCodeController(ds);
+        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
         Assert.assertNotNull(controller);
         
-        controller = new ICDCodeController();
+        controller = new ICDCodeController(TestDAOFactory.getTestInstance());
         controller.setSQLData(new ICDCodeMySQL(ds));
     }
     
     public void testAdd(){
-        ICDCodeController controller = new ICDCodeController(ds);
+        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
         Assert.assertNotNull(controller);
         
         // add an ICD code
@@ -70,7 +72,7 @@ public class ICDCodeControllerTest extends TestCase {
     }
     
     public void testEdit(){
-        ICDCodeController controller = new ICDCodeController(ds);
+        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
         Assert.assertNotNull(controller);
         
         // add an ICD code
@@ -101,7 +103,7 @@ public class ICDCodeControllerTest extends TestCase {
     }
     
     public void testRemove(){
-        ICDCodeController controller = new ICDCodeController(ds);
+        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
         Assert.assertNotNull(controller);
         
         // test deleting nonexistent code
@@ -110,7 +112,7 @@ public class ICDCodeControllerTest extends TestCase {
     
     public void testSQLErrors() throws SQLException, FormValidationException{
         DataSource mockDS = mock(DataSource.class);
-        ICDCodeController controller = new ICDCodeController(mockDS);
+        ICDCodeController controller = new ICDCodeController(mockDS, TestDAOFactory.getTestInstance());
         controller = spy(controller);
         ICDCodeMySQL mockData = mock(ICDCodeMySQL.class);
         controller.setSQLData(mockData);

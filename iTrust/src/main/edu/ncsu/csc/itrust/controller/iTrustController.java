@@ -3,6 +3,8 @@ package edu.ncsu.csc.itrust.controller;
 import javax.faces.application.FacesMessage.Severity;
 
 import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.TransactionDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
@@ -16,6 +18,7 @@ public class iTrustController {
 
 	private SessionUtils sessionUtils;
 	private TransactionLogger logger;
+	private DAOFactory factory;
 
 	/**
 	 * A fallback error message to be displayed when something goes unexpectedly
@@ -24,7 +27,11 @@ public class iTrustController {
 	protected static final String GENERIC_ERROR = "Something went wrong and the action couldn't be completed.";
 
 	public iTrustController() {
-		this(null, null);
+		this(null, null, null);
+	}
+	
+	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger) {
+		this(sessionUtils, logger, null);
 	}
 
 	/**
@@ -34,17 +41,26 @@ public class iTrustController {
 	 * @param sessionUtils
 	 * @param logger
 	 */
-	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger) {
-		if (sessionUtils == null) {
+	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger, DAOFactory factory) {
+ 		if (sessionUtils == null) {
 			sessionUtils = SessionUtils.getInstance();
 		}
 		if (logger == null) {
-			logger = TransactionLogger.getInstance();
+			logger = TransactionLogger.getInstance(factory);
 		}
-		setSessionUtils(sessionUtils);
+		setFactory(factory);
+ 		setSessionUtils(sessionUtils);
 		setTransactionLogger(logger);
 	}
-
+	
+	protected DAOFactory getFactory() {
+		return factory;
+	}
+	
+	public void setFactory(DAOFactory factory) {
+		this.factory = factory;
+	}
+	
 	protected TransactionLogger getTransactionLogger() {
 		return logger;
 	}
@@ -60,7 +76,7 @@ public class iTrustController {
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
-
+	
 	/**
 	 * @see {@link SessionUtils#printFacesMessage(Severity, String, String, String)}
 	 */
@@ -72,7 +88,7 @@ public class iTrustController {
 	 * @see {@link TransactionLogger#logTransaction(TransactionType, long, long, String)}
 	 */
 	public void logTransaction(TransactionType type, Long loggedInMID, Long secondaryMID, String addedInfo) {
-		TransactionLogger.getInstance().logTransaction(type, loggedInMID, secondaryMID, addedInfo);
+		logger.logTransaction(type, loggedInMID, secondaryMID, addedInfo);
 	}
 
 	/**
@@ -84,4 +100,5 @@ public class iTrustController {
 		Long patientMID = sessionUtils.getCurrentPatientMIDLong();
 		logTransaction(type, loggedInMID, patientMID, addedInfo);
 	}
+	
 }
