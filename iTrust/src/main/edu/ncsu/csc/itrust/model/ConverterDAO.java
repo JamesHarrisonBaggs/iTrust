@@ -3,6 +3,8 @@ package edu.ncsu.csc.itrust.model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,45 +38,40 @@ public class ConverterDAO {
 		return builder.parse(new InputSource(reader));
 	}
 
-	public static synchronized  DataSource getDataSource() {
+	public static synchronized DataSource getDataSource() {
 		FileReader f = null;
 		BufferedReader r = null;
-		
-		if (ds != null) {
-			try {
+
+		try{
 			ds.close();
-			} catch (Exception e) {
-			}
+		} catch (Exception e){
+			
 		}
+		try {
+			f = new FileReader("WebRoot/META-INF/context.xml");
+			r = new BufferedReader(f);
+			Document document = parseXML(r);
+			ds = new BasicDataSource();
+			ds.setDriverClassName(getAttribute(document, "@driverClassName"));
+			ds.setUsername(getAttribute(document, "@username"));
+			ds.setPassword(getAttribute(document, "@password"));
+			ds.setUrl(getAttribute(document, "@url"));
+			ds.setMaxTotal(15);
 
-		if (ds == null) {
+			ds.setPoolPreparedStatements(true);
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			try {
-				f = new FileReader("WebRoot/META-INF/context.xml");
-				r = new BufferedReader(f);
-				Document document = parseXML(r);
-				ds = new BasicDataSource();
-				ds.setDriverClassName(getAttribute(document, "@driverClassName"));
-				ds.setUsername(getAttribute(document, "@username"));
-				ds.setPassword(getAttribute(document, "@password"));
-				ds.setUrl(getAttribute(document, "@url"));
-				ds.setMaxTotal(15);
-
-				ds.setPoolPreparedStatements(true);
-
-			} catch (Exception e) {
+				r.close();
+			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
 				try {
-					r.close();
+					f.close();
 				} catch (IOException e) {
 					e.printStackTrace();
-				} finally {
-					try {
-						f.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		}
