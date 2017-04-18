@@ -36,12 +36,20 @@ public class ConverterDAO {
 		return builder.parse(new InputSource(reader));
 	}
 
-	public static synchronized  DataSource getDataSource() {
+	public static synchronized DataSource getDataSource() {
 		FileReader f = null;
 		BufferedReader r = null;
-		if (ds == null) {
 
+		if (ds != null) {
 			try {
+				ds.close();
+			} catch (Exception e) {
+
+			}
+		}
+		if (ds == null || ds.isClosed()) {
+			try {
+
 				f = new FileReader("WebRoot/META-INF/context.xml");
 				r = new BufferedReader(f);
 				Document document = parseXML(r);
