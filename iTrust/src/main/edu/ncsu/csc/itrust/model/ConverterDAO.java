@@ -36,7 +36,7 @@ public class ConverterDAO {
 		return builder.parse(new InputSource(reader));
 	}
 
-	public synchronized static DataSource getDataSource() {
+	public static synchronized  DataSource getDataSource() {
 		FileReader f = null;
 		BufferedReader r = null;
 		if (ds == null) {
