@@ -15,7 +15,7 @@ import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class LaborReportControllerTest {
-	
+	/**
 	LaborReportController controller;
 	DataSource ds;
 	@Mock SessionUtils mockSessionUtils;
@@ -44,5 +44,5 @@ public class LaborReportControllerTest {
 //		controller.getComplication(visit);
 		controller.logReportView();
 	}
-
+**/
 }

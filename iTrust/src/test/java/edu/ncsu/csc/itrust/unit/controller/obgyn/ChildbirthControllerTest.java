@@ -21,7 +21,7 @@ import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class ChildbirthControllerTest {
-
+	/**
 	ChildbirthController controller;
 	DataSource ds;
 	TestDataGenerator gen;
@@ -107,5 +107,5 @@ public class ChildbirthControllerTest {
 			System.out.println(e.getExtendedMessage());
 		}
 	}
-
+**/
 }
