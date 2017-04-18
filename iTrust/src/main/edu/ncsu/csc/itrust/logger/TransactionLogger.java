@@ -13,23 +13,33 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
  */
 public class TransactionLogger {
 
-	/** The singleton instance of this class. */
-	private static TransactionLogger singleton = null;
-
-	/** The DAO which exposes logging functionality to the singleton */
+	/** The DAO which exposes logging functionality */
 	TransactionDAO dao;
-
+	
 	private TransactionLogger() {
 		dao = DAOFactory.getProductionInstance().getTransactionDAO();
 	}
 
+	private TransactionLogger(DAOFactory factory) {
+		dao = factory.getTransactionDAO();
+	}
+	
 	/**
-	 * @return Singleton instance of this transaction logging mechanism.
+	 * @return A new transaction logging mechanism.
+	 * WARNING: Constructs using the production instance of DAOFactory
 	 */
 	public static synchronized TransactionLogger getInstance() {
-		if (singleton == null)
-			singleton = new TransactionLogger();
-		return singleton;
+		return new TransactionLogger();
+	}
+	
+	/**
+	 * @return A new transaction logging mechanism.
+	 * Constructs using a specific DAOFactory (can use inject TestDAOFactory)
+	 */
+	public static synchronized TransactionLogger getInstance(DAOFactory factory) {
+		if (factory != null)
+			return new TransactionLogger(factory);
+		return new TransactionLogger();
 	}
 
 	/**

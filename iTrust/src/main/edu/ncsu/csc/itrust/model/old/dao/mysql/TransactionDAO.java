@@ -234,7 +234,7 @@ public class TransactionDAO {
 								+ "count(if(loggedInMID>=9000000000, transactionID, null)) as PersonnelCount "
 								+ "FROM transactionlog GROUP BY transactionCode ORDER BY transactionCode ASC");
 				ResultSet rs = ps.executeQuery()) {
-			TransactionLogger.getInstance().logTransaction(TransactionType.OPERATIONAL_PROFILE_VIEW, loggedInMID, 0L, "");
+			TransactionLogger.getInstance(factory).logTransaction(TransactionType.OPERATIONAL_PROFILE_VIEW, loggedInMID, 0L, "");
 			OperationalProfile result = operationalProfileLoader.loadSingle(rs);
 			return result;
 		} catch (SQLException e) {

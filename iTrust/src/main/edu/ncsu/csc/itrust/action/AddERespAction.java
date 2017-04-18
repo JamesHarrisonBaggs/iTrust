@@ -25,6 +25,7 @@ public class AddERespAction {
 	private PersonnelDAO personnelDAO;
 	private AuthDAO authDAO;
     private long loggedInMID;
+	private TransactionLogger logger;
 	
 	/**
  * Sets up the defaults for the class
@@ -37,6 +38,7 @@ public class AddERespAction {
 		this.personnelDAO = factory.getPersonnelDAO();
 		this.loggedInMID = loggedInMID;
 		this.authDAO = factory.getAuthDAO();
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -54,7 +56,7 @@ public class AddERespAction {
 		personnelDAO.editPersonnel(p);
 		String pwd = authDAO.addUser(newMID, Role.ER, RandomPassword.getRandomPassword());
 		p.setPassword(pwd);
-		TransactionLogger.getInstance().logTransaction(TransactionType.ER_CREATE, loggedInMID, p.getMID(), "");
+		logger.logTransaction(TransactionType.ER_CREATE, loggedInMID, p.getMID(), "");
 		return newMID;
 	}
 }

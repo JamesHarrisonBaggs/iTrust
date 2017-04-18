@@ -14,10 +14,12 @@ import edu.ncsu.csc.itrust.model.old.validate.ApptBeanValidator;
 public class AddApptAction extends ApptAction {
 	private ApptBeanValidator validator = new ApptBeanValidator();
 	private long loggedInMID;
+	private TransactionLogger logger;
 	
 	public AddApptAction(DAOFactory factory, long loggedInMID) {
 		super(factory, loggedInMID);
 		this.loggedInMID = loggedInMID;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 	public String addAppt(ApptBean appt, boolean ignoreConflicts) throws FormValidationException, SQLException, DBException {
@@ -34,14 +36,13 @@ public class AddApptAction extends ApptAction {
 		
 		try {
 			apptDAO.scheduleAppt(appt);
-			TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_ADD, loggedInMID, appt.getPatient(), "");
+			logger.logTransaction(TransactionType.APPOINTMENT_ADD, loggedInMID, appt.getPatient(), "");
 			if(ignoreConflicts){
-				TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, appt.getPatient(), "");
+				logger.logTransaction(TransactionType.APPOINTMENT_CONFLICT_OVERRIDE, loggedInMID, appt.getPatient(), "");
 			}
 			return "Success: " + appt.getApptType() + " for " + appt.getDate() + " added";
 		}
 		catch (SQLException e) {
-			
 			return e.getMessage();
 		} 
 	}	

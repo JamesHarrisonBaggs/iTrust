@@ -33,7 +33,7 @@ public class SendMessageAction {
 	private MessageDAO messageDAO;
 	private EMailValidator emailVal;
 	private MessageValidator messVal;
-
+	private TransactionLogger logger;
 
 	/**
 	 * Sets up defaults
@@ -48,6 +48,7 @@ public class SendMessageAction {
 		this.messageDAO = factory.getMessageDAO();
 		this.emailVal = new EMailValidator();
 		this.messVal = new MessageValidator();
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 	/**
@@ -122,8 +123,9 @@ public class SendMessageAction {
 		email.setFrom(fromEmail);
 		email.setSubject(String.format("A new message from %s", senderName));
 		emailer.sendEmail(email);
-		TransactionLogger.getInstance().logTransaction(TransactionType.EMAIL_SEND, loggedInMID, mBean.getTo(), "");
-		TransactionLogger.getInstance().logTransaction(TransactionType.MESSAGE_SEND, loggedInMID, mBean.getTo(), "");
+		
+		logger.logTransaction(TransactionType.EMAIL_SEND, loggedInMID, mBean.getTo(), "");
+		logger.logTransaction(TransactionType.MESSAGE_SEND, loggedInMID, mBean.getTo(), "");
 	}
 	
 	/**

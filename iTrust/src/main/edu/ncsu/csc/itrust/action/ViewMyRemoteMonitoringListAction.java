@@ -23,6 +23,7 @@ public class ViewMyRemoteMonitoringListAction {
 	private RemoteMonitoringDAO rmDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
+	private TransactionLogger logger;
 
 	/**
 	 * Constructor
@@ -34,7 +35,8 @@ public class ViewMyRemoteMonitoringListAction {
 		this.loggedInMID = loggedInMID;
 		this.rmDAO = factory.getRemoteMonitoringDAO();
 		this.authDAO = factory.getAuthDAO();
-		TransactionLogger.getInstance().logTransaction(TransactionType.PATIENT_LIST_VIEW, loggedInMID, (long)0, "Viewed monitored patients");
+		this.logger = TransactionLogger.getInstance(factory);
+		logger.logTransaction(TransactionType.PATIENT_LIST_VIEW, loggedInMID, (long)0, "Viewed monitored patients");
 		
 	}
 
@@ -97,7 +99,7 @@ public class ViewMyRemoteMonitoringListAction {
 		if (!valid) {
 			throw new FormValidationException("Input must be a valid telemedicine data type!");
 		}
-		TransactionLogger.getInstance().logTransaction(TransactionType.PATIENT_LIST_VIEW, loggedInMID, (long)0, "Viewed monitored patients");
+		logger.logTransaction(TransactionType.PATIENT_LIST_VIEW, loggedInMID, (long)0, "Viewed monitored patients");
 		return rmDAO.getPatientDataByType(patientMID, dataType);
 	}
 	

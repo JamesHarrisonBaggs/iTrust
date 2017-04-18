@@ -29,6 +29,7 @@ public class ResetPasswordAction {
 	private AuthDAO authDAO;
 	private PatientDAO patientDAO;
 	private DAOFactory factory;
+	private TransactionLogger logger;
 
 	/**
 	 * Set up defaults
@@ -38,6 +39,7 @@ public class ResetPasswordAction {
 		this.authDAO = factory.getAuthDAO();
 		this.patientDAO = factory.getPatientDAO();
 		this.factory = factory;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -170,8 +172,8 @@ public class ResetPasswordAction {
 			if (answer.equals(authDAO.getSecurityAnswer(mid))) {
 				authDAO.resetPassword(mid, password);
 				new EmailUtil(factory).sendEmail(makeEmailApp(mid, role));
-				TransactionLogger.getInstance().logTransaction(TransactionType.EMAIL_SEND, mid, mid, "");
-				TransactionLogger.getInstance().logTransaction(TransactionType.PASSWORD_RESET, new Long(mid), null, "");
+				logger.logTransaction(TransactionType.EMAIL_SEND, mid, mid, "");
+				logger.logTransaction(TransactionType.PASSWORD_RESET, new Long(mid), null, "");
 				return "Password changed";
 				
 			} else {
