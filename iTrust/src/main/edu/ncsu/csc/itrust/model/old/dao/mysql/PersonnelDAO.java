@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.old.beans.loaders.HospitalBeanLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.Role;
+import edu.ncsu.csc.itrust.utils.DAOUtils;
 
 /**
  * Used for managing information related to personnel: HCPs, UAPs, Admins
@@ -58,20 +59,7 @@ public class PersonnelDAO {
 	 * @throws DBException
 	 */
 	public String getName(final long mid) throws ITrustException, DBException {
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = conn
-						.prepareStatement("SELECT firstName, lastName FROM personnel WHERE MID=?");) {
-			stmt.setLong(1, mid);
-			ResultSet results = stmt.executeQuery();
-			if (!results.next()) {
-				throw new ITrustException("User does not exist");
-			}
-			final String result = results.getString("firstName") + " " + results.getString("lastName");
-			results.close();
-			return result;
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
+		return DAOUtils.getName(mid, factory, "personnel");
 	}
 
 	public long getNextID(final Role role) throws DBException, ITrustException {
