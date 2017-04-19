@@ -17,7 +17,6 @@ import org.mockito.Mockito;
 import edu.ncsu.csc.itrust.controller.obgyn.PregnancyController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;

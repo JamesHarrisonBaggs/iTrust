@@ -11,11 +11,9 @@ import javax.sql.DataSource;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
-import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
-import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 
 @ManagedBean(name = "icdcode_controller")
 @SessionScoped

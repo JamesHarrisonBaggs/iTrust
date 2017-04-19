@@ -4,7 +4,6 @@ import javax.faces.application.FacesMessage.Severity;
 
 import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
-import edu.ncsu.csc.itrust.model.old.dao.mysql.TransactionDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
