@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedure;
 import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedureMySQL;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
+import edu.ncsu.csc.itrust.utils.ControllerUtils;
 
 @ManagedBean(name = "medical_procedure_controller")
 @SessionScoped
@@ -37,20 +38,7 @@ public class MedicalProcedureController extends iTrustController {
 	}
 
 	public void add(MedicalProcedure mp) {
-		try {
-			if (sql.add(mp)) {
-				printFacesMessage(FacesMessage.SEVERITY_INFO, "Medical Procedure successfully created",
-						"Medical Procedure successfully created", null);
-				Long ovid = getSessionUtils().getCurrentOfficeVisitId();
-				logTransaction(TransactionType.PROCEDURE_ADD, ovid == null ? null : ovid.toString());
-			} else {
-				throw new Exception();
-			}
-		} catch (SQLException e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, e.getMessage(), null);
-		} catch (Exception e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_MEDICAL_PROCEDURE, INVALID_MEDICAL_PROCEDURE, null);
-		}
+		ControllerUtils.add(null, sql, null, mp);
 	}
 
 	public void edit(MedicalProcedure mp) {
