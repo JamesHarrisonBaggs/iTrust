@@ -79,34 +79,44 @@ if(request.getParameter("loginError") != null) {
 
 <%@include file="/header.jsp" %>
 <script type="text/javascript">
-	$(document).ready(function(){
-		// get post titles from reddit
-		var sayings = [];
-		$.ajax({
-			url: "http://www.reddit.com/r/enlightenedbirdmen/hot.json?sort=hot",
-			context: document.body,
-			success: function(response) {
-				var children = response.data.children;
-				for (var i = 0; i < children.length; i++) {
-					var title = children[i].data.title;
-					sayings.push(title);
-				}
-				$('#home-content').delay(1000).animate({opacity:1},3000);
-				var index = Math.floor((Math.random()*sayings.length)+1);
-				$('.jenkins-quote').html(sayings[index]);
-				$('.jenkins-quote').delay(1000).animate({opacity:1},4000);				
-			}
-		});
-	});
-// 	$( document ).ready(function(){
-// 		$('#home-content').delay(1000).animate({opacity:1},3000);
-// 		var sayings = "The first rule of space travel is always check out distress beacons.;Whatever you are asking, the answer is I'm amazing.;Uncertainty is inherently unsustainable. Eventually, everything either is or isn't.;I'm not the nicest guy in the universe, because I'm the smartest.;DISQUALIFIED! (There's one every semester);Get schwifty!;Ohh yea, you gotta get schwifty.;I'm not looking for judgement, just a yes or no. Can you assimilate a giraffe?;I'll tell you how I feel about school, Jerry: it's a waste of time.;Sometimes science is a lot more art, than science. A lot of people don't get that.;It's a figure of speech, Morty! They're bureaucrats! I don't respect them. Just keep shooting, Morty!;They're robots Morty! It's okay to shoot them! They're just robots!;You have to turn them on, Morty! The shoes need to be turned on!;Wubbalubbadubdub!".split(';');
-// 		var index = Math.floor((Math.random()*sayings.length)+1);
-// 		// console.log(index);
-// 		// console.log(sayings[index]);
-// 		$('.jenkins-quote').html(sayings[index]);
-// 		//$('.jenkins-quote').delay(1000).animate({opacity:1},4000);
-// 	});
+	// $(document).ready(function(){
+	// 	// get post titles from reddit
+	// 	var reddits = ["lifeprotips", "enlightenedbirdmen", "lifeprotips"];
+	// 	var reddit = Math.floor((Math.random()*(reddits.length)+1));
+	// 	var url = "http://www.reddit.com/r/" + reddits[reddit] + "/hot.json?sort=hot"
+	// 	console.log("Reddit quotes:")
+	// 	console.log(reddits.length);
+	// 	console.log(reddit);
+	// 	console.log(url);
+	// 	$.ajax({
+	// 		url: url,
+	// 		context: document.body,
+	// 		success: function(response) {
+	// 			var sayings = [];
+	// 			var children = response.data.children;
+	// 			for (var i = 0; i < children.length; i++) {
+	// 				var title = children[i].data.title;
+	// 				sayings.push(title);
+	// 			}
+	// 			$('#home-content').delay(1000).animate({opacity:1},3000);
+	// 			var index = Math.floor((Math.random()*sayings.length)+1);
+	// 			console.log(sayings[index]);
+	// 			$('.jenkins-quote').html(sayings[index]);
+	// 			$('.jenkins-quote').delay(1000).animate({opacity:1},4000);				
+	// 		}
+	// 	});
+	// });
+ 	$( document ).ready(function(){
+		$('#home-content').delay(1000).animate({opacity:1},3000);
+ 		var sayings = "Now is the time to try something new.;If winter comes, can spring be far behind?;A stranger, is a friend you have not spoken to yet.;Conquer your fears or they will conquer you.;You learn from your mistakes, you will learn a lot today.;	You only need look to your own reflection for inspiration. Because you are Beautiful!;You are not judged by your efforts you put in, you are judged on your performance.;Rivers need springs.;When you look down, all you see is dirt, so keep looking up.;If you are afraid to shake the dice, you will never throw a six.;A single conversation with a wise man is better than ten years of study.;Happiness is often a rebound from hard work.;The world may be your oyster, but that doesn't mean you'll get it's pearl.;Do not follow where the path may lead. Go where there is no path...and leave a trail.;Do not fear what you don't know.;Do not be covered in sadness or be fooled in happiness they both must exist.;All progress occurs because people dare to be different.;Your ability for accomplishment will be followed by success.;We can't help everyone. But everyone can help someone.;Express yourself: Don't hold back!;You have a deep appreciation of the arts and music.;Intelligence is the door to freedom and alert attention is the mother of intelligence.;For success today look first to yourself.;Determination is the wake-up call to the human will.;There are no limitations to the mind except those we aknowledge.;A merry heart does good like a medicine.;Whenever possible, keep it simple.;If you don't do it excellently, don't do it at all.;Emotion is energy in motion.;Punctuality is the politeness of kings and the duty of gentle people everywhere.;Your happiness is intertwined with your outlook on life.;If you feel you are right, stand firmly by your convictions.;Your smile brings happiness to everyone you meet.;Instead of worrying and agonizing, move ahead constructively.;Do you believe?;Endurance and persistence will be rewarded.;Hold on to the past but eventually, let the times go and keep the memories into the present.;Truth is an unpopular subject. Because it is unquestionably correct.;The most important thing in communication is to hear what isn't being said.;Be broad minded and socially active.;You have a fine capacity for the enjoyment of life.;A wish is what makes life happen when you dream of rose petals.;Love can turn a cottage into a golden palace.;Unleash your life force.;There is a prospect of a thrilling time ahead for you.;Land is always in the mind of the flying birds.;Try? No! Do or do not, there is no try.;You create your own stage ... the audience is waiting.;It is never too late. Just as it is never too early.;Discover the power within yourself.;Good things take time.;Put your unhappiness aside. Life is beautiful, be happy.;You can still love what you can not have in life.;Make a wise choice everyday.;Circumstance does not make the man, it reveals him to himself.;The man who waits till tomorrow, misses the opportunities of today.;Life does not get better by chance. It gets better by change.;True wisdom is found in happiness.;Every exit is an entrance to new experiences.;About time I got out of that cookie.;I've never seen anyone fall from a banana peel.;Friendship is the greatest treasure of all.;Follow your bliss and the Universe will open doors here there were once only walls.;Find a peaceful place where you can make plans for the future.;All the water in the world can't sink a ship unless it gets inside.;When you squeeze an orange, orange juice comes out - because that's what's inside.;\"Stressed\" is \"desserts\" spelled backwards.;Broccoli is a vegetable. So is pizza.;Life doesn't come with instructions.;Burritos are sleeping bags for ground beef.;Cut the red wire.  Unless there is a blue one or a green one.;A surprise to be sure, but a welcome one;Have you ever heard the tragedy of Darth Plagueis the Wise?;The first rule of space travel is always check out distress beacons.;Whatever you are asking, the answer is I'm amazing.;Uncertainty is inherently unsustainable. Eventually, everything either is or isn't.;I'm not the nicest guy in the universe, because I'm the smartest.;DISQUALIFIED! (There's one every semester);Get schwifty!;Ohh yea, you gotta get schwifty.;I'm not looking for judgement, just a yes or no. Can you assimilate a giraffe?;I'll tell you how I feel about school, Jerry: it's a waste of time.;Sometimes science is a lot more art, than science. A lot of people don't get that.;It's a figure of speech, Morty! They're bureaucrats! I don't respect them. Just keep shooting, Morty!;They're robots Morty! It's okay to shoot them! They're just robots!;You have to turn them on, Morty! The shoes need to be turned on!;Wubbalubbadubdub!".split(';');
+ 		var index = Math.floor((Math.random()*sayings.length));
+ 		console.log("Jenkins quotes:");
+ 		console.log(sayings.length);
+ 		console.log(index);
+ 		console.log(sayings[index]);
+ 		$('.jenkins-quote').html(sayings[index]);
+ 		// $('.jenkins-quote').delay(1000).animate({opacity:1},4000);
+ 	});
 </script>
 <div id="home-content">
 	<blockquote><span class="jenkins-quote"></span></blockquote>
