@@ -41,10 +41,10 @@ public class ControllerUtils {
 		}
 	}
 	
-	public static void add(PrescriptionMySQL psql, MedicalProcedureMySQL mpsql, Prescription prescription, MedicalProcedure medicalProcedure) {
+	public static void add(PrescriptionMySQL psql, MedicalProcedureMySQL mpsql, Prescription prescription, 
+			MedicalProcedure medicalProcedure, iTrustController controller) {
 		String message = "";
 		SessionUtils session = SessionUtils.getInstance();
-		iTrustController controller = new iTrustController();
 		try {
 			if (psql != null && prescription != null) {
 				message = "Invalid Prescription";
