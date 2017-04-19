@@ -163,12 +163,14 @@ public class OfficeVisitController extends iTrustController {
 	 *            (if any)
 	 */
 	public void printFacesMessage(Severity severity, String summary, String detail, String clientId) {
-		FacesContext ctx = FacesContext.getCurrentInstance();
+		SessionUtils session = SessionUtils.getInstance();
+		session.printFacesMessage(severity, summary, detail, clientId);
+		/*FacesContext ctx = FacesContext.getCurrentInstance();
 		if (ctx == null) {
 			return;
 		}
 		ctx.getExternalContext().getFlash().setKeepMessages(true);
-		ctx.addMessage(clientId, new FacesMessage(severity, summary, detail));
+		ctx.addMessage(clientId, new FacesMessage(severity, summary, detail));*/
 	}
 
 	public void redirectToBaseOfficeVisit() throws IOException {
