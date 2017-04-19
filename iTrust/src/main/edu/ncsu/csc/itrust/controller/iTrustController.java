@@ -3,6 +3,8 @@ package edu.ncsu.csc.itrust.controller;
 import javax.faces.application.FacesMessage.Severity;
 
 import edu.ncsu.csc.itrust.logger.TransactionLogger;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.model.old.dao.mysql.TransactionDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
@@ -24,9 +26,9 @@ public class iTrustController {
 	protected static final String GENERIC_ERROR = "Something went wrong and the action couldn't be completed.";
 
 	public iTrustController() {
-		this(null, null);
+		this(null, null, null);
 	}
-
+	
 	/**
 	 * Initializes iTrustController with SessionUtils and TransactionLogger
 	 * instances. Initializes sessionUtils and logger if they are null.
@@ -34,17 +36,20 @@ public class iTrustController {
 	 * @param sessionUtils
 	 * @param logger
 	 */
-	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger) {
+	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger, DAOFactory factory) {
+ 		if (factory == null) {
+ 			factory = DAOFactory.getProductionInstance();
+ 		}
 		if (sessionUtils == null) {
 			sessionUtils = SessionUtils.getInstance();
 		}
 		if (logger == null) {
-			logger = TransactionLogger.getInstance();
+			logger = TransactionLogger.getInstance(factory);
 		}
 		setSessionUtils(sessionUtils);
 		setTransactionLogger(logger);
 	}
-
+	
 	protected TransactionLogger getTransactionLogger() {
 		return logger;
 	}
@@ -60,7 +65,7 @@ public class iTrustController {
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
-
+	
 	/**
 	 * @see {@link SessionUtils#printFacesMessage(Severity, String, String, String)}
 	 */
@@ -72,7 +77,7 @@ public class iTrustController {
 	 * @see {@link TransactionLogger#logTransaction(TransactionType, long, long, String)}
 	 */
 	public void logTransaction(TransactionType type, Long loggedInMID, Long secondaryMID, String addedInfo) {
-		TransactionLogger.getInstance().logTransaction(type, loggedInMID, secondaryMID, addedInfo);
+		logger.logTransaction(type, loggedInMID, secondaryMID, addedInfo);
 	}
 
 	/**
@@ -82,6 +87,9 @@ public class iTrustController {
 	public void logTransaction(TransactionType type, String addedInfo) {
 		Long loggedInMID = sessionUtils.getSessionLoggedInMIDLong();
 		Long patientMID = sessionUtils.getCurrentPatientMIDLong();
+		if (loggedInMID == null) loggedInMID = Long.valueOf(0);
+		if (patientMID == null) patientMID = Long.valueOf(0);
 		logTransaction(type, loggedInMID, patientMID, addedInfo);
 	}
+	
 }

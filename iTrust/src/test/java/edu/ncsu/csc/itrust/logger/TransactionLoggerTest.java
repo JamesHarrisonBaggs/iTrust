@@ -21,14 +21,6 @@ public class TransactionLoggerTest {
 	}
 
 	@Test
-	public void testGetInstance() {
-		TransactionLogger first = TransactionLogger.getInstance();
-		TransactionLogger second = TransactionLogger.getInstance();
-		// Should be a singleton
-		Assert.assertEquals(first, second);
-	}
-
-	@Test
 	public void testLogTransaction() throws DBException {
 		DAOFactory prod = spy(DAOFactory.getProductionInstance());
 		TransactionDAO mockDAO = mock(TransactionDAO.class);

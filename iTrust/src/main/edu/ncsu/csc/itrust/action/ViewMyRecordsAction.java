@@ -38,6 +38,7 @@ public class ViewMyRecordsAction {
 	private FakeEmailDAO emailDAO;
 	private ReportRequestDAO reportRequestDAO;
 	private long loggedInMID;
+	private TransactionLogger logger;
 
 	/**
 	 * Set up
@@ -52,6 +53,7 @@ public class ViewMyRecordsAction {
 		this.emailDAO = factory.getFakeEmailDAO();
 		this.reportRequestDAO = factory.getReportRequestDAO();
 		this.loggedInMID = loggedInMID;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 
@@ -115,7 +117,7 @@ public class ViewMyRecordsAction {
 	 * @throws ITrustException
 	 */
 	public List<Email> getEmailHistory() throws ITrustException {
-		TransactionLogger.getInstance().logTransaction(TransactionType.EMAIL_HISTORY_VIEW, loggedInMID, (long)0, "");
+		logger.logTransaction(TransactionType.EMAIL_HISTORY_VIEW, loggedInMID, (long)0, "");
 		return emailDAO.getEmailsByPerson(getPatient().getEmail());
 	}
 
@@ -262,6 +264,6 @@ public class ViewMyRecordsAction {
 	}
 	
 	public void logViewMedicalRecords(Long mid, Long secondary) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.MEDICAL_RECORD_VIEW, mid, secondary, "");
+		logger.logTransaction(TransactionType.MEDICAL_RECORD_VIEW, mid, secondary, "");
 	}
 }

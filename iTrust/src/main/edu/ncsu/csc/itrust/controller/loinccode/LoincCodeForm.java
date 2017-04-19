@@ -7,6 +7,7 @@ import javax.faces.bean.ViewScoped;
 
 import edu.ncsu.csc.itrust.controller.loinccode.LoincCodeController;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 @ManagedBean(name = "loinc_code_form")
@@ -27,11 +28,15 @@ public class LoincCodeForm {
 	private boolean displayCodes;
 
 	public LoincCodeForm() {
-		this(null);
+		this(null, null);
+	}
+	
+	public LoincCodeForm(DAOFactory factory) {
+		this(null, factory);
 	}
 
-	public LoincCodeForm(LoincCodeController loincCodeController) {
-		controller = (loincCodeController == null) ? new LoincCodeController() : loincCodeController;
+	public LoincCodeForm(LoincCodeController loincCodeController, DAOFactory factory) {
+		controller = (loincCodeController == null) ? new LoincCodeController(factory) : loincCodeController;
 		search = "";
 		setDisplayCodes(false);
 	}

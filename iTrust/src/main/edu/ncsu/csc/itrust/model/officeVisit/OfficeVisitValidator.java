@@ -41,7 +41,7 @@ public class OfficeVisitValidator extends POJOValidator<OfficeVisit> {
 	 */
 	@Override
 	public void validate(OfficeVisit obj) throws FormValidationException {
-		OfficeVisitController ovc = new OfficeVisitController(ds);
+		OfficeVisitController ovc = new OfficeVisitController(ds, null);
 		ErrorList errorList = new ErrorList();
 		
 		LocalDateTime date = obj.getDate();

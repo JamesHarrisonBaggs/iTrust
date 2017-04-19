@@ -16,11 +16,13 @@ public class EditApptTypeAction {
 	private ApptTypeDAO apptTypeDAO;
 	private long loggedInMID;
 	private ApptTypeBeanValidator validator = new ApptTypeBeanValidator();
+	private TransactionLogger logger;
 	
 	public EditApptTypeAction(DAOFactory factory, long loggedInMID) {
 		this.apptTypeDAO = factory.getApptTypeDAO();
 		this.loggedInMID = loggedInMID;
-		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_TYPE_VIEW, loggedInMID, 0L, "");
+		this.logger = TransactionLogger.getInstance(factory);
+		logger.logTransaction(TransactionType.APPOINTMENT_TYPE_VIEW, loggedInMID, 0L, "");
 	}
 	
 	public List<ApptTypeBean> getApptTypes() throws SQLException, DBException {
@@ -38,7 +40,7 @@ public class EditApptTypeAction {
 		
 		try {
 			if (apptTypeDAO.addApptType(apptType)) {
-				TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_TYPE_ADD, loggedInMID, 0L, "");
+				logger.logTransaction(TransactionType.APPOINTMENT_TYPE_ADD, loggedInMID, 0L, "");
 				return "Success: " + apptType.getName() + " - Duration: " + apptType.getDuration() + " added";
 			} else
 				return "The database has become corrupt. Please contact the system administrator for assistance.";
@@ -67,7 +69,7 @@ public class EditApptTypeAction {
 		
 		try {
 			if (apptTypeDAO.editApptType(apptType)) {
-				TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_TYPE_EDIT, loggedInMID, 0L, "");
+				logger.logTransaction(TransactionType.APPOINTMENT_TYPE_EDIT, loggedInMID, 0L, "");
 				return "Success: " + apptType.getName() + " - Duration: " + apptType.getDuration() + " updated";
 			} else
 				return "The database has become corrupt. Please contact the system administrator for assistance.";

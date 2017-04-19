@@ -11,12 +11,14 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 public class ViewMyApptsAction extends ApptAction {
 	private long loggedInMID;
+	private TransactionLogger logger;
 	
 	public ViewMyApptsAction(DAOFactory factory, long loggedInMID) {
 		super(factory, loggedInMID);
 		this.loggedInMID = loggedInMID;
-		TransactionLogger.getInstance().logTransaction(TransactionType.UPCOMING_APPOINTMENTS_VIEW, loggedInMID, 0L, "");
-		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_ALL_VIEW, loggedInMID, 0L, "");
+		this.logger = TransactionLogger.getInstance(factory);
+		logger.logTransaction(TransactionType.UPCOMING_APPOINTMENTS_VIEW, loggedInMID, 0L, "");
+		logger.logTransaction(TransactionType.APPOINTMENT_ALL_VIEW, loggedInMID, 0L, "");
 	}
 	
 	public void setLoggedInMID(long mid) {

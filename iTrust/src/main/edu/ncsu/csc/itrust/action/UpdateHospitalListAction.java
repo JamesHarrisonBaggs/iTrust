@@ -18,6 +18,7 @@ import edu.ncsu.csc.itrust.model.old.validate.HospitalBeanValidator;
 public class UpdateHospitalListAction {
 	private HospitalsDAO hospDAO;
 	private long performerID;
+	private TransactionLogger logger;
 
 	/**
 	 * Set up
@@ -28,10 +29,11 @@ public class UpdateHospitalListAction {
 	public UpdateHospitalListAction(DAOFactory factory, long performerID) {
 		this.hospDAO = factory.getHospitalsDAO();
 		this.performerID = performerID;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 	public void logViewHospitalListing() {
-		TransactionLogger.getInstance().logTransaction(TransactionType.HOSPITAL_LISTING_VIEW, performerID, null, "");
+		logger.logTransaction(TransactionType.HOSPITAL_LISTING_VIEW, performerID, null, "");
 	}
 
 	/**
@@ -46,7 +48,7 @@ public class UpdateHospitalListAction {
 		
 		try {
 			if (hospDAO.addHospital(hosp)) {
-				TransactionLogger.getInstance().logTransaction(TransactionType.HOSPITAL_LISTING_ADD, performerID, null, hosp.getHospitalID());
+				logger.logTransaction(TransactionType.HOSPITAL_LISTING_ADD, performerID, null, hosp.getHospitalID());
 				return "Success: " + hosp.getHospitalID() + " - " + hosp.getHospitalName() + " added";
 			} else {
 				return "The database has become corrupt. Please contact the system administrator for assistance.";
@@ -75,7 +77,7 @@ public class UpdateHospitalListAction {
 			if (0 == (rows = updateHospital(hosp))) {
 				return "Error: Hospital not found.";
 			} else {
-				TransactionLogger.getInstance().logTransaction(TransactionType.HOSPITAL_LISTING_EDIT, performerID, null, "" + hosp.getHospitalID());
+				logger.logTransaction(TransactionType.HOSPITAL_LISTING_EDIT, performerID, null, "" + hosp.getHospitalID());
 				return "Success: " + rows + " row(s) updated";
 			}
 		} catch (DBException e) {	

@@ -27,6 +27,7 @@ import edu.ncsu.csc.itrust.model.hospital.HospitalData;
 import edu.ncsu.csc.itrust.model.hospital.HospitalMySQLConverter;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class OfficeVisitFormTest extends TestCase {
@@ -66,7 +67,7 @@ public class OfficeVisitFormTest extends TestCase {
 		apptData = new ApptTypeMySQLConverter(ds);
 		hData = new HospitalMySQLConverter(ds);
 		gen = new TestDataGenerator();
-		ovc = Mockito.spy(new OfficeVisitController(ds));
+		ovc = Mockito.spy(new OfficeVisitController(ds, TestDAOFactory.getTestInstance()));
 		mockovc = Mockito.mock(OfficeVisitController.class);
 		
 		// Set up office visits

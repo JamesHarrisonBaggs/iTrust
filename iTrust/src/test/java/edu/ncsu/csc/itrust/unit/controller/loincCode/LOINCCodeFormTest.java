@@ -15,15 +15,20 @@ import edu.ncsu.csc.itrust.controller.loinccode.LoincCodeForm;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class LOINCCodeFormTest extends TestCase{
     TestDataGenerator gen;
     DataSource ds;
+    DAOFactory test;
+    
     @Override
     public void setUp() throws FileNotFoundException, SQLException, IOException{
         ds = ConverterDAO.getDataSource();
+        test = TestDAOFactory.getTestInstance();
         gen = new TestDataGenerator();
         gen.clearAllTables();
     }
@@ -32,9 +37,9 @@ public class LOINCCodeFormTest extends TestCase{
     public void testForm(){
         // test constructor
         LoincCodeForm form = new LoincCodeForm();
-        LoincCodeController controller = new LoincCodeController();
+        LoincCodeController controller = new LoincCodeController(test);
         controller.setSQLData(new LOINCCodeMySQL(ds));
-        form = new LoincCodeForm(controller);
+        form = new LoincCodeForm(controller, test);
         Assert.assertEquals("", form.getSearch());
         Assert.assertFalse(form.getDisplayCodes());
         

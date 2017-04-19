@@ -118,12 +118,12 @@ public class ObstetricsVisitController extends iTrustController {
 	}
 
 	public ObstetricsVisitController(DataSource ds, SessionUtils utils, DAOFactory dao) throws DBException {
-		super();
+		super(utils, null, dao);
 		sessionUtils = utils;
 		factory = dao;
 		obc = new ObstetricsInitController(ds, utils, factory);
 		sql = new ObstetricsVisitMySQL(ds);
-		ovc = new OfficeVisitController(ds);
+		ovc = new OfficeVisitController(ds, factory);
 		ovc.setSessionUtils(utils);		
 		setUpController();
 	}

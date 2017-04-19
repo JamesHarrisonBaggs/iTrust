@@ -29,8 +29,10 @@ import edu.ncsu.csc.itrust.model.hospital.HospitalMySQLConverter;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitData;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 import junit.framework.TestCase;
 
@@ -49,11 +51,12 @@ public class OfficeVisitControllerTest extends TestCase {
 
 	private ApptTypeData apptData;
 	private OfficeVisitData ovData;
-	private DataSource ds;
-	private TestDataGenerator gen; // remove when ApptType, Patient, and other
-									// files are finished
 	private OfficeVisit testOV;
 
+	private DataSource ds;
+	private TestDataGenerator gen; // remove when ApptType, Patient, and other files are finished
+	private DAOFactory test;
+	
 	private LocalDateTime birthDate;
 	private LocalDateTime babyDate;
 	private LocalDateTime childDate;
@@ -62,8 +65,9 @@ public class OfficeVisitControllerTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		ds = ConverterDAO.getDataSource();
+		test = TestDAOFactory.getTestInstance();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		ovc = Mockito.spy(new OfficeVisitController(ds, mockSessionUtils));
+		ovc = Mockito.spy(new OfficeVisitController(ds, mockSessionUtils, test));
 		Mockito.doNothing().when(ovc).printFacesMessage(Matchers.any(FacesMessage.Severity.class), Mockito.anyString(),
 				Mockito.anyString(), Mockito.anyString());
 		Mockito.doNothing().when(ovc).redirectToBaseOfficeVisit();
@@ -101,7 +105,7 @@ public class OfficeVisitControllerTest extends TestCase {
 		testOV.setDate(babyDate);
 
 		// Initialize a office visit controller with null data source
-		ovcWithNullDataSource = new OfficeVisitController(null, sessionUtils);
+		ovcWithNullDataSource = new OfficeVisitController(null, sessionUtils, test);
 
 		// Mock HttpServletRequest
 		mockHttpServletRequest = Mockito.mock(HttpServletRequest.class);

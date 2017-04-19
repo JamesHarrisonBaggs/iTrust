@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import edu.ncsu.csc.itrust.controller.obgyn.LaborReportController;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
+import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
@@ -18,6 +19,7 @@ public class LaborReportControllerTest {
 	
 	LaborReportController controller;
 	DataSource ds;
+	TestDataGenerator gen;
 	@Mock SessionUtils mockSessionUtils;
 	
 	@Before
@@ -26,6 +28,9 @@ public class LaborReportControllerTest {
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
 		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
 		controller = new LaborReportController(ds, mockSessionUtils, TestDAOFactory.getTestInstance());
+		gen = new TestDataGenerator();
+		gen.clearAllTables();
+		gen.standardData();
 	}
 
 	@Test

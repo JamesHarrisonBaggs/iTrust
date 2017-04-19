@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
@@ -25,7 +26,6 @@ public class PrescriptionController extends iTrustController {
 	private PrescriptionMySQL sql;
 
 	public PrescriptionController() throws DBException {
-		super();
 		sql = new PrescriptionMySQL();
 	}
 
@@ -35,8 +35,8 @@ public class PrescriptionController extends iTrustController {
 	 * @param ds
 	 *            The injected DataSource dependency
 	 */
-	public PrescriptionController(DataSource ds) throws DBException {
-		super();
+	public PrescriptionController(DataSource ds, DAOFactory factory) throws DBException {
+		super(null, null, factory);
 		this.sql = new PrescriptionMySQL(ds);
 	}
 	

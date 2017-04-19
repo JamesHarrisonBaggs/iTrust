@@ -14,12 +14,14 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
  */
 public class SessionTimeoutListener implements HttpSessionListener {
 	private DAOFactory factory;
+	private TransactionLogger logger;
 
 	/**
 	 * The default constructor.
 	 */
 	public SessionTimeoutListener() {
 		this.factory = DAOFactory.getProductionInstance();
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -29,6 +31,7 @@ public class SessionTimeoutListener implements HttpSessionListener {
 	 */
 	public SessionTimeoutListener(DAOFactory factory) {
 		this.factory = factory;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -61,7 +64,7 @@ public class SessionTimeoutListener implements HttpSessionListener {
 		HttpSession session = arg0.getSession();
 		Long mid = (Long) session.getAttribute("loggedInMID");
 		if (mid != null) {
-			TransactionLogger.getInstance().logTransaction(TransactionType.LOGOUT_INACTIVE, mid, null, "");
+			logger.logTransaction(TransactionType.LOGOUT_INACTIVE, mid, null, "");
 		}
 	}
 }

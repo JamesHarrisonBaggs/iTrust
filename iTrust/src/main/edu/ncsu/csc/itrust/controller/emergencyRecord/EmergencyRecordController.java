@@ -8,6 +8,7 @@ import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecord;
 import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecordMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
@@ -34,7 +35,8 @@ public class EmergencyRecordController extends iTrustController {
      * @param ds The DataSource to use
      * @param allergyData the AllergyDAO to use
      */
-    public EmergencyRecordController(DataSource ds, AllergyDAO allergyData) throws DBException{
+    public EmergencyRecordController(DataSource ds, AllergyDAO allergyData, DAOFactory factory) throws DBException {
+    	super(null, null, factory);
     	EmergencyRecordMySQL sql;
     	sql = new EmergencyRecordMySQL(ds, allergyData);
     	this.sql = sql;

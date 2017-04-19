@@ -140,7 +140,7 @@ public class UltrasoundController extends iTrustController {
 	}
 
 	public UltrasoundController(SessionUtils sessionUtils, TransactionLogger logger) {
-		super(sessionUtils, logger);
+		super(sessionUtils, logger, null);
 	}
 
 	public OfficeVisit getOfficeVisit() throws DBException {

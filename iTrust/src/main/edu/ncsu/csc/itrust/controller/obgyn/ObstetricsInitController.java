@@ -48,8 +48,8 @@ public class ObstetricsInitController extends iTrustController {
 	}
 
 	public ObstetricsInitController(DataSource ds, SessionUtils utils, DAOFactory factory) throws DBException {
-		super();
-		this.utils = utils;
+		super(utils, null, factory);
+		this.utils = getSessionUtils();
 		this.factory = factory;
 		this.sql = new ObstetricsInitMySQL(ds);
 		this.setUpInitialization();

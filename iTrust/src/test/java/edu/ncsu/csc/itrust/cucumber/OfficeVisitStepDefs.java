@@ -11,6 +11,8 @@ import edu.ncsu.csc.itrust.model.hospital.HospitalData;
 import edu.ncsu.csc.itrust.model.hospital.HospitalMySQLConverter;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisit;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import cucumber.api.java.en.Then;
 
 import java.security.InvalidParameterException;
@@ -31,15 +33,17 @@ private HospitalData hospBean;
 private DataSource ds;
 private OfficeVisit sharedVisit;
 private OfficeVisitController ovc;
+private DAOFactory test;
 
 	public OfficeVisitStepDefs(PatientDataShared currentPatient, OfficeVisit sharedOV){
-		this.ds =ConverterDAO.getDataSource();
+		this.ds = ConverterDAO.getDataSource();
+		this.test = TestDAOFactory.getTestInstance();
 		this.patientData = currentPatient;
 		this.ovData = new OfficeVisitMySQL(ds);
 		this.atBean = new ApptTypeMySQLConverter(ds);
 		this.hospBean = new HospitalMySQLConverter(ds);
 		this.sharedVisit = sharedOV;
-		this.ovc = new OfficeVisitController(ds);
+		this.ovc = new OfficeVisitController(ds, test);
 	}
 	
 	@Given("^I have already selected (.+)")

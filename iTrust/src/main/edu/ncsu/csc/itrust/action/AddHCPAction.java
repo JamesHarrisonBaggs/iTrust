@@ -24,6 +24,8 @@ public class AddHCPAction {
     private PersonnelDAO personnelDAO;
     private AuthDAO authDAO;
     private long loggedInMID;
+    private TransactionLogger logger;
+
 	/**
 	 * Sets up the defaults for the class
 	 * 
@@ -35,6 +37,7 @@ public class AddHCPAction {
 		this.personnelDAO = factory.getPersonnelDAO();
 		this.loggedInMID = loggedInMID;
 		this.authDAO = factory.getAuthDAO();
+	    this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 	/**
@@ -52,7 +55,7 @@ public class AddHCPAction {
 		personnelDAO.editPersonnel(p);
 		String pwd = authDAO.addUser(newMID, Role.HCP, RandomPassword.getRandomPassword());
 		p.setPassword(pwd);
-		TransactionLogger.getInstance().logTransaction(TransactionType.LHCP_CREATE, loggedInMID, p.getMID(), "");
+		logger.logTransaction(TransactionType.LHCP_CREATE, loggedInMID, p.getMID(), "");
 		return newMID;
 	}
 }

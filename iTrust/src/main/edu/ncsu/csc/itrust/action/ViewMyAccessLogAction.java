@@ -28,7 +28,8 @@ public class ViewMyAccessLogAction {
 	private TransactionDAO transDAO;
 	private PatientDAO patientDAO;
 	private long loggedInMID;
-
+	private TransactionLogger logger;
+	
 	/**
 	 * Set up
 	 * 
@@ -39,6 +40,7 @@ public class ViewMyAccessLogAction {
 		this.loggedInMID = loggedInMID;
 		this.transDAO = factory.getTransactionDAO();
 		this.patientDAO = factory.getPatientDAO();
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -161,6 +163,6 @@ public class ViewMyAccessLogAction {
 	}
 	
 	public void logViewAccessLog(Long mid) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.ACCESS_LOG_VIEW, mid, null, "");
+		logger.logTransaction(TransactionType.ACCESS_LOG_VIEW, mid, null, "");
 	}
 }

@@ -19,14 +19,19 @@ import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class CPTCodeControllerTest extends TestCase {
     TestDataGenerator gen;
     DataSource ds;
+    DAOFactory test;
+    
     @Override
     public void setUp() throws FileNotFoundException, SQLException, IOException{
+    	test = TestDAOFactory.getTestInstance();
         ds = ConverterDAO.getDataSource();
         gen = new TestDataGenerator();
         gen.clearAllTables();
@@ -34,7 +39,7 @@ public class CPTCodeControllerTest extends TestCase {
     
     public void testConstructor(){
         // test testing constructor
-        CPTCodeController controller = new CPTCodeController(ds);
+        CPTCodeController controller = new CPTCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         controller = new CPTCodeController();
@@ -42,7 +47,7 @@ public class CPTCodeControllerTest extends TestCase {
     }
     
     public void testAdd(){
-        CPTCodeController controller = new CPTCodeController(ds);
+        CPTCodeController controller = new CPTCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add a CPTCode
@@ -72,7 +77,7 @@ public class CPTCodeControllerTest extends TestCase {
     }
     
     public void testEdit(){
-        CPTCodeController controller = new CPTCodeController(ds);
+        CPTCodeController controller = new CPTCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add a CPTCode
@@ -110,7 +115,7 @@ public class CPTCodeControllerTest extends TestCase {
     }
     
     public void testRemove(){
-        CPTCodeController controller = new CPTCodeController(ds);
+        CPTCodeController controller = new CPTCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add a CPTCode
@@ -135,7 +140,7 @@ public class CPTCodeControllerTest extends TestCase {
     }
     
     public void testGetters(){
-        CPTCodeController controller = new CPTCodeController(ds);
+        CPTCodeController controller = new CPTCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add a CPTCode
@@ -153,7 +158,7 @@ public class CPTCodeControllerTest extends TestCase {
     
     public void testSQLErrors() throws SQLException, FormValidationException{
         DataSource mockDS = mock(DataSource.class);
-        CPTCodeController controller = new CPTCodeController(mockDS);
+        CPTCodeController controller = new CPTCodeController(mockDS, test);
         controller = spy(controller);
         CPTCodeMySQL mockData = mock(CPTCodeMySQL.class);
         controller.setMySQL(mockData);

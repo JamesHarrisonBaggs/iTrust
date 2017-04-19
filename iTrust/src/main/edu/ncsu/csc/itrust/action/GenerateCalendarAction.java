@@ -23,6 +23,7 @@ public class GenerateCalendarAction {
 	private ViewMyApptsAction a_action;
 	private List<ApptBean> send;
 	private ApptTypeDAO apptTypeDAO;
+	private TransactionLogger logger;
 	
 	/**
 	 * Set up defaults
@@ -34,7 +35,8 @@ public class GenerateCalendarAction {
 		a_action = new ViewMyApptsAction(factory, loggedInMID);
 		send = new ArrayList<ApptBean>();
 		apptTypeDAO = factory.getApptTypeDAO();
-		TransactionLogger.getInstance().logTransaction(TransactionType.CALENDAR_VIEW, loggedInMID, 0L, "");
+		this.logger = TransactionLogger.getInstance(factory);
+		logger.logTransaction(TransactionType.CALENDAR_VIEW, loggedInMID, 0L, "");
 	}
 	
 	/**

@@ -22,7 +22,9 @@ import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCodeMySQL;
 import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedure;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 import junit.framework.TestCase;
 
@@ -31,10 +33,12 @@ public class MedicalProcedureFormTest extends TestCase {
     private DataSource ds;
     private OfficeVisitMySQL ovSql;
     private SessionUtils utils;
+    private DAOFactory test;
     
     @Override
     public void setUp() throws FileNotFoundException, SQLException, IOException{
         ds = ConverterDAO.getDataSource();
+        test = TestDAOFactory.getTestInstance();
         ovSql = new OfficeVisitMySQL(ds);
         utils = spy(SessionUtils.getInstance());
         gen = new TestDataGenerator();
@@ -49,8 +53,8 @@ public class MedicalProcedureFormTest extends TestCase {
         
         // make the form
         MedicalProcedureForm form = new MedicalProcedureForm();
-        form = new MedicalProcedureForm(null, null, utils, null);
-        form = new MedicalProcedureForm(null, null, utils, ds);
+        form = new MedicalProcedureForm(null, null, utils, null, test);
+        form = new MedicalProcedureForm(null, null, utils, ds, test);
         
         // fill input
         form.fillInput("0", new CPTCode("90717", "Typhoid Vaccine"));
@@ -80,9 +84,9 @@ public class MedicalProcedureFormTest extends TestCase {
         form.remove(Long.toString(form.getMedicalProcedure().getId()));
         Assert.assertEquals(0, form.getMedicalProceduresByOfficeVisit(Long.toString(ovID)).size());
         
-        MedicalProcedureController mockMedicalProcedureController = spy(new MedicalProcedureController(ds));
+        MedicalProcedureController mockMedicalProcedureController = spy(new MedicalProcedureController(ds, test));
         CPTCodeMySQL mockCPTCodeSQL = spy(new CPTCodeMySQL(ds));
-        form = new MedicalProcedureForm(mockMedicalProcedureController, mockCPTCodeSQL, utils, ds);
+        form = new MedicalProcedureForm(mockMedicalProcedureController, mockCPTCodeSQL, utils, ds, test);
         when(mockCPTCodeSQL.getAll()).thenThrow(new SQLException());
         
         Assert.assertEquals(0, form.getCPTCodes().size());

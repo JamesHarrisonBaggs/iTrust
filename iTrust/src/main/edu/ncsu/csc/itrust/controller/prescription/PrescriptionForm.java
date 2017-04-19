@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
 import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
@@ -28,10 +29,14 @@ public class PrescriptionForm {
 	private NDCCodeMySQL ndcData;
 
 	public PrescriptionForm() {
-	    this(null, null, SessionUtils.getInstance(), null);
+	    this(null, null, SessionUtils.getInstance(), null, null);
+	}
+	
+	public PrescriptionForm(DAOFactory factory) {
+	    this(null, null, SessionUtils.getInstance(), null, factory);
 	}
 
-	public PrescriptionForm(PrescriptionController pc, NDCCodeMySQL nData, SessionUtils sessionUtils, DataSource ds) {
+	public PrescriptionForm(PrescriptionController pc, NDCCodeMySQL nData, SessionUtils sessionUtils, DataSource ds, DAOFactory factory) {
 	    this.sessionUtils = (sessionUtils == null) ? SessionUtils.getInstance() : sessionUtils;
 		try {
 			if (ds == null) {
@@ -39,7 +44,7 @@ public class PrescriptionForm {
 				controller = (pc == null) ? new PrescriptionController() : pc;
 			} else {
 				ndcData = (nData == null) ? new NDCCodeMySQL(ds) : nData;
-				controller = (pc == null) ? new PrescriptionController(ds) : pc;
+				controller = (pc == null) ? new PrescriptionController(ds, factory) : pc;
 			}
 			clearFields();
 			

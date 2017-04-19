@@ -75,7 +75,7 @@ public class LaborReportController extends iTrustController {
 	 * Constructs a LaborReportController with a Data Source
 	 */
 	public LaborReportController(DataSource ds, SessionUtils utils, DAOFactory dao) throws DBException {
-		super();
+		super(null, null, dao);
 		sessionUtils = utils;
 		factory = dao;
 		
@@ -116,7 +116,9 @@ public class LaborReportController extends iTrustController {
 	}
 	
 	public ObstetricsInit getCurrentInit() throws DBException {
-		return initsDB.getByID(patientID).get(0);
+		List<ObstetricsInit> list = initsDB.getByID(patientID);
+		if (!list.isEmpty()) return list.get(0);
+		else return null;
 	}
 	
 	public List<ObstetricsVisit> getObVisits() throws DBException {

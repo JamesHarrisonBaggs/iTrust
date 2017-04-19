@@ -12,7 +12,7 @@ public class SharedOfficeVisit {
 	public SharedOfficeVisit() throws Exception {
 		hasError = false;
 		wasAddSuccessful = false;
-		ovc = new OfficeVisitController(((TestDAOFactory)TestDAOFactory.getTestInstance()).getDataSource());
+		ovc = new OfficeVisitController(((TestDAOFactory)TestDAOFactory.getTestInstance()).getDataSource(), TestDAOFactory.getTestInstance());
 	}
 	public OfficeVisitController getOfficeVisitController() {
 		return ovc;
