@@ -88,23 +88,33 @@ public class MessageDAO {
 			throw new DBException(e);
 		}
 	}
-
 	/**
-	 * Gets all the messages for a certain user MID sorted by name ascending.
+	 * Gets all the messages for a certain user MID sorted by name.
 	 * 
 	 * @param mid
 	 *            The MID of the user to be looked up.
+	 * @param ascending
+	 * 				Whether or not the list should be ascending or descending by name
 	 * @return A java.util.List of MessageBeans.
 	 * @throws SQLException
 	 * @throws DBException
 	 */
-	public List<MessageBean> getMessagesNameAscending(long mid) throws SQLException, DBException {
+	public List<MessageBean> getMessagesName(long mid, boolean ascending) throws SQLException, DBException {
+		String stmtString1 = "";
+		String stmtString2 = "";
+		if(ascending) {
+			stmtString1 = "SELECT message.* FROM message, patients WHERE message.from_id=patients.mid AND message.to_id=? ORDER BY patients.lastName ASC, patients.firstName ASC, message.sent_date ASC";
+			stmtString2 = "SELECT message.* FROM message, personnel WHERE message.from_id=personnel.mid AND message.to_id=? ORDER BY personnel.lastName ASC, personnel.firstName ASC, message.sent_date ASC";
+		} else {
+			stmtString1 = "SELECT message.* FROM message, patients WHERE message.from_id=patients.mid AND message.to_id=? ORDER BY patients.lastName DESC, patients.firstName DESC, message.sent_date DESC";
+			stmtString2 = "SELECT message.* FROM message, personnel WHERE message.from_id=personnel.mid AND message.to_id=? ORDER BY personnel.lastName DESC, personnel.firstName DESC, message.sent_date DESC";
+		}
 		try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = (mid >= 999999999)
 						? conn.prepareStatement(
-								"SELECT message.* FROM message, patients WHERE message.from_id=patients.mid AND message.to_id=? ORDER BY patients.lastName ASC, patients.firstName ASC, message.sent_date ASC")
+								stmtString1)
 						: conn.prepareStatement(
-								"SELECT message.* FROM message, personnel WHERE message.from_id=personnel.mid AND message.to_id=? ORDER BY personnel.lastName ASC, personnel.firstName ASC, message.sent_date ASC")) {
+								stmtString2)) {
 			stmt.setLong(1, mid);
 			ResultSet rs = stmt.executeQuery();
 
@@ -115,6 +125,19 @@ public class MessageDAO {
 		} catch (SQLException e) {
 			throw new DBException(e);
 		}
+	}
+	
+	/**
+	 * Gets all the messages for a certain user MID sorted by name ascending.
+	 * 
+	 * @param mid
+	 *            The MID of the user to be looked up.
+	 * @return A java.util.List of MessageBeans.
+	 * @throws SQLException
+	 * @throws DBException
+	 */
+	public List<MessageBean> getMessagesNameAscending(long mid) throws SQLException, DBException {
+		return getMessagesName(mid, true);
 	}
 
 	/**
@@ -127,21 +150,7 @@ public class MessageDAO {
 	 * @throws DBException
 	 */
 	public List<MessageBean> getMessagesNameDescending(long mid) throws SQLException, DBException {
-		try (Connection conn = factory.getConnection();
-				PreparedStatement stmt = (mid >= 999999999)
-						? conn.prepareStatement(
-								"SELECT message.* FROM message, patients WHERE message.from_id=patients.mid AND message.to_id=? ORDER BY patients.lastName DESC, patients.firstName DESC, message.sent_date DESC")
-						: conn.prepareStatement(
-								"SELECT message.* FROM message, personnel WHERE message.from_id=personnel.mid AND message.to_id=? ORDER BY personnel.lastName DESC, personnel.firstName DESC, message.sent_date DESC")) {
-			stmt.setLong(1, mid);
-			ResultSet rs = stmt.executeQuery();
-
-			List<MessageBean> messageList = this.mbLoader.loadList(rs);
-			rs.close();
-			return messageList;
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
+		return getMessagesName(mid, false);
 	}
 
 	/**
