@@ -46,7 +46,7 @@ public class PrescriptionController extends iTrustController {
 	}
 
 	public void add(Prescription prescription) {
-		ControllerUtils.add(sql, null, prescription, null);
+		ControllerUtils.add(sql, null, prescription, null, this);
 	}
 
 	public void edit(Prescription prescription) {

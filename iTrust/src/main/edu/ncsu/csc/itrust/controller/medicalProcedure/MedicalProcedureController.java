@@ -38,7 +38,7 @@ public class MedicalProcedureController extends iTrustController {
 	}
 
 	public void add(MedicalProcedure mp) {
-		ControllerUtils.add(null, sql, null, mp);
+		ControllerUtils.add(null, sql, null, mp, this);
 	}
 
 	public void edit(MedicalProcedure mp) {
