@@ -17,6 +17,7 @@ import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
+import edu.ncsu.csc.itrust.utils.ControllerUtils;
 
 @ManagedBean(name = "prescription_controller")
 @SessionScoped
@@ -45,19 +46,7 @@ public class PrescriptionController extends iTrustController {
 	}
 
 	public void add(Prescription prescription) {
-		try {
-			if (sql.add(prescription)) {
-				printFacesMessage(FacesMessage.SEVERITY_INFO, "Prescription is successfully created",
-						"Prescription is successfully created", null);
-				logTransaction(TransactionType.PRESCRIPTION_ADD, getSessionUtils().getCurrentOfficeVisitId().toString());
-			} else {
-				throw new Exception();
-			}
-		} catch (SQLException e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, e.getMessage(), null);
-		} catch (Exception e) {
-			printFacesMessage(FacesMessage.SEVERITY_ERROR, INVALID_PRESCRIPTION, INVALID_PRESCRIPTION, null);
-		}
+		ControllerUtils.add(sql, null, prescription, null);
 	}
 
 	public void edit(Prescription prescription) {
