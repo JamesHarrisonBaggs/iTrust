@@ -17,10 +17,10 @@ import org.mockito.Mockito;
 import edu.ncsu.csc.itrust.controller.obgyn.PregnancyController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
-import edu.ncsu.csc.itrust.model.obgyn.ObstetricsVisitMySQL;
 import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class PregnancyControllerTest {
@@ -40,7 +40,7 @@ public class PregnancyControllerTest {
 		ds = ConverterDAO.getDataSource();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
 		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		controller = new PregnancyController(ds, mockSessionUtils);
+		controller = new PregnancyController(ds, mockSessionUtils, TestDAOFactory.getTestInstance());
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();

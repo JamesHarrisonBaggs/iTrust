@@ -19,7 +19,9 @@ import edu.ncsu.csc.itrust.model.diagnosis.Diagnosis;
 import edu.ncsu.csc.itrust.model.diagnosis.DiagnosisMySQL;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.officeVisit.OfficeVisitMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 import junit.framework.TestCase;
 
@@ -29,13 +31,16 @@ public class DiagnosisControllerTest extends TestCase {
     TestDataGenerator gen;
     DiagnosisMySQL sql;
     OfficeVisitMySQL ovSql;
+    DAOFactory test;
     
     @Mock
     SessionUtils mockSessionUtils;
 
     @Override
     public void setUp() throws Exception {
-        ds = ConverterDAO.getDataSource();
+        
+    	test = TestDAOFactory.getTestInstance();
+    	ds = ConverterDAO.getDataSource();
         gen = new TestDataGenerator();
         gen.clearAllTables();
         gen.uc11();
@@ -43,7 +48,7 @@ public class DiagnosisControllerTest extends TestCase {
         mockSessionUtils = Mockito.mock(SessionUtils.class);
         Mockito.doReturn(1L).when(mockSessionUtils).getCurrentOfficeVisitId();
         sql = spy(new DiagnosisMySQL(ds));
-        controller = new DiagnosisController(ds);
+        controller = new DiagnosisController(ds, test);
         controller.setSql(sql);
         ovSql = new OfficeVisitMySQL(ds);
     }

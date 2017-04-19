@@ -13,6 +13,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.diagnosis.Diagnosis;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "diagnosis_form")
@@ -24,18 +25,22 @@ public class DiagnosisForm {
 	private ICDCodeMySQL icdData;
 	
 	public DiagnosisForm() {
-		this(null, null, null, null);
+		this(null, null, null, null, null);
 	}
 	
-	public DiagnosisForm(DiagnosisController dc, ICDCodeMySQL icdData, SessionUtils sessionUtils, DataSource ds) {
+	public DiagnosisForm(DAOFactory factory) {
+		this(null, null, null, null, factory);
+	}
+	
+	public DiagnosisForm(DiagnosisController dc, ICDCodeMySQL icdData, SessionUtils sessionUtils, DataSource ds, DAOFactory factory) {
 		this.sessionUtils = (sessionUtils == null) ? SessionUtils.getInstance() : sessionUtils;
 		try {
 		    if (ds == null) {
-    			this.controller = (dc == null) ? new DiagnosisController() : dc;
+    			this.controller = (dc == null) ? new DiagnosisController() : dc; // not sure about this
     			this.icdData = (icdData == null) ? new ICDCodeMySQL() : icdData;
 		    } else {
 		        this.icdData = (icdData == null) ? new ICDCodeMySQL(ds) : icdData;
-                controller = (dc == null) ? new DiagnosisController(ds) : dc; 
+                controller = (dc == null) ? new DiagnosisController(ds, factory) : dc; 
 		    }
 		} catch (DBException e) {
 			this.sessionUtils.printFacesMessage(FacesMessage.SEVERITY_ERROR, "Diagnosis Controller Error",

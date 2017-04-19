@@ -15,15 +15,21 @@ import edu.ncsu.csc.itrust.controller.cptcode.CPTCodeForm;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class CPTCodeFormTest extends TestCase {
-    TestDataGenerator gen;
+    
+	TestDataGenerator gen;
     DataSource ds;
+    DAOFactory test;
+    
     @Override
     public void setUp() throws FileNotFoundException, SQLException, IOException{
         ds = ConverterDAO.getDataSource();
+        test = TestDAOFactory.getTestInstance();
         gen = new TestDataGenerator();
         gen.clearAllTables();
     }
@@ -31,10 +37,10 @@ public class CPTCodeFormTest extends TestCase {
     @Test
     public void testCPTCodeForm(){
         // test constructor
-        CPTCodeForm form = new CPTCodeForm();
-        CPTCodeController controller = new CPTCodeController();
+        CPTCodeForm form = new CPTCodeForm(test);
+        CPTCodeController controller = new CPTCodeController(test);
         controller.setMySQL(new CPTCodeMySQL(ds));
-        form = new CPTCodeForm(controller);
+        form = new CPTCodeForm(controller, test);
         Assert.assertEquals("", form.getSearch());
         Assert.assertFalse(form.getDisplayCodes());
         

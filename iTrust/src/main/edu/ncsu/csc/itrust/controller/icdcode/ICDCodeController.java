@@ -13,6 +13,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
 @ManagedBean(name = "icdcode_controller")
 @SessionScoped
@@ -25,8 +26,14 @@ public class ICDCodeController extends iTrustController {
 	private ICDCodeMySQL sql;
 	//private SessionUtils sessionUtils;
 
+	
 	public ICDCodeController() {
-		try {
+		this(null);
+	}
+	
+	public ICDCodeController(DAOFactory factory) {
+		super(null, null, factory);
+ 		try {
 			sql = new ICDCodeMySQL();
 		} catch (DBException e) {
 		    sql = null;
@@ -39,7 +46,8 @@ public class ICDCodeController extends iTrustController {
 	 * @param ds
 	 *            The injected DataSource dependency
 	 */
-	public ICDCodeController(DataSource ds) {
+	public ICDCodeController(DataSource ds, DAOFactory factory) {
+		super(null, null, factory);
 		sql = new ICDCodeMySQL(ds);
 	}
 
@@ -74,7 +82,6 @@ public class ICDCodeController extends iTrustController {
             printFacesMessage(FacesMessage.SEVERITY_ERROR, UNKNOWN_ERROR, UNKNOWN_ERROR, null);
         }
 	}
-
 
 	public void remove(String icdCodeID) {
 	    try {

@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 /**
@@ -41,8 +42,8 @@ public class HealthTrackerChartData implements Serializable {
 		refreshChartData();
 	}
 	
-	public HealthTrackerChartData(DataSource ds, SessionUtils utils) throws DBException {
-		htcontrol = new HealthTrackerController(ds);
+	public HealthTrackerChartData(DataSource ds, SessionUtils utils, DAOFactory factory) throws DBException {
+		htcontrol = new HealthTrackerController(ds, factory);
 		htcontrol.setSessionUtils(utils);
 		this.dataList = htcontrol.getAllData();
 		refreshChartData();

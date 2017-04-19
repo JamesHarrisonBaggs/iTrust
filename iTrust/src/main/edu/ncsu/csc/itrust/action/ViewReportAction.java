@@ -23,7 +23,7 @@ public class ViewReportAction {
 	public ViewReportAction(DAOFactory factory, long loggedInMID, long patientMID) {
 		patientDAO = factory.getPatientDAO();
 		personnelDAO = factory.getPersonnelDAO();
-		TransactionLogger.getInstance().logTransaction(TransactionType.COMPREHENSIVE_REPORT_VIEW, loggedInMID, patientMID, "");
+		TransactionLogger.getInstance(factory).logTransaction(TransactionType.COMPREHENSIVE_REPORT_VIEW, loggedInMID, patientMID, "");
 	}
 
 	/**

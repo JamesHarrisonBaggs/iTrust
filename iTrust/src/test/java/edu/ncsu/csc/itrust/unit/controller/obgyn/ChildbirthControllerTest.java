@@ -18,6 +18,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.obgyn.Childbirth;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class ChildbirthControllerTest {
@@ -34,16 +35,11 @@ public class ChildbirthControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		try {
-			ds = ConverterDAO.getDataSource();
-			mockSessionUtils = Mockito.mock(SessionUtils.class);
-			Mockito.doReturn("51").when(mockSessionUtils).getRequestParameter(Mockito.anyString());
-			Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
-			controller = new ChildbirthController(ds, mockSessionUtils);
-		} catch (NullPointerException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
+		ds = ConverterDAO.getDataSource();
+		mockSessionUtils = Mockito.mock(SessionUtils.class);
+		Mockito.doReturn("51").when(mockSessionUtils).getRequestParameter(Mockito.anyString());
+		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
+		controller = new ChildbirthController(ds, mockSessionUtils, TestDAOFactory.getTestInstance());
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();

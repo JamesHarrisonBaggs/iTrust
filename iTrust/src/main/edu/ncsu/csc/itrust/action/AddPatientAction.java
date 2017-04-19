@@ -25,6 +25,7 @@ public class AddPatientAction {
 	private PatientDAO patientDAO;
 	private AuthDAO authDAO;
 	private long loggedInMID;
+	private TransactionLogger logger;
 
 	/**
 	 * Just the factory and logged in MID
@@ -36,6 +37,7 @@ public class AddPatientAction {
         this.patientDAO = factory.getPatientDAO();
         this.loggedInMID = loggedInMID;
         this.authDAO = factory.getAuthDAO();
+		this.logger = TransactionLogger.getInstance(factory);
     }
 	
 	/**
@@ -59,7 +61,7 @@ public class AddPatientAction {
 		authDAO.setDependent(newMID, isDependent);
 		p.setPassword(pwd);
 		patientDAO.editPatient(p, loggedInMID);
-		TransactionLogger.getInstance().logTransaction(TransactionType.HCP_CREATED_DEPENDENT_PATIENT, loggedInMID, p.getMID(), "");
+		logger.logTransaction(TransactionType.HCP_CREATED_DEPENDENT_PATIENT, loggedInMID, p.getMID(), "");
 		return newMID;
 	}
 	
@@ -70,7 +72,7 @@ public class AddPatientAction {
 		String pwd = authDAO.addUser(newMID, Role.PATIENT, RandomPassword.getRandomPassword());
 		p.setPassword(pwd);
 		patientDAO.editPatient(p, loggedInMID);
-		TransactionLogger.getInstance().logTransaction(TransactionType.PATIENT_CREATE, loggedInMID, p.getMID(), "");
+		logger.logTransaction(TransactionType.PATIENT_CREATE, loggedInMID, p.getMID(), "");
 		return newMID;
 	}
 }

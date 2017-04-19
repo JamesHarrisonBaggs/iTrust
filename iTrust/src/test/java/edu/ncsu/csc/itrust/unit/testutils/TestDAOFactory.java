@@ -36,7 +36,7 @@ public class TestDAOFactory extends DAOFactory implements IConnectionDriver {
 
 	private static DAOFactory testInstance;
 
-	public static DAOFactory getTestInstance() {
+	public static synchronized DAOFactory getTestInstance() {
 		if (testInstance == null)
 			testInstance = new TestDAOFactory();
 		return testInstance;

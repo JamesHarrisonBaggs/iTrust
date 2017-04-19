@@ -13,6 +13,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
 @ManagedBean(name = "loinccode_controller")
 @SessionScoped
@@ -26,6 +27,11 @@ public class LoincCodeController extends iTrustController {
 	//private SessionUtils sessionUtils;
 
 	public LoincCodeController() {
+		this(null);
+	}
+	
+	public LoincCodeController(DAOFactory factory) {
+		super(null, null, factory);
 		try {
 			sql = new LOINCCodeMySQL();
 		} catch (DBException e) {
@@ -39,7 +45,8 @@ public class LoincCodeController extends iTrustController {
 	 * @param ds
 	 *            The injected DataSource dependency
 	 */
-	public LoincCodeController(DataSource ds) {
+	public LoincCodeController(DataSource ds, DAOFactory factory) {
+		super(null, null, factory);
 		sql = new LOINCCodeMySQL(ds);
 	}
 

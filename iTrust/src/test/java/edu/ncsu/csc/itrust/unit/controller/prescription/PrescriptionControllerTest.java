@@ -35,10 +35,12 @@ import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureData;
 import edu.ncsu.csc.itrust.model.old.beans.MedicationBean;
 import edu.ncsu.csc.itrust.model.old.beans.PatientBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
 import edu.ncsu.csc.itrust.model.prescription.PrescriptionMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class PrescriptionControllerTest {
@@ -52,15 +54,17 @@ public class PrescriptionControllerTest {
 	@Spy
 	private DataSource ds;
 	private TestDataGenerator gen;
+	private DAOFactory test;
 	
 	@Before
 	public void setUp() throws FileNotFoundException, SQLException, IOException, DBException {
+		test = TestDAOFactory.getTestInstance();
 		ds = spy(ConverterDAO.getDataSource());
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.uc21();
 		gen.uc19();
-		controller = spy(new PrescriptionController(ds));
+		controller = spy(new PrescriptionController(ds, test));
 		mockSessionUtils = mock(SessionUtils.class);
 		controller.setSessionUtils(mockSessionUtils);
 		mockData = mock(LabProcedureData.class);

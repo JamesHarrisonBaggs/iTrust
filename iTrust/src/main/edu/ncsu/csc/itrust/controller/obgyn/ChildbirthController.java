@@ -24,6 +24,7 @@ import edu.ncsu.csc.itrust.model.obgyn.Childbirth;
 import edu.ncsu.csc.itrust.model.obgyn.ChildbirthMySQL;
 import edu.ncsu.csc.itrust.model.obgyn.ChildbirthVisit;
 import edu.ncsu.csc.itrust.model.obgyn.ChildbirthVisitMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 /**
@@ -61,7 +62,6 @@ public class ChildbirthController extends iTrustController {
 	private boolean added;
 	
 	public ChildbirthController() throws DBException {
-		super();
 		sessionUtils = getSessionUtils();
 		cbs = new ChildbirthMySQL();
 		cbvs = new ChildbirthVisitMySQL();
@@ -75,12 +75,12 @@ public class ChildbirthController extends iTrustController {
 		setValues();
 	}
 	
-	public ChildbirthController(DataSource ds, SessionUtils utils) throws DBException {
-		super();
+	public ChildbirthController(DataSource ds, SessionUtils utils, DAOFactory factory) throws DBException {
+		super(null, null, factory);
 		sessionUtils = utils;
 		cbs = new ChildbirthMySQL(ds);
 		cbvs = new ChildbirthVisitMySQL(ds);
-		ovc = new OfficeVisitController(ds);
+		ovc = new OfficeVisitController(ds, factory);
 		visitId = Long.parseLong(sessionUtils.getRequestParameter("visitID"));
 		pid = sessionUtils.getCurrentPatientMIDLong();
 		setValues();

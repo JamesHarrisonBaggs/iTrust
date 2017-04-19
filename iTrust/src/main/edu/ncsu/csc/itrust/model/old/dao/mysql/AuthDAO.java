@@ -38,6 +38,8 @@ public class AuthDAO {
 	private transient final DAOFactory factory;
 	private SecureRandom secureRandom;
 
+	private TransactionLogger logger;
+
 	/**
 	 * The typical constructor.
 	 * 
@@ -48,6 +50,7 @@ public class AuthDAO {
 	public AuthDAO(final DAOFactory factory) {
 		this.factory = factory;
 		this.secureRandom = new SecureRandom();
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	/**
@@ -591,11 +594,11 @@ public class AuthDAO {
 	
 	/** Logs that given user was logged in */
 	public void logUserAuthenticated(Long mid) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.LOGIN_SUCCESS, mid, null, "");
+		logger.logTransaction(TransactionType.LOGIN_SUCCESS, mid, null, "");
 	}
 	
 	/** Logs that given user was logged out */
 	public void logUserLoggedOut(Long mid) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.LOGOUT, mid, null, "");
+		logger.logTransaction(TransactionType.LOGOUT, mid, null, "");
 	}
 }

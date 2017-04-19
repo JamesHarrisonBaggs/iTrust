@@ -18,6 +18,7 @@ import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 public class ViewMyBillingAction  {
 	private BillingDAO billingDAO;
 	private long loggedInMID;
+	private TransactionLogger logger;
 	
 	/**
 	 * @param factory The DAOFactory used to create the DAOs used in this action
@@ -26,6 +27,7 @@ public class ViewMyBillingAction  {
 	public ViewMyBillingAction(DAOFactory factory, long loggedInMID) {
 		this.billingDAO = factory.getBillingDAO();
 		this.loggedInMID = loggedInMID;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 	/**
@@ -47,7 +49,7 @@ public class ViewMyBillingAction  {
 	 * @throws DBException
 	 */
 	public List<BillingBean> getAllMyBills() throws SQLException, DBException {
-	    TransactionLogger.getInstance().logTransaction(TransactionType.PATIENT_BILLS_VIEW_ALL, loggedInMID, 0L, "");
+		logger.logTransaction(TransactionType.PATIENT_BILLS_VIEW_ALL, loggedInMID, 0L, "");
 		return billingDAO.getBills(loggedInMID);
 	}
 

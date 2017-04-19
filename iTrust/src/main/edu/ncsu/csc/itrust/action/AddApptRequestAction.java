@@ -25,11 +25,13 @@ public class AddApptRequestAction {
 	private ApptDAO aDAO;
 	private ApptRequestDAO arDAO;
 	private ApptTypeDAO atDAO;
+	private TransactionLogger logger;
 	
 	public AddApptRequestAction(DAOFactory factory) {
 		aDAO = factory.getApptDAO();
 		arDAO = factory.getApptRequestDAO();
 		atDAO = factory.getApptTypeDAO();
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 
 	public String addApptRequest(ApptRequestBean bean) throws SQLException, DBException {
@@ -47,7 +49,7 @@ public class AddApptRequestAction {
 
 		arDAO.addApptRequest(bean);
 		
-		TransactionLogger.getInstance().logTransaction(TransactionType.APPOINTMENT_REQUEST_SUBMITTED, loggedInMID, hcpid, "");
+		logger.logTransaction(TransactionType.APPOINTMENT_REQUEST_SUBMITTED, loggedInMID, hcpid, "");
 
 		return "Your appointment request has been saved and is pending.";
 	}

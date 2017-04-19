@@ -22,9 +22,11 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.JUnitiTrustUtils;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class HealthTrackerControllerTest {
@@ -32,6 +34,7 @@ public class HealthTrackerControllerTest {
 	HealthTrackerController controller;
 	DataSource ds;
 	TestDataGenerator gen;
+	DAOFactory test;
 
 	List<HealthTrackerBean> list;
 	HealthTrackerBean bean;
@@ -42,8 +45,9 @@ public class HealthTrackerControllerTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		test = TestDAOFactory.getTestInstance();
 		ds = ConverterDAO.getDataSource();
-		controller = new HealthTrackerController(ds);
+		controller = new HealthTrackerController(ds, test);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();

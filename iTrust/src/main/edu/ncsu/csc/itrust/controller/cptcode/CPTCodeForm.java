@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 @ManagedBean(name = "cpt_code_form")
@@ -20,12 +21,12 @@ public class CPTCodeForm {
     private String search;
     private boolean displayCodes;
 
-    public CPTCodeForm() {
-        this(null);
+    public CPTCodeForm(DAOFactory factory) {
+        this(null, factory);
     }
 
-    public CPTCodeForm(CPTCodeController cptCodeController) {
-        controller = (cptCodeController == null) ? new CPTCodeController() : cptCodeController;
+    public CPTCodeForm(CPTCodeController cptCodeController, DAOFactory factory) {
+        controller = (cptCodeController == null) ? new CPTCodeController(factory) : cptCodeController;
         search = "";
         setDisplayCodes(false);
     }

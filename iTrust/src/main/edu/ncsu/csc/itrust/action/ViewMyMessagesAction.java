@@ -27,6 +27,7 @@ public class ViewMyMessagesAction {
 	private PatientDAO patientDAO;
 	private PersonnelDAO personnelDAO;
 	private MessageDAO messageDAO;
+	private TransactionLogger logger;
 
 	/**
 	 * Set up defaults
@@ -41,8 +42,9 @@ public class ViewMyMessagesAction {
 		this.patientDAO = factory.getPatientDAO();
 		this.personnelDAO = factory.getPersonnelDAO();
 		this.messageDAO = factory.getMessageDAO();
-		TransactionLogger.getInstance().logTransaction(TransactionType.MESSAGE_VIEW, loggedInMID, 0L, "");                     
-		TransactionLogger.getInstance().logTransaction(TransactionType.NOTIFICATIONS_VIEW, loggedInMID, 0l, "");
+		this.logger = TransactionLogger.getInstance(factory);
+		logger.logTransaction(TransactionType.MESSAGE_VIEW, loggedInMID, 0L, "");                     
+		logger.logTransaction(TransactionType.NOTIFICATIONS_VIEW, loggedInMID, 0l, "");
 	}
 	
 	/**
@@ -53,8 +55,7 @@ public class ViewMyMessagesAction {
 	 * @throws DBException 
 	 */
 	public List<MessageBean> getAllMyMessages() throws SQLException, DBException {
-
-		TransactionLogger.getInstance().logTransaction(TransactionType.INBOX_VIEW, loggedInMID, 0L, "");
+		logger.logTransaction(TransactionType.INBOX_VIEW, loggedInMID, 0L, "");
 		return messageDAO.getMessagesForMID(loggedInMID);
 	}
 	
@@ -101,7 +102,7 @@ public class ViewMyMessagesAction {
 	 * @throws SQLException
 	 */
 	public List<MessageBean> getAllMySentMessages() throws DBException, SQLException {
-		TransactionLogger.getInstance().logTransaction(TransactionType.OUTBOX_VIEW, loggedInMID, 0l, "");
+		logger.logTransaction(TransactionType.OUTBOX_VIEW, loggedInMID, 0l, "");
 		return messageDAO.getMessagesFrom(loggedInMID);
 	}
 	

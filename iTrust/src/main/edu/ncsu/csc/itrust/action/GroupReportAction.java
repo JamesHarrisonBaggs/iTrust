@@ -28,6 +28,7 @@ public class GroupReportAction {
 	private PatientDAO pDAO;
 	private AllergyDAO aDAO;
 	private FamilyDAO fDAO;
+	private TransactionLogger logger;
 
 	/**
 	 * 
@@ -38,7 +39,8 @@ public class GroupReportAction {
 		pDAO = factory.getPatientDAO();
 		aDAO = factory.getAllergyDAO();
 		fDAO = factory.getFamilyDAO();
-		TransactionLogger.getInstance().logTransaction(TransactionType.GROUP_REPORT_VIEW, mid, 0L , "");
+		this.logger = TransactionLogger.getInstance(factory);
+		logger.logTransaction(TransactionType.GROUP_REPORT_VIEW, mid, 0L , "");
 	}
 
 	/**

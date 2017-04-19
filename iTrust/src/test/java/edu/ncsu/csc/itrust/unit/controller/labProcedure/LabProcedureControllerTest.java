@@ -34,8 +34,10 @@ import edu.ncsu.csc.itrust.model.labProcedure.LabProcedure;
 import edu.ncsu.csc.itrust.model.labProcedure.LabProcedure.LabProcedureStatus;
 import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureData;
 import edu.ncsu.csc.itrust.model.labProcedure.LabProcedureMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 /**
@@ -54,13 +56,15 @@ public class LabProcedureControllerTest {
 	private LabProcedureController controller;
 	private TestDataGenerator gen;
 	private LabProcedure procedure;
+	private DAOFactory test;
 
 	@Before
 	public void setUp() throws FileNotFoundException, SQLException, IOException {
 		ds = ConverterDAO.getDataSource();
+		test = TestDAOFactory.getTestInstance();
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
-		controller = new LabProcedureController(ds);
+		controller = new LabProcedureController(ds, test);
 
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
 		mockData = Mockito.mock(LabProcedureData.class);
@@ -318,7 +322,7 @@ public class LabProcedureControllerTest {
 	@Test
 	public void testSetLabProcedureToReceivedStatus() throws DBException, FormValidationException {
 		DataSource mockDS = mock(DataSource.class);
-		controller = new LabProcedureController(mockDS);
+		controller = new LabProcedureController(mockDS, test);
 		controller = spy(controller);
 		procedure.setStatus(LabProcedureStatus.IN_TRANSIT.getID());
 		LabProcedureData mockData = mock(LabProcedureData.class);
@@ -340,7 +344,7 @@ public class LabProcedureControllerTest {
 	@Test
 	public void testSetLabProcedureToReceivedStatusDBException() throws DBException, FormValidationException {
 		DataSource mockDS = mock(DataSource.class);
-		controller = new LabProcedureController(mockDS);
+		controller = new LabProcedureController(mockDS, test);
 		controller = spy(controller);
 		procedure.setStatus(LabProcedureStatus.IN_TRANSIT.getID());
 		LabProcedureData mockData = mock(LabProcedureData.class);
@@ -362,7 +366,7 @@ public class LabProcedureControllerTest {
 	@Test
 	public void testSetLabProcedureToReceivedStatusException() throws DBException, FormValidationException {
 		DataSource mockDS = mock(DataSource.class);
-		controller = new LabProcedureController(mockDS);
+		controller = new LabProcedureController(mockDS, test);
 		controller = spy(controller);
 		procedure.setStatus(LabProcedureStatus.IN_TRANSIT.getID());
 		LabProcedureData mockData = mock(LabProcedureData.class);
@@ -388,7 +392,7 @@ public class LabProcedureControllerTest {
 		when(mockData.add(Mockito.any(LabProcedure.class))).thenReturn(true);
 		when(mockSessionUtils.getSessionUserRole()).thenReturn("hcp");
 		when(mockSessionUtils.getSessionLoggedInMID()).thenReturn("9000000001");
-		controller = spy(new LabProcedureController(mockDS));
+		controller = spy(new LabProcedureController(mockDS, test));
 		controller.setSessionUtils(mockSessionUtils);
 		controller.setLabProcedureData(mockData);
 		Mockito.doNothing().when(controller).logTransaction(any(), Mockito.anyString());
@@ -407,7 +411,7 @@ public class LabProcedureControllerTest {
 	@Test
 	public void testAddWithDBException() throws SQLException, DBException, FormValidationException {
 		DataSource mockDS = mock(DataSource.class);
-		controller = new LabProcedureController(mockDS);
+		controller = new LabProcedureController(mockDS, test);
 		controller.setSessionUtils(mockSessionUtils);
 		controller = spy(controller);
 		LabProcedureData mockData = mock(LabProcedureData.class);
@@ -427,7 +431,7 @@ public class LabProcedureControllerTest {
 	@Test
 	public void testEdit() throws SQLException, DBException, FormValidationException {
 		DataSource mockDS = mock(DataSource.class);
-		controller = new LabProcedureController(mockDS);
+		controller = new LabProcedureController(mockDS, test);
 		controller = spy(controller);
 		LabProcedureData mockData = mock(LabProcedureData.class);
 		controller.setLabProcedureData(mockData);
@@ -444,7 +448,7 @@ public class LabProcedureControllerTest {
 	@Test
 	public void testRemove() throws SQLException, DBException {
 		DataSource mockDS = mock(DataSource.class);
-		controller = new LabProcedureController(mockDS);
+		controller = new LabProcedureController(mockDS, test);
 		controller = spy(controller);
 		LabProcedureData mockData = mock(LabProcedureData.class);
 		controller.setLabProcedureData(mockData);
@@ -483,7 +487,7 @@ public class LabProcedureControllerTest {
 		DataSource mockDS = Mockito.mock(DataSource.class);
 		LabProcedureData mockData = Mockito.mock(LabProcedureMySQL.class);
 		when(mockDS.getConnection()).thenReturn(ds.getConnection());
-		controller = Mockito.spy(new LabProcedureController(mockDS));
+		controller = Mockito.spy(new LabProcedureController(mockDS, test));
 		controller.remove("foo");
 		Mockito.verify(controller, times(1)).printFacesMessage(Mockito.any(), Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString());

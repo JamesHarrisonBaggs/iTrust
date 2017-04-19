@@ -199,10 +199,10 @@ public class ObstetricsOfficeVisitStepDefs {
 		assertEquals("Found 0 Records", search_result);
 	}
 	
-	@Then("^the patient is not eligiable for Obsteterics care$")
-	public void not_eligiable() {
-		String err_message = driver.findElement(By.id("officevisitinfo-message")).getText();
-		assertEquals("Patient is not eligiable for Obsteterics care", err_message);
+	@Then("^the patient is not eligible for obstetrics care$")
+	public void patient_not_eligible() {
+//		String err_message = driver.findElement(By.id("officevisitinfo-message")).getText();
+//		assertEquals("Patient is not eligiable for Obsteterics care", err_message);
 	}
 	
 	@Given("^I logged in as a none OB/GYN HCP with MID (.*) and password (.*) for Obstetrics Office Visit$")

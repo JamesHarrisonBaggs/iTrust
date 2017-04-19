@@ -1,10 +1,8 @@
-#Author: ereinst
-
 Feature: View Basic Health Information
-As a HCP
+As an HCP
 I want to be able to view patient health information
 so that I can know basic information about the patient's health
-	
+ 
 Scenario Outline: View Health Information
 	Given I have logged in as HCP: <HCPuser> with password: <HCPpw> 
 	And I select "iTrust - Basic Health Information"

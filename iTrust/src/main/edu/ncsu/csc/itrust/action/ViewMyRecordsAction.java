@@ -38,6 +38,7 @@ public class ViewMyRecordsAction {
 	private FakeEmailDAO emailDAO;
 	private ReportRequestDAO reportRequestDAO;
 	private long loggedInMID;
+	private TransactionLogger logger;
 
 	/**
 	 * Set up
@@ -52,6 +53,7 @@ public class ViewMyRecordsAction {
 		this.emailDAO = factory.getFakeEmailDAO();
 		this.reportRequestDAO = factory.getReportRequestDAO();
 		this.loggedInMID = loggedInMID;
+		this.logger = TransactionLogger.getInstance(factory);
 	}
 	
 
@@ -115,7 +117,7 @@ public class ViewMyRecordsAction {
 	 * @throws ITrustException
 	 */
 	public List<Email> getEmailHistory() throws ITrustException {
-		TransactionLogger.getInstance().logTransaction(TransactionType.EMAIL_HISTORY_VIEW, loggedInMID, (long)0, "");
+		logger.logTransaction(TransactionType.EMAIL_HISTORY_VIEW, loggedInMID, (long)0, "");
 		return emailDAO.getEmailsByPerson(getPatient().getEmail());
 	}
 
@@ -128,41 +130,14 @@ public class ViewMyRecordsAction {
 	public List<AllergyBean> getAllergies() throws ITrustException {
 		return allergyDAO.getAllergies(loggedInMID);
 	}
-
+	
 	/**
 	 * Returns a list of Parents, Siblings, and Children of the currently logged in patient
 	 * 
 	 * @return list of FamilyMemberBeans
 	 */
 	public List<FamilyMemberBean> getFamily() throws ITrustException {
-		List<FamilyMemberBean> fam = new ArrayList<FamilyMemberBean>();
-		List<FamilyMemberBean> parents = null;
-		try {
-			parents = familyDAO.getParents(loggedInMID);
-			fam.addAll(parents);
-			fam.addAll(familyDAO.getSiblings(loggedInMID));
-			fam.addAll(familyDAO.getChildren(loggedInMID));
-		} catch (DBException e) {
-			throw new ITrustException(e.getMessage());
-		}
-		
-		if(parents != null) {
-			List<FamilyMemberBean> grandparents = new ArrayList<FamilyMemberBean>();
-			for(FamilyMemberBean parent : parents) {
-				try {
-					grandparents.addAll(familyDAO.getParents(parent.getMid()));
-				} catch (DBException e) {
-					throw new ITrustException(e.getMessage());
-				}
-			}
-			
-			fam.addAll(grandparents);
-			
-			for(FamilyMemberBean gp : grandparents) {
-				gp.setRelation("Grandparent");
-			}
-		}
-		return fam;
+		return getFamily(true, true, true, false);
 	}
 	
 	/**
@@ -171,17 +146,31 @@ public class ViewMyRecordsAction {
 	 * @return list of FamilyMemberBeans
 	 */
 	public List<FamilyMemberBean> getFamilyHistory() throws ITrustException {
-		List<FamilyMemberBean> fam = new ArrayList<FamilyMemberBean>();
+		return getFamily(true, true, false, true);
+	}
+
+	
+	public List<FamilyMemberBean> getFamily(boolean includeParents, boolean includeSiblings, 
+			boolean includeChildren, boolean includeGrandparents) throws ITrustException {
+		List<FamilyMemberBean> family = new ArrayList<FamilyMemberBean>();
+		
+		// parents, siblings, children
 		List<FamilyMemberBean> parents = null;
 		try {
-			parents = familyDAO.getParents(loggedInMID);
-			fam.addAll(parents);
-			fam.addAll(familyDAO.getSiblings(loggedInMID));
+			if (includeParents) {
+				parents = familyDAO.getParents(loggedInMID);
+				family.addAll(parents);
+			}
+			if (includeSiblings)
+				family.addAll(familyDAO.getSiblings(loggedInMID));
+			if (includeChildren)
+				family.addAll(familyDAO.getChildren(loggedInMID));			
 		} catch (DBException e) {
 			throw new ITrustException(e.getMessage());
 		}
 		
-		if(parents != null) {
+		// grandparents
+		if (parents != null && includeGrandparents) {
 			List<FamilyMemberBean> grandparents = new ArrayList<FamilyMemberBean>();
 			for(FamilyMemberBean parent : parents) {
 				try {
@@ -190,17 +179,16 @@ public class ViewMyRecordsAction {
 					throw new ITrustException(e.getMessage());
 				}
 			}
-			
-			fam.addAll(grandparents);
-			
+			family.addAll(grandparents);
 			for(FamilyMemberBean gp : grandparents) {
 				gp.setRelation("Grandparent");
 			}
 		}
-		return fam;
+				
+		return family;
 	}
 
-	
+
 	/**
 	 * Returns a list of PatientBeans of all patients the currently logged in patient represents
 	 * 
@@ -276,6 +264,6 @@ public class ViewMyRecordsAction {
 	}
 	
 	public void logViewMedicalRecords(Long mid, Long secondary) {
-		TransactionLogger.getInstance().logTransaction(TransactionType.MEDICAL_RECORD_VIEW, mid, secondary, "");
+		logger.logTransaction(TransactionType.MEDICAL_RECORD_VIEW, mid, secondary, "");
 	}
 }

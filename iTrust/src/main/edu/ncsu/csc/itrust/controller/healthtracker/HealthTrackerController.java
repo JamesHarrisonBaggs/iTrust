@@ -16,6 +16,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerBean;
 import edu.ncsu.csc.itrust.model.healthtracker.HealthTrackerMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 /**
@@ -39,7 +40,6 @@ public class HealthTrackerController extends iTrustController {
 	 * Constructs a new Health Tracker Controller
 	 */
 	public HealthTrackerController() throws DBException {
-		super();
 		this.sql = new HealthTrackerMySQL();
 		dataList = new ArrayList<HealthTrackerBean>();
 	}
@@ -47,8 +47,8 @@ public class HealthTrackerController extends iTrustController {
 	/**
 	 * Constructs a new Health Tracker Controller with a data source
 	 */
-	public HealthTrackerController(DataSource ds) throws DBException {
-		super();
+	public HealthTrackerController(DataSource ds, DAOFactory factory) throws DBException {
+		super(null, null, factory);
 		this.sql = new HealthTrackerMySQL(ds);
 		dataList = new ArrayList<HealthTrackerBean>();
 	}

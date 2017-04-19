@@ -16,6 +16,7 @@ import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class NDCCodeFormTest extends TestCase {
@@ -32,9 +33,9 @@ public class NDCCodeFormTest extends TestCase {
     public void testForm(){
      // test constructor
         NDCCodeForm form = new NDCCodeForm();
-        NDCCodeController controller = new NDCCodeController();
+        NDCCodeController controller = new NDCCodeController(TestDAOFactory.getTestInstance());
         controller.setSQLData(new NDCCodeMySQL(ds));
-        form = new NDCCodeForm(controller);
+        form = new NDCCodeForm(controller, TestDAOFactory.getTestInstance());
         Assert.assertEquals("", form.getSearch());
         Assert.assertFalse(form.getDisplayCodes());
         
