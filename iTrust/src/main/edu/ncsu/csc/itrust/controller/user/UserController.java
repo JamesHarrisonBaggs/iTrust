@@ -7,6 +7,7 @@ import edu.ncsu.csc.itrust.model.DataBean;
 import edu.ncsu.csc.itrust.model.old.enums.Role;
 import edu.ncsu.csc.itrust.model.user.User;
 import edu.ncsu.csc.itrust.model.user.UserMySQLConverter;
+import edu.ncsu.csc.itrust.utils.ControllerUtils;
 
 @ManagedBean(name="user")
 public class UserController {
@@ -17,7 +18,7 @@ public class UserController {
 	}
 	
 	public String getUserNameForID(String mid) throws DBException {
-		User user = getUser(mid, true);
+		User user = ControllerUtils.getUser(mid, false, true);
 		if (user == null) return "";
 		if (user.getRole().equals(Role.TESTER)){
 			return Long.toString(user.getMID());
@@ -27,35 +28,35 @@ public class UserController {
 	}
 
 	public String getUserRoleForID(String mid) throws DBException {
-		User user = getUser(mid, false);
+		User user = ControllerUtils.getUser(mid, false, false);
 		if (user == null) return "";
 		return user.getRole().getUserRolesString().toLowerCase();
 	}
 	
 	public boolean doesUserExistWithID(String mid) throws DBException{
-		User user = getUser(mid, true);
+		User user = ControllerUtils.getUser(mid, false, true);
 		return user != null;
 	}
 
-	/**
-	 * Returns a User associated with an MID
-	 * Returns null for an invalid MID or missing patient
-	 * @param allowInvalidMIDs - true to search for users with MID < 1
-	 */
-	private User getUser(String mid, boolean allowInvalidMIDs) throws DBException {
-		if (mid == null || mid.isEmpty()) {
-			return null;
-		}
-		long id = -1;
-		try {
-			id = Long.parseLong(mid);
-		} catch (NumberFormatException n) {
-			return null;
-		}
-		if (!allowInvalidMIDs && id < 1) {
-			return null;
-		}
-		return userData.getByID(id);
-	}
+//	/**
+//	 * Returns a User associated with an MID
+//	 * Returns null for an invalid MID or missing patient
+//	 * @param allowInvalidMIDs - true to search for users with MID < 1
+//	 */
+//	private User getUser(String mid, boolean allowInvalidMIDs) throws DBException {
+//		if (mid == null || mid.isEmpty()) {
+//			return null;
+//		}
+//		long id = -1;
+//		try {
+//			id = Long.parseLong(mid);
+//		} catch (NumberFormatException n) {
+//			return null;
+//		}
+//		if (!allowInvalidMIDs && id < 1) {
+//			return null;
+//		}
+//		return userData.getByID(id);
+//	}
 
 }
