@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PatientLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.utils.DAOUtils;
 
 /**
  * Used for managing all static information related to a patient. For other
@@ -58,22 +59,7 @@ public class PatientDAO {
 	 * @throws DBException
 	 */
 	public String getName(long mid) throws ITrustException, DBException {
-		try (Connection conn = factory.getConnection();
-				PreparedStatement ps = conn.prepareStatement("SELECT firstName, lastName FROM patients WHERE MID=?")) {
-			ps.setLong(1, mid);
-			ResultSet rs;
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				String result = rs.getString("firstName") + " " + rs.getString("lastName");
-				rs.close();
-				return result;
-			} else {
-				rs.close();
-				throw new ITrustException("User does not exist");
-			}
-		} catch (SQLException e) {
-			throw new DBException(e);
-		}
+		return DAOUtils.getName(mid, factory, "patients");
 	}
 
 	/**
