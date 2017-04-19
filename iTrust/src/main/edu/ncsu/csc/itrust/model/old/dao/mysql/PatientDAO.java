@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.old.beans.PersonnelBean;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PatientLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.utils.DAOUtils;
 
 /**
  * Used for managing all static information related to a patient. For other
@@ -58,7 +59,8 @@ public class PatientDAO {
 	 * @throws DBException
 	 */
 	public String getName(long mid) throws ITrustException, DBException {
-		try (Connection conn = factory.getConnection();
+		return DAOUtils.getName(mid, factory, "patients");
+		/*try (Connection conn = factory.getConnection();
 				PreparedStatement ps = conn.prepareStatement("SELECT firstName, lastName FROM patients WHERE MID=?")) {
 			ps.setLong(1, mid);
 			ResultSet rs;
@@ -73,7 +75,7 @@ public class PatientDAO {
 			}
 		} catch (SQLException e) {
 			throw new DBException(e);
-		}
+		}*/
 	}
 
 	/**
@@ -179,7 +181,8 @@ public class PatientDAO {
 	 * @throws DBException
 	 */
 	public boolean checkPatientExists(long pid) throws DBException {
-		try (Connection conn = factory.getConnection();
+		return DAOUtils.checkExisits(pid, factory, "patients");
+		/*try (Connection conn = factory.getConnection();
 				PreparedStatement ps = conn.prepareStatement("SELECT * FROM patients WHERE MID=?")) {
 			ps.setLong(1, pid);
 			ResultSet rs = ps.executeQuery();
@@ -188,7 +191,7 @@ public class PatientDAO {
 			return exists;
 		} catch (SQLException e) {
 			throw new DBException(e);
-		}
+		}*/
 	}
 
 	/**

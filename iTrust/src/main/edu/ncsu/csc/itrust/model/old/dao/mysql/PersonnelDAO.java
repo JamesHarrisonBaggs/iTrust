@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.old.beans.loaders.HospitalBeanLoader;
 import edu.ncsu.csc.itrust.model.old.beans.loaders.PersonnelLoader;
 import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.Role;
+import edu.ncsu.csc.itrust.utils.DAOUtils;
 
 /**
  * Used for managing information related to personnel: HCPs, UAPs, Admins
@@ -58,7 +59,8 @@ public class PersonnelDAO {
 	 * @throws DBException
 	 */
 	public String getName(final long mid) throws ITrustException, DBException {
-		try (Connection conn = factory.getConnection();
+		return DAOUtils.getName(mid, factory, "personnel");
+		/*try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = conn
 						.prepareStatement("SELECT firstName, lastName FROM personnel WHERE MID=?");) {
 			stmt.setLong(1, mid);
@@ -71,7 +73,7 @@ public class PersonnelDAO {
 			return result;
 		} catch (SQLException e) {
 			throw new DBException(e);
-		}
+		}*/
 	}
 
 	public long getNextID(final Role role) throws DBException, ITrustException {
@@ -177,7 +179,8 @@ public class PersonnelDAO {
 	 * @throws DBException
 	 */
 	public boolean checkPersonnelExists(final long pid) throws DBException {
-		try (Connection conn = factory.getConnection();
+		return DAOUtils.checkExisits(pid, factory, "personnel");
+		/*try (Connection conn = factory.getConnection();
 				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM personnel WHERE MID=?")) {
 			stmt.setLong(1, pid);
 			final ResultSet results = stmt.executeQuery();
@@ -186,7 +189,7 @@ public class PersonnelDAO {
 			return exists;
 		} catch (SQLException e) {
 			throw new DBException(e);
-		}
+		}*/
 	}
 
 	/**
