@@ -15,6 +15,7 @@ import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedure;
 import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedureMySQL;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class MedicalProcedureControllerTest extends TestCase {
@@ -28,7 +29,7 @@ public class MedicalProcedureControllerTest extends TestCase {
     
     @Test
     public void testDiabolicals() throws DBException, SQLException{
-        MedicalProcedureController controller = new MedicalProcedureController(ds);
+        MedicalProcedureController controller = new MedicalProcedureController(ds, TestDAOFactory.getTestInstance());
         MedicalProcedureMySQL sql = spy(new MedicalProcedureMySQL(ds));
         controller.setSQL(sql);
         MedicalProcedure i = new MedicalProcedure();

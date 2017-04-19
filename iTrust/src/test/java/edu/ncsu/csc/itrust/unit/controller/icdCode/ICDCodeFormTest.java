@@ -25,9 +25,11 @@ import junit.framework.TestCase;
 public class ICDCodeFormTest extends TestCase {
 	TestDataGenerator gen;
 	DataSource ds;
-
+	DAOFactory test;
+	
 	@Override
 	public void setUp() throws FileNotFoundException, SQLException, IOException {
+		test = TestDAOFactory.getTestInstance();
 		ds = ConverterDAO.getDataSource();
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
@@ -36,12 +38,12 @@ public class ICDCodeFormTest extends TestCase {
 	@Test
 	public void testICDCodeForm() {
 		// test constructor
-		DAOFactory test = TestDAOFactory.getTestInstance();
 		ICDCodeForm form = new ICDCodeForm(test);
 		ICDCodeController controller = new ICDCodeController(test);
 		controller.setSQLData(new ICDCodeMySQL(ds));
-		controller.setTransactionLogger(TransactionLogger.getInstance(test));
+		controller.setTransactionLogger(TransactionLogger.getInstance(TestDAOFactory.getTestInstance()));
 		form = new ICDCodeForm(controller, test);
+		
 		Assert.assertEquals("", form.getSearch());
 		Assert.assertFalse(form.getDisplayCodes());
 

@@ -15,20 +15,24 @@ import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.immunization.Immunization;
 import edu.ncsu.csc.itrust.model.immunization.ImmunizationMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class ImmunizationControllerTest extends TestCase {
 
-    private DataSource ds;
+    DataSource ds;
+    DAOFactory test;
     
     @Override
     public void setUp(){
+    	test = TestDAOFactory.getTestInstance();
         ds = ConverterDAO.getDataSource();
     }
     
     @Test
     public void testDiabolicals() throws DBException, SQLException{
-        ImmunizationController controller = new ImmunizationController(ds);
+        ImmunizationController controller = new ImmunizationController(ds, test);
         ImmunizationMySQL sql = spy(new ImmunizationMySQL(ds));
         controller.setSQL(sql);
         Immunization i = new Immunization();

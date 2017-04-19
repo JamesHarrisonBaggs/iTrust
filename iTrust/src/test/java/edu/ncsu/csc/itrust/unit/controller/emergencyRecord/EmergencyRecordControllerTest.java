@@ -25,6 +25,7 @@ import edu.ncsu.csc.itrust.model.diagnosis.Diagnosis;
 import edu.ncsu.csc.itrust.model.emergencyRecord.EmergencyRecord;
 import edu.ncsu.csc.itrust.model.immunization.Immunization;
 import edu.ncsu.csc.itrust.model.old.beans.AllergyBean;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.dao.mysql.AllergyDAO;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.model.prescription.Prescription;
@@ -36,15 +37,17 @@ import junit.framework.TestCase;
 public class EmergencyRecordControllerTest extends TestCase {
 
 	EmergencyRecordController c;
-	@Mock private SessionUtils mockSessionUtils;
-	private DataSource ds;
-
+	DataSource ds;
+	@Mock SessionUtils mockSessionUtils;
+	DAOFactory test;
+	
 	@Override
 	public void setUp() throws DBException, FileNotFoundException, SQLException, IOException {
+		test = TestDAOFactory.getTestInstance();
 		ds = ConverterDAO.getDataSource();
 		AllergyDAO allergyData = TestDAOFactory.getTestInstance().getAllergyDAO();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
-		c = new EmergencyRecordController(ds, allergyData);
+		c = new EmergencyRecordController(ds, allergyData, test);
 		c = spy(c);
 		c.setSessionUtils(mockSessionUtils);
 		doNothing().when(c).logTransaction(any(), any());

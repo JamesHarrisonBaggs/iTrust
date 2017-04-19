@@ -16,9 +16,11 @@ import org.mockito.Mockito;
 
 import edu.ncsu.csc.itrust.controller.icdcode.ICDCodeController;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
+import edu.ncsu.csc.itrust.logger.TransactionLogger;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
 import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
@@ -27,24 +29,30 @@ import junit.framework.TestCase;
 public class ICDCodeControllerTest extends TestCase {
     TestDataGenerator gen;
     DataSource ds;
+    DAOFactory test;
+    
     @Override
-    public void setUp() throws FileNotFoundException, SQLException, IOException{
+    public void setUp() throws FileNotFoundException, SQLException, IOException {
+    	test = TestDAOFactory.getTestInstance();
         ds = ConverterDAO.getDataSource();
         gen = new TestDataGenerator();
         gen.clearAllTables();
     }
     
     public void testConstructor(){
-        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
+        ICDCodeController controller = new ICDCodeController(ds, test);
         Assert.assertNotNull(controller);
         
-        controller = new ICDCodeController(TestDAOFactory.getTestInstance());
+        controller = new ICDCodeController(test);
         controller.setSQLData(new ICDCodeMySQL(ds));
     }
     
     public void testAdd(){
-        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
+        ICDCodeController controller = new ICDCodeController(ds, test);
         Assert.assertNotNull(controller);
+        
+        controller.setTransactionLogger(TransactionLogger.getInstance(TestDAOFactory.getTestInstance()));
+        controller.logTransaction(TransactionType.ACTIVITY_FEED_VIEW, "");
         
         // add an ICD code
         controller.add(new ICDCode("B11", "name1", true));
@@ -72,7 +80,7 @@ public class ICDCodeControllerTest extends TestCase {
     }
     
     public void testEdit(){
-        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
+        ICDCodeController controller = new ICDCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add an ICD code
@@ -103,7 +111,7 @@ public class ICDCodeControllerTest extends TestCase {
     }
     
     public void testRemove(){
-        ICDCodeController controller = new ICDCodeController(ds, TestDAOFactory.getTestInstance());
+        ICDCodeController controller = new ICDCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // test deleting nonexistent code
@@ -112,7 +120,7 @@ public class ICDCodeControllerTest extends TestCase {
     
     public void testSQLErrors() throws SQLException, FormValidationException{
         DataSource mockDS = mock(DataSource.class);
-        ICDCodeController controller = new ICDCodeController(mockDS, TestDAOFactory.getTestInstance());
+        ICDCodeController controller = new ICDCodeController(mockDS, test);
         controller = spy(controller);
         ICDCodeMySQL mockData = mock(ICDCodeMySQL.class);
         controller.setSQLData(mockData);

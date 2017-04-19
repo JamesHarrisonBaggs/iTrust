@@ -23,21 +23,26 @@ import edu.ncsu.csc.itrust.model.icdcode.ICDCode;
 import edu.ncsu.csc.itrust.model.icdcode.ICDCodeMySQL;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCode;
 import edu.ncsu.csc.itrust.model.loinccode.LOINCCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class LOINCCodeControllerTest extends TestCase {
     TestDataGenerator gen;
     DataSource ds;
+    DAOFactory test;
+    
     @Override
     public void setUp() throws FileNotFoundException, SQLException, IOException{
         ds = ConverterDAO.getDataSource();
+        test = TestDAOFactory.getTestInstance();
         gen = new TestDataGenerator();
         gen.clearAllTables();
     }
     
     public void testConstructor(){
-        LoincCodeController controller = new LoincCodeController(ds);
+        LoincCodeController controller = new LoincCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         controller = new LoincCodeController();
@@ -45,7 +50,7 @@ public class LOINCCodeControllerTest extends TestCase {
     }
     
     public void testAdd(){
-        LoincCodeController controller = new LoincCodeController(ds);
+        LoincCodeController controller = new LoincCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add an ICD code
@@ -76,7 +81,7 @@ public class LOINCCodeControllerTest extends TestCase {
     }
     
     public void testEdit(){
-        LoincCodeController controller = new LoincCodeController(ds);
+        LoincCodeController controller = new LoincCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add an ICD code
@@ -107,7 +112,7 @@ public class LOINCCodeControllerTest extends TestCase {
     }
     
     public void testRemove(){
-        LoincCodeController controller = new LoincCodeController(ds);
+        LoincCodeController controller = new LoincCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // test deleting nonexistent code
@@ -116,7 +121,7 @@ public class LOINCCodeControllerTest extends TestCase {
     
     public void testSQLErrors() throws SQLException, FormValidationException, DBException{
         DataSource mockDS = mock(DataSource.class);
-        LoincCodeController controller = new LoincCodeController(mockDS);
+        LoincCodeController controller = new LoincCodeController(mockDS, test);
         controller = spy(controller);
         LOINCCodeMySQL mockData = mock(LOINCCodeMySQL.class);
         controller.setSQLData(mockData);

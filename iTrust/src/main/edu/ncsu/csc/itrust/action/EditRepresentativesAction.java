@@ -123,8 +123,7 @@ public class EditRepresentativesAction extends PatientBaseAction {
 		try {
 			return patientDAO.checkIfPatientIsActive(patientID);
 		} catch (DBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return false;
 	}

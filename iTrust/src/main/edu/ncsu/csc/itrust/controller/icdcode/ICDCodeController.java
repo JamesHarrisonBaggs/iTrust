@@ -28,9 +28,14 @@ public class ICDCodeController extends iTrustController {
 	private ICDCodeMySQL sql;
 	//private SessionUtils sessionUtils;
 
+	
+	public ICDCodeController() {
+		this(null);
+	}
+	
 	public ICDCodeController(DAOFactory factory) {
- 		super(null, null, factory);
-		try {
+		super(null, null, factory);
+ 		try {
 			sql = new ICDCodeMySQL();
 		} catch (DBException e) {
 		    sql = null;

@@ -19,21 +19,26 @@ import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import junit.framework.TestCase;
 
 public class NDCCodeControllerTest extends TestCase {
     TestDataGenerator gen;
     DataSource ds;
+    DAOFactory test;
+    
     @Override
     public void setUp() throws FileNotFoundException, SQLException, IOException{
         ds = ConverterDAO.getDataSource();
+        test = TestDAOFactory.getTestInstance();
         gen = new TestDataGenerator();
         gen.clearAllTables();
     }
     
     public void testConstructor(){
-        NDCCodeController controller = new NDCCodeController(ds);
+        NDCCodeController controller = new NDCCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         controller = new NDCCodeController();
@@ -41,7 +46,7 @@ public class NDCCodeControllerTest extends TestCase {
     }
     
     public void testAdd(){
-        NDCCodeController controller = new NDCCodeController(ds);
+        NDCCodeController controller = new NDCCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add an NDC code
@@ -70,7 +75,7 @@ public class NDCCodeControllerTest extends TestCase {
     }
     
     public void testEdit(){
-        NDCCodeController controller = new NDCCodeController(ds);
+        NDCCodeController controller = new NDCCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // add an NDC code
@@ -101,7 +106,7 @@ public class NDCCodeControllerTest extends TestCase {
     }
     
     public void testRemove(){
-        NDCCodeController controller = new NDCCodeController(ds);
+        NDCCodeController controller = new NDCCodeController(ds, test);
         Assert.assertNotNull(controller);
         
         // test deleting nonexistent code
@@ -110,7 +115,7 @@ public class NDCCodeControllerTest extends TestCase {
     
     public void testSQLErrors() throws SQLException, FormValidationException{
         DataSource mockDS = mock(DataSource.class);
-        NDCCodeController controller = new NDCCodeController(mockDS);
+        NDCCodeController controller = new NDCCodeController(mockDS, test);
         controller = spy(controller);
         NDCCodeMySQL mockData = mock(NDCCodeMySQL.class);
         controller.setSQLData(mockData);

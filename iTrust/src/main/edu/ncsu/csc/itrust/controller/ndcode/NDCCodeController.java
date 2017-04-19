@@ -13,6 +13,7 @@ import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.exception.FormValidationException;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
 import edu.ncsu.csc.itrust.model.ndcode.NDCCodeMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 
 @ManagedBean(name = "ndccode_controller")
 @SessionScoped
@@ -31,6 +32,15 @@ public class NDCCodeController extends iTrustController {
 		    sql = null;
 		}
 	}
+	
+	public NDCCodeController(DAOFactory factory) {
+		super(null, null, factory);
+		try {
+			sql = new NDCCodeMySQL();
+		} catch (DBException e) {
+		    sql = null;
+		}
+	}
 
 	/**
 	 * Constructor injection, intended only for unit testing purposes.
@@ -38,7 +48,8 @@ public class NDCCodeController extends iTrustController {
 	 * @param ds
 	 *            The injected DataSource dependency
 	 */
-	public NDCCodeController(DataSource ds) {
+	public NDCCodeController(DataSource ds, DAOFactory factory) {
+		super(null, null, factory);
 		sql = new NDCCodeMySQL(ds);
 	}
 

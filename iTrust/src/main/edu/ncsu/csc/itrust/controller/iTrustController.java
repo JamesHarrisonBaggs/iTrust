@@ -18,7 +18,6 @@ public class iTrustController {
 
 	private SessionUtils sessionUtils;
 	private TransactionLogger logger;
-	private DAOFactory factory;
 
 	/**
 	 * A fallback error message to be displayed when something goes unexpectedly
@@ -30,10 +29,6 @@ public class iTrustController {
 		this(null, null, null);
 	}
 	
-	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger) {
-		this(sessionUtils, logger, null);
-	}
-
 	/**
 	 * Initializes iTrustController with SessionUtils and TransactionLogger
 	 * instances. Initializes sessionUtils and logger if they are null.
@@ -42,23 +37,17 @@ public class iTrustController {
 	 * @param logger
 	 */
 	public iTrustController(SessionUtils sessionUtils, TransactionLogger logger, DAOFactory factory) {
- 		if (sessionUtils == null) {
+ 		if (factory == null) {
+ 			factory = DAOFactory.getProductionInstance();
+ 		}
+		if (sessionUtils == null) {
 			sessionUtils = SessionUtils.getInstance();
 		}
 		if (logger == null) {
 			logger = TransactionLogger.getInstance(factory);
 		}
-		setFactory(factory);
- 		setSessionUtils(sessionUtils);
+		setSessionUtils(sessionUtils);
 		setTransactionLogger(logger);
-	}
-	
-	protected DAOFactory getFactory() {
-		return factory;
-	}
-	
-	public void setFactory(DAOFactory factory) {
-		this.factory = factory;
 	}
 	
 	protected TransactionLogger getTransactionLogger() {
@@ -98,6 +87,8 @@ public class iTrustController {
 	public void logTransaction(TransactionType type, String addedInfo) {
 		Long loggedInMID = sessionUtils.getSessionLoggedInMIDLong();
 		Long patientMID = sessionUtils.getCurrentPatientMIDLong();
+		if (loggedInMID == null) loggedInMID = Long.valueOf(0);
+		if (patientMID == null) patientMID = Long.valueOf(0);
 		logTransaction(type, loggedInMID, patientMID, addedInfo);
 	}
 	

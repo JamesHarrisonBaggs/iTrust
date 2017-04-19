@@ -11,6 +11,7 @@ import edu.ncsu.csc.itrust.controller.iTrustController;
 import edu.ncsu.csc.itrust.exception.DBException;
 import edu.ncsu.csc.itrust.model.obgyn.Pregnancy;
 import edu.ncsu.csc.itrust.model.obgyn.PregnancyMySQL;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
@@ -22,14 +23,13 @@ public class PregnancyController extends iTrustController {
 	private SessionUtils utils;
 	
 	public PregnancyController() throws DBException {
-		super();
 		this.utils = this.getSessionUtils();
 		this.sql = new PregnancyMySQL();
 		this.patientId = utils.getCurrentPatientMIDLong().longValue();
 	}
 	
-	public PregnancyController(DataSource ds, SessionUtils utils) {
-		super();
+	public PregnancyController(DataSource ds, SessionUtils utils, DAOFactory factory) {
+		super(null, null, factory);
 		this.utils = utils;
 		this.sql = new PregnancyMySQL(ds);
 		this.patientId = utils.getCurrentPatientMIDLong().longValue();

@@ -60,7 +60,7 @@ public class PrescriptionReportStepDefs {
 	public PrescriptionReportStepDefs(){
 		
 		this.ds = ConverterDAO.getDataSource();
-		this.ovController = new OfficeVisitController(ds);
+		this.ovController = new OfficeVisitController(ds, TestDAOFactory.getTestInstance());
 		this.ovValidator = new OfficeVisitValidator(ds);
 		this.authController = new AuthDAO(TestDAOFactory.getTestInstance());
 		this.patientController = new PatientDAO(TestDAOFactory.getTestInstance());

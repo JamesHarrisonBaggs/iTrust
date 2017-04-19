@@ -14,7 +14,9 @@ import org.mockito.Mockito;
 import edu.ncsu.csc.itrust.controller.healthtracker.HealthTrackerChartData;
 import edu.ncsu.csc.itrust.controller.obgyn.ChildbirthController;
 import edu.ncsu.csc.itrust.model.ConverterDAO;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.unit.datagenerators.TestDataGenerator;
+import edu.ncsu.csc.itrust.unit.testutils.TestDAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 public class HealthTrackerChartDataTest {
@@ -22,16 +24,18 @@ public class HealthTrackerChartDataTest {
 	HealthTrackerChartData controller;
 	DataSource ds;
 	TestDataGenerator gen;
+	DAOFactory test;
 	
 	@Mock SessionUtils mockSessionUtils;
 	
 	@Before
 	public void setUp() throws Exception {
+		test = TestDAOFactory.getTestInstance();
 		ds = ConverterDAO.getDataSource();
 		mockSessionUtils = Mockito.mock(SessionUtils.class);
 		Mockito.doReturn("51").when(mockSessionUtils).getRequestParameter(Mockito.anyString());
 		Mockito.doReturn(2L).when(mockSessionUtils).getCurrentPatientMIDLong();
-		controller = new HealthTrackerChartData(ds, mockSessionUtils);
+		controller = new HealthTrackerChartData(ds, mockSessionUtils, test);
 		gen = new TestDataGenerator();
 		gen.clearAllTables();
 		gen.standardData();

@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import edu.ncsu.csc.itrust.model.ndcode.NDCCode;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.model.old.enums.TransactionType;
 
 
@@ -24,11 +25,15 @@ public class NDCCodeForm {
     private boolean displayCodes;
 
     public NDCCodeForm() {
-        this(null);
+        this(null, null);
+    }
+    
+    public NDCCodeForm(DAOFactory factory) {
+    	this(null, factory);
     }
 
-    public NDCCodeForm(NDCCodeController cptCodeController) {
-        controller = (cptCodeController == null) ? new NDCCodeController() : cptCodeController;
+    public NDCCodeForm(NDCCodeController cptCodeController, DAOFactory factory) {
+        controller = (cptCodeController == null) ? new NDCCodeController(factory) : cptCodeController;
         search = "";
         setDisplayCodes(false);
     }

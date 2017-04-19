@@ -16,10 +16,16 @@ public class TransactionLogger {
 	/** The DAO which exposes logging functionality */
 	TransactionDAO dao;
 	
+	/**
+	 * Constructs a TransactionLogger with the production instance of DAOFactory
+	 */
 	private TransactionLogger() {
 		dao = DAOFactory.getProductionInstance().getTransactionDAO();
 	}
 
+	/**
+	 * Constructs a TransactionLogger with a specified instance of DAOFactory
+	 */
 	private TransactionLogger(DAOFactory factory) {
 		dao = factory.getTransactionDAO();
 	}
@@ -49,6 +55,7 @@ public class TransactionLogger {
 		try {
 			dao.logTransaction(type, loggedInMID, secondaryMID, addedInfo);
 		} catch (DBException e) {
+			System.err.println(e.getExtendedMessage());
 			e.printStackTrace();
 		}
 	}

@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCode;
 import edu.ncsu.csc.itrust.model.cptcode.CPTCodeMySQL;
 import edu.ncsu.csc.itrust.model.medicalProcedure.MedicalProcedure;
+import edu.ncsu.csc.itrust.model.old.dao.DAOFactory;
 import edu.ncsu.csc.itrust.webutils.SessionUtils;
 
 @ManagedBean(name = "medical_procedure_form")
@@ -23,18 +24,18 @@ public class MedicalProcedureForm {
     private CPTCodeMySQL cptData;
     
     public MedicalProcedureForm(){
-        this(null, null, SessionUtils.getInstance(), null);
+        this(null, null, SessionUtils.getInstance(), null, null);
     }
     
-    public MedicalProcedureForm(MedicalProcedureController mpc, CPTCodeMySQL cptData, SessionUtils sessionUtils, DataSource ds){
+    public MedicalProcedureForm(MedicalProcedureController mpc, CPTCodeMySQL cptData, SessionUtils sessionUtils, DataSource ds, DAOFactory factory){
         this.sessionUtils = (sessionUtils == null) ? SessionUtils.getInstance() : sessionUtils;
         try {
             if (ds == null) {
                 this.cptData = (cptData == null) ? new CPTCodeMySQL() : cptData;
-                controller = (mpc == null) ? new MedicalProcedureController() : mpc;
+                controller = (mpc == null) ? new MedicalProcedureController(factory) : mpc;
             } else {
                 this.cptData = (cptData == null) ? new CPTCodeMySQL(ds) : cptData;
-                controller = (mpc == null) ? new MedicalProcedureController(ds) : mpc;
+                controller = (mpc == null) ? new MedicalProcedureController(ds, factory) : mpc;
             }
             clearFields();
             
